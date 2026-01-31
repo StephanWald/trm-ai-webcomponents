@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 3 of 6 (Walkthrough Component)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-01-31 — Phase 2 complete (OrgChart Component verified)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-01-31 — Completed 03-01-PLAN.md (Walkthrough Component core implementation)
 
-Progress: [███░░░░░░░] 33%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 3.9 min
-- Total execution time: 0.32 hours
+- Total plans completed: 6
+- Average duration: 4.2 min
+- Total execution time: 0.42 hours
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [███░░░░░░░] 33%
 |-------|-------|-------|----------|
 | 01-foundation-infrastructure | 3/3 | 9.5min | 3.2min |
 | 02-orgchart-component | 2/2 | 10.0min | 5.0min |
+| 03-walkthrough-component | 1/3 | 5.2min | 5.2min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (4.5min), 01-03 (3.0min), 02-01 (5.0min), 02-02 (5.0min)
-- Trend: Testing and component plans consistent at ~5min, faster than initial infrastructure
+- Last 5 plans: 01-03 (3.0min), 02-01 (5.0min), 02-02 (5.0min), 03-01 (5.2min)
+- Trend: Component implementation plans stabilizing around 5min
 
 *Updated after each plan completion*
 
@@ -60,6 +61,10 @@ Recent decisions affecting current work:
 - 02-01: Timer-based click/double-click over native dblclick - better cross-browser reliability
 - 02-01: Two-pass DFS filter algorithm - ensures ancestor chain visibility for UX clarity
 - 02-01: Map-based cycle detection during tree building - prevents infinite loops
+- 03-01: Fixed-position overlays on document.body to escape shadow DOM boundaries
+- 03-01: Custom YouTube wrapper over video.js plugin - 0kB vs 240kB+
+- 03-01: timeupdate event over requestVideoFrameCallback - sufficient precision without overhead
+- 03-01: requestAnimationFrame throttling for scroll/resize overlay updates
 
 ### Pending Todos
 
@@ -72,23 +77,30 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31 (plan execution)
-Stopped at: Completed 02-02-PLAN.md - OrgChart component testing complete
+Stopped at: Completed 03-01-PLAN.md - Walkthrough component core implementation complete
 Resume file: None
 
 ## Next Steps
 
-**Phase 2 OrgChart Component COMPLETE**:
-- ✅ Complete sp-org-chart web component with all 13 ORGC requirements
-- ✅ Tree utilities (build, filter, sort) with O(n) performance
-- ✅ Drag-and-drop reorganization with drop zones
-- ✅ Long-press deletion with countdown indicator
+**Phase 3 Plan 01 COMPLETE - Walkthrough Component Core**:
+- ✅ Complete sp-walkthrough component with video playback (standard + YouTube)
+- ✅ Timeline synchronization with automatic scene advancement
+- ✅ Cross-shadow-boundary DOM element highlighting via overlays
+- ✅ Manual navigation (prev/next/scene dropdown)
+- ✅ Draggable panel with viewport constraints
+- ✅ Volume/mute controls and WebVTT captions
+- ✅ ESC abort with cleanup
 - ✅ Public API methods and custom events
-- ✅ DWC theming with light/dark overrides
-- ✅ Comprehensive test coverage (42 spec + 16 E2E tests)
-- ✅ All tests passing (49 spec total, 22 E2E total)
+- ✅ WALK-01 through WALK-06 and WALK-10 through WALK-15 implemented
 
-**Ready for Phase 3** - Walkthrough component development can begin with:
-- Component patterns established and tested (sp-org-chart)
-- Testing patterns proven (42 spec + 16 E2E)
-- DWC theming integration validated
-- Shadow DOM and CSS parts working correctly
+**Ready for Plan 02 (Author Mode)**:
+- Component supports authorMode prop (stubbed)
+- timelineUpdated event implemented for scene CRUD
+- Pointer tool pattern researched
+- TimelineEngine.setScenes() ready for dynamic updates
+
+**Known for Plan 03 (Testing)**:
+- All public methods testable via component API
+- Event emissions observable
+- OverlayManager can be tested with mock DOM
+- YouTubePlayerWrapper testable in isolation
