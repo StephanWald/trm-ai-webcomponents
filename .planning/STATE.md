@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 4 of 6 (Markdown Editor Component)
-Plan: 0 of 4 in current phase
-Status: Ready to plan
-Last activity: 2026-01-31 — Phase 3 complete (Walkthrough Component verified)
+Plan: 1 of 4 in current phase
+Status: In progress
+Last activity: 2026-01-31 — Completed 04-01-PLAN.md (Editor Foundation)
 
-Progress: [█████░░░░░] 50%
+Progress: [█████░░░░░] 53%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 9
 - Average duration: 4.2 min
-- Total execution time: 0.56 hours
+- Total execution time: 0.63 hours
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [█████░░░░░] 50%
 | 01-foundation-infrastructure | 3/3 | 9.5min | 3.2min |
 | 02-orgchart-component | 2/2 | 10.0min | 5.0min |
 | 03-walkthrough-component | 3/3 | 15.5min | 5.2min |
+| 04-markdown-editor-component | 1/4 | 4.1min | 4.1min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (5.0min), 03-01 (5.2min), 03-02 (4.0min), 03-03 (6.3min)
-- Trend: Testing tasks slightly longer (6min) due to comprehensive coverage
+- Last 5 plans: 03-01 (5.2min), 03-02 (4.0min), 03-03 (6.3min), 04-01 (4.1min)
+- Trend: Foundation tasks fast (4min), testing tasks longer (6min)
 
 *Updated after each plan completion*
 
@@ -72,6 +73,9 @@ Recent decisions affecting current work:
 - 03-03: CSS.escape polyfill using Object.defineProperty for JSDOM compatibility
 - 03-03: Mock getBoundingClientRect in overlay-manager tests for JSDOM environment
 - 03-03: Shadow DOM E2E testing via page.evaluate accessing shadowRoot
+- 04-01: Renamed focus() to focusEditor() to avoid conflict with HTML element prototype
+- 04-01: Debounced history push at 500ms for typing performance, auto-save at 2000ms
+- 04-01: Word count uses split(/\s+/) with filter for empty strings (0 words for empty content)
 
 ### Pending Todos
 
@@ -84,44 +88,34 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31 (plan execution)
-Stopped at: Completed 03-03-PLAN.md - Phase 3 complete with comprehensive test coverage
+Stopped at: Completed 04-01-PLAN.md - Markdown editor foundation with source mode
 Resume file: None
 
 ## Next Steps
 
-**Phase 3 Plan 01 COMPLETE - Walkthrough Component Core**:
-- ✅ Complete sp-walkthrough component with video playback (standard + YouTube)
-- ✅ Timeline synchronization with automatic scene advancement
-- ✅ Cross-shadow-boundary DOM element highlighting via overlays
-- ✅ Manual navigation (prev/next/scene dropdown)
-- ✅ Draggable panel with viewport constraints
-- ✅ Volume/mute controls and WebVTT captions
-- ✅ ESC abort with cleanup
-- ✅ Public API methods and custom events
-- ✅ WALK-01 through WALK-06 and WALK-10 through WALK-15 implemented
+**Phase 4 Plan 01 COMPLETE - Markdown Editor Foundation**:
+- ✅ TypeScript interfaces: EditorMode, ToolbarState, EditorStats, event detail interfaces
+- ✅ HistoryManager utility: 50-state undo/redo stack with position tracking
+- ✅ MarkdownRenderer utility: marked + DOMPurify pipeline with Prism fallback
+- ✅ FileHandler utility: Import/export file operations
+- ✅ SpeechRecognizer utility: Web Speech API wrapper with feature detection
+- ✅ sp-markdown-editor component: source mode with monospace textarea
+- ✅ Auto-save debouncing: 2-second delay with save indicator UI
+- ✅ Character/word count: live statistics in footer
+- ✅ Public API: getContent, setContent, clear, getMode, setMode, isDirty, focusEditor
+- ✅ DWC theming: CSS with dark mode and print styles
 
-**Phase 3 Plan 02 COMPLETE - Author Mode**:
-- ✅ CSS selector generator with ID > data-attr > class > nth-child strategy
-- ✅ Pointer tool with crosshair cursor and document-level click handler
-- ✅ Scene CRUD operations (create, edit, save, delete)
-- ✅ Author mode UI with toolbar, scene list, and editor panel
-- ✅ Timeline update events for all author actions
-- ✅ WALK-07, WALK-08, WALK-09 implemented
-- ✅ All 15 WALK requirements complete
+**Ready for Phase 4 Plan 02 (Toolbar Implementation)**:
+- Component foundation complete with single source of truth pattern
+- ToolbarState interface defined and ready
+- MarkdownRenderer, FileHandler, SpeechRecognizer utilities ready to uncomment
+- CSS toolbar placeholder already in render method
+- All event emitters defined (importFile, exportFile, imagePaste)
 
-**Phase 3 Plan 03 COMPLETE - Testing & Verification**:
-- ✅ 108 test cases created (56 spec + 26 E2E + 26 utility)
-- ✅ All spec tests pass (168 total across project)
-- ✅ All E2E tests pass (45 total across project)
-- ✅ TimelineEngine, OverlayManager, YouTubeWrapper, SelectorGenerator fully unit tested
-- ✅ Component spec tests cover props, state, events, methods, author mode, accessibility
-- ✅ E2E tests validate rendering, navigation, ESC abort, author mode UI
-- ✅ TEST-01 and TEST-02 requirements satisfied
+**Ready for Phase 4 Plan 03 (WYSIWYG Mode)**:
+- EditorMode type supports 'wysiwyg' and 'split' modes
+- setMode() and getMode() API methods implemented
+- CSS placeholders for wysiwyg-editor and split-editor already in stylesheet
+- MarkdownRenderer utility ready for preview rendering
 
-**Phase 3 COMPLETE - All 15 WALK requirements implemented and tested**
-
-**Ready for Phase 4 (RichText Editor)**:
-- Component testing patterns established
-- Spec + E2E test infrastructure proven
-- Shadow DOM testing patterns documented
-- No blockers or concerns
+**No blockers or concerns**
