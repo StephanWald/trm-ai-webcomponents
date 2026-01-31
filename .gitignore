@@ -1,0 +1,8 @@
+node_modules/
+dist/
+dist-custom-elements/
+www/
+loader/
+.stencil/
+*.log
+.DS_Store

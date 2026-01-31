@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+div {
+  font-family: system-ui, sans-serif;
+}
+
+h2 {
+  margin-top: 0;
+  color: #0066cc;
+}
