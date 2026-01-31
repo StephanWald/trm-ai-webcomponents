@@ -5,6 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
+export { HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
 export namespace Components {
     interface SpExample {
         /**
@@ -19,10 +21,52 @@ export namespace Components {
          */
         "theme": 'light' | 'dark' | 'auto';
     }
+    interface SpOrgChart {
+        /**
+          * Clear all highlights
+         */
+        "clearHighlight": () => Promise<void>;
+        /**
+          * Enable/disable edit mode for drag-and-drop and deletion
+          * @default false
+         */
+        "editable": boolean;
+        /**
+          * Get the currently selected user
+         */
+        "getSelected": () => Promise<User | null>;
+        /**
+          * Highlight a specific user by ID
+         */
+        "highlightUser": (userId: string) => Promise<void>;
+        /**
+          * Custom message when users array is empty
+          * @default 'No data available'
+         */
+        "noDataMessage": string;
+        /**
+          * Scroll a user tile into view with smooth animation
+         */
+        "scrollToUser": (userId: string) => Promise<void>;
+        /**
+          * Theme override for standalone usage
+          * @default 'auto'
+         */
+        "theme": 'light' | 'dark' | 'auto';
+        /**
+          * Flat array of users with reporting relationships
+          * @default []
+         */
+        "users": User[];
+    }
 }
 export interface SpExampleCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSpExampleElement;
+}
+export interface SpOrgChartCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpOrgChartElement;
 }
 declare global {
     interface HTMLSpExampleElementEventMap {
@@ -42,8 +86,29 @@ declare global {
         prototype: HTMLSpExampleElement;
         new (): HTMLSpExampleElement;
     };
+    interface HTMLSpOrgChartElementEventMap {
+        "userClick": UserEventDetail;
+        "userDblclick": UserEventDetail;
+        "hierarchyChange": HierarchyChangeDetail;
+        "userDelete": UserEventDetail;
+    }
+    interface HTMLSpOrgChartElement extends Components.SpOrgChart, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpOrgChartElementEventMap>(type: K, listener: (this: HTMLSpOrgChartElement, ev: SpOrgChartCustomEvent<HTMLSpOrgChartElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpOrgChartElementEventMap>(type: K, listener: (this: HTMLSpOrgChartElement, ev: SpOrgChartCustomEvent<HTMLSpOrgChartElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpOrgChartElement: {
+        prototype: HTMLSpOrgChartElement;
+        new (): HTMLSpOrgChartElement;
+    };
     interface HTMLElementTagNameMap {
         "sp-example": HTMLSpExampleElement;
+        "sp-org-chart": HTMLSpOrgChartElement;
     }
 }
 declare namespace LocalJSX {
@@ -64,8 +129,47 @@ declare namespace LocalJSX {
          */
         "theme"?: 'light' | 'dark' | 'auto';
     }
+    interface SpOrgChart {
+        /**
+          * Enable/disable edit mode for drag-and-drop and deletion
+          * @default false
+         */
+        "editable"?: boolean;
+        /**
+          * Custom message when users array is empty
+          * @default 'No data available'
+         */
+        "noDataMessage"?: string;
+        /**
+          * Emitted when hierarchy changes via drag-and-drop
+         */
+        "onHierarchyChange"?: (event: SpOrgChartCustomEvent<HierarchyChangeDetail>) => void;
+        /**
+          * Emitted when a user tile is clicked
+         */
+        "onUserClick"?: (event: SpOrgChartCustomEvent<UserEventDetail>) => void;
+        /**
+          * Emitted when a user tile is double-clicked
+         */
+        "onUserDblclick"?: (event: SpOrgChartCustomEvent<UserEventDetail>) => void;
+        /**
+          * Emitted when a user is deleted
+         */
+        "onUserDelete"?: (event: SpOrgChartCustomEvent<UserEventDetail>) => void;
+        /**
+          * Theme override for standalone usage
+          * @default 'auto'
+         */
+        "theme"?: 'light' | 'dark' | 'auto';
+        /**
+          * Flat array of users with reporting relationships
+          * @default []
+         */
+        "users"?: User[];
+    }
     interface IntrinsicElements {
         "sp-example": SpExample;
+        "sp-org-chart": SpOrgChart;
     }
 }
 export { LocalJSX as JSX };
@@ -73,6 +177,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "sp-example": LocalJSX.SpExample & JSXBase.HTMLAttributes<HTMLSpExampleElement>;
+            "sp-org-chart": LocalJSX.SpOrgChart & JSXBase.HTMLAttributes<HTMLSpOrgChartElement>;
         }
     }
 }
