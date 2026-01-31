@@ -91,17 +91,21 @@
     <h2>Walkthrough Component</h2>
     <p>Interactive walkthrough with video playback, timeline synchronization, and DOM element highlighting.</p>
     <button id="showWalkthroughManual" style="margin-right: 0.5rem;">Show Manual Walkthrough</button>
-    <button id="showWalkthroughVideo">Show Video Walkthrough</button>
+    <button id="showWalkthroughVideo" style="margin-right: 0.5rem;">Show Video Walkthrough</button>
+    <button id="showWalkthroughAuthor">Show Author Mode</button>
     <div id="walkthroughEventLog" style="margin-top: 1rem; padding: 0.5rem; background: #f5f5f5; border-radius: 4px; font-family: monospace; font-size: 0.75rem; max-height: 150px; overflow-y: auto;"></div>
     <sp-walkthrough id="walkthrough"></sp-walkthrough>
 
     <!-- Demo elements for highlighting -->
     <div style="margin-top: 1rem;">
-      <div id="demo-element-1" style="padding: 1rem; background: #e3f2fd; border-radius: 4px; margin-bottom: 0.5rem;">
+      <div id="demo-element-1" class="highlight-target" style="padding: 1rem; background: #e3f2fd; border-radius: 4px; margin-bottom: 0.5rem;">
         Demo Element 1 - This can be highlighted
       </div>
-      <div id="demo-element-2" style="padding: 1rem; background: #fff3e0; border-radius: 4px;">
+      <div id="demo-element-2" class="highlight-target" style="padding: 1rem; background: #fff3e0; border-radius: 4px; margin-bottom: 0.5rem;">
         Demo Element 2 - This can also be highlighted
+      </div>
+      <div id="demo-element-3" class="highlight-target" style="padding: 1rem; background: #e8f5e9; border-radius: 4px;">
+        Demo Element 3 - Try the pointer tool in author mode
       </div>
     </div>
   </div>
@@ -164,6 +168,7 @@
     const walkthrough = document.getElementById('walkthrough');
     const showWalkthroughManual = document.getElementById('showWalkthroughManual');
     const showWalkthroughVideo = document.getElementById('showWalkthroughVideo');
+    const showWalkthroughAuthor = document.getElementById('showWalkthroughAuthor');
     const walkthroughEventLog = document.getElementById('walkthroughEventLog');
 
     // Helper to log events
@@ -232,6 +237,14 @@
       // Sample short YouTube video for demo
       walkthrough.videoSrc = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
       walkthrough.autoPlay = false;
+      walkthrough.authorMode = false;
+      await walkthrough.show();
+    });
+
+    showWalkthroughAuthor.addEventListener('click', async () => {
+      walkthrough.scenes = manualScenes;
+      walkthrough.videoSrc = undefined;
+      walkthrough.authorMode = true;
       await walkthrough.show();
     });
 
@@ -253,7 +266,12 @@
     });
 
     walkthrough.addEventListener('timelineUpdated', (e) => {
-      logWalkthroughEvent('timelineUpdated', { changeType: e.detail.changeType, sceneId: e.detail.affectedSceneId });
+      logWalkthroughEvent('timelineUpdated', {
+        changeType: e.detail.changeType,
+        sceneId: e.detail.affectedSceneId,
+        sceneCount: e.detail.scenes.length
+      });
+      console.log('[Author Mode] Timeline updated:', e.detail);
     });
   </script>
 </body>
