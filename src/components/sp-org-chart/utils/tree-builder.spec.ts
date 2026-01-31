@@ -1,5 +1,5 @@
 import { buildTree } from './tree-builder';
-import { User, TreeNode } from '../types/org-chart.types';
+import { User } from '../types/org-chart.types';
 
 describe('buildTree', () => {
   it('returns empty array when given empty array', () => {
