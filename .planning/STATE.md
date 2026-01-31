@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 4 of 6 (Markdown Editor Component)
-Plan: 1 of 4 in current phase
+Plan: 2 of 4 in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 04-01-PLAN.md (Editor Foundation)
+Last activity: 2026-01-31 — Completed 04-02-PLAN.md (Toolbar and Keyboard Shortcuts)
 
-Progress: [█████░░░░░] 53%
+Progress: [██████░░░░] 59%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 4.2 min
-- Total execution time: 0.63 hours
+- Total plans completed: 10
+- Average duration: 4.0 min
+- Total execution time: 0.67 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [█████░░░░░] 53%
 | 01-foundation-infrastructure | 3/3 | 9.5min | 3.2min |
 | 02-orgchart-component | 2/2 | 10.0min | 5.0min |
 | 03-walkthrough-component | 3/3 | 15.5min | 5.2min |
-| 04-markdown-editor-component | 1/4 | 4.1min | 4.1min |
+| 04-markdown-editor-component | 2/4 | 7.1min | 3.6min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (5.2min), 03-02 (4.0min), 03-03 (6.3min), 04-01 (4.1min)
-- Trend: Foundation tasks fast (4min), testing tasks longer (6min)
+- Last 5 plans: 03-02 (4.0min), 03-03 (6.3min), 04-01 (4.1min), 04-02 (3.0min)
+- Trend: Foundation tasks fast (3-4min), testing tasks longer (6min)
 
 *Updated after each plan completion*
 
@@ -76,6 +76,11 @@ Recent decisions affecting current work:
 - 04-01: Renamed focus() to focusEditor() to avoid conflict with HTML element prototype
 - 04-01: Debounced history push at 500ms for typing performance, auto-save at 2000ms
 - 04-01: Word count uses split(/\s+/) with filter for empty strings (0 words for empty content)
+- 04-02: Text-based toolbar button labels (B, I, S, H1, etc.) to avoid icon library dependency
+- 04-02: Toggle behavior for all formatting operations - unwrap if already wrapped
+- 04-02: ActionResult pattern returns content + cursor positions for component to apply
+- 04-02: requestAnimationFrame for cursor positioning after state updates
+- 04-02: Ctrl/Cmd detection for Mac compatibility in keyboard shortcuts
 
 ### Pending Todos
 
@@ -88,7 +93,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31 (plan execution)
-Stopped at: Completed 04-01-PLAN.md - Markdown editor foundation with source mode
+Stopped at: Completed 04-02-PLAN.md - Markdown editor toolbar and keyboard shortcuts
 Resume file: None
 
 ## Next Steps
@@ -105,17 +110,26 @@ Resume file: None
 - ✅ Public API: getContent, setContent, clear, getMode, setMode, isDirty, focusEditor
 - ✅ DWC theming: CSS with dark mode and print styles
 
-**Ready for Phase 4 Plan 02 (Toolbar Implementation)**:
-- Component foundation complete with single source of truth pattern
-- ToolbarState interface defined and ready
-- MarkdownRenderer, FileHandler, SpeechRecognizer utilities ready to uncomment
-- CSS toolbar placeholder already in render method
-- All event emitters defined (importFile, exportFile, imagePaste)
+**Phase 4 Plan 02 COMPLETE - Toolbar and Keyboard Shortcuts**:
+- ✅ ToolbarActions utility class with all markdown formatting operations
+- ✅ Toolbar with 6 grouped sections (History, Inline, Headings, Block, Lists, Insert)
+- ✅ Keyboard shortcuts: Ctrl+B/I/K/S/Z/Y for common operations
+- ✅ Undo/redo toolbar buttons with disabled state based on history
+- ✅ DWC-themed toolbar styles with dark mode support
+- ✅ Toggle behavior for all formatting operations
+- ✅ applyToolbarAction helper for consistent state updates
 
 **Ready for Phase 4 Plan 03 (WYSIWYG Mode)**:
 - EditorMode type supports 'wysiwyg' and 'split' modes
 - setMode() and getMode() API methods implemented
 - CSS placeholders for wysiwyg-editor and split-editor already in stylesheet
-- MarkdownRenderer utility ready for preview rendering
+- MarkdownRenderer utility ready to uncomment for preview rendering
+- All toolbar formatting operations can be reused for WYSIWYG mode
+
+**Ready for Phase 4 Plan 04 (Testing)**:
+- ToolbarActions utility has pure functions (no side effects) - easy to unit test
+- All formatting operations return deterministic results for given inputs
+- Toolbar button click handlers can be tested via component testing
+- Keyboard shortcuts can be tested via simulated KeyboardEvent dispatch
 
 **No blockers or concerns**
