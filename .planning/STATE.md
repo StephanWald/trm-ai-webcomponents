@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 4 of 6 (Markdown Editor Component)
-Plan: 2 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 04-02-PLAN.md (Toolbar and Keyboard Shortcuts)
+Last activity: 2026-01-31 — Completed 04-03-PLAN.md (WYSIWYG Mode and File Operations)
 
-Progress: [██████░░░░] 59%
+Progress: [███████░░░] 65%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
-- Average duration: 4.0 min
-- Total execution time: 0.67 hours
+- Total plans completed: 11
+- Average duration: 4.2 min
+- Total execution time: 0.76 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [██████░░░░] 59%
 | 01-foundation-infrastructure | 3/3 | 9.5min | 3.2min |
 | 02-orgchart-component | 2/2 | 10.0min | 5.0min |
 | 03-walkthrough-component | 3/3 | 15.5min | 5.2min |
-| 04-markdown-editor-component | 2/4 | 7.1min | 3.6min |
+| 04-markdown-editor-component | 3/4 | 12.3min | 4.1min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (4.0min), 03-03 (6.3min), 04-01 (4.1min), 04-02 (3.0min)
-- Trend: Foundation tasks fast (3-4min), testing tasks longer (6min)
+- Last 5 plans: 03-03 (6.3min), 04-01 (4.1min), 04-02 (3.0min), 04-03 (5.2min)
+- Trend: Foundation tasks fast (3-4min), feature tasks moderate (4-5min), testing tasks longer (6min)
 
 *Updated after each plan completion*
 
@@ -81,6 +81,11 @@ Recent decisions affecting current work:
 - 04-02: ActionResult pattern returns content + cursor positions for component to apply
 - 04-02: requestAnimationFrame for cursor positioning after state updates
 - 04-02: Ctrl/Cmd detection for Mac compatibility in keyboard shortcuts
+- 04-03: Mode switcher tabs at right end of toolbar (avoids separate bar adding height)
+- 04-03: WYSIWYG mode is preview-only (non-editable) using innerHTML rendering
+- 04-03: Split mode with independent scrolling for source and preview panes
+- 04-03: Voice dictation appends to end of content (predictable continuous dictation behavior)
+- 04-03: Print uses temporary window with inline styles for consistent formatting
 
 ### Pending Todos
 
@@ -93,7 +98,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31 (plan execution)
-Stopped at: Completed 04-02-PLAN.md - Markdown editor toolbar and keyboard shortcuts
+Stopped at: Completed 04-03-PLAN.md - WYSIWYG mode and file operations
 Resume file: None
 
 ## Next Steps
@@ -119,12 +124,17 @@ Resume file: None
 - ✅ Toggle behavior for all formatting operations
 - ✅ applyToolbarAction helper for consistent state updates
 
-**Ready for Phase 4 Plan 03 (WYSIWYG Mode)**:
-- EditorMode type supports 'wysiwyg' and 'split' modes
-- setMode() and getMode() API methods implemented
-- CSS placeholders for wysiwyg-editor and split-editor already in stylesheet
-- MarkdownRenderer utility ready to uncomment for preview rendering
-- All toolbar formatting operations can be reused for WYSIWYG mode
+**Phase 4 Plan 03 COMPLETE - WYSIWYG Mode and File Operations**:
+- ✅ Mode switcher tabs (Source, Preview, Split) with active state
+- ✅ WYSIWYG preview mode rendering markdown as formatted HTML
+- ✅ Split mode with source textarea and preview side by side
+- ✅ Mode switching preserves content without data loss
+- ✅ File import button with .md/.markdown/.txt support
+- ✅ File export button with .md download
+- ✅ Voice dictation toggle with feature detection (Chrome/Edge)
+- ✅ Print support with formatted HTML in new window
+- ✅ Image paste detection with event emission (file + dataUrl)
+- ✅ All 6 events wired: contentChange, save, modeChange, importFile, exportFile, imagePaste
 
 **Ready for Phase 4 Plan 04 (Testing)**:
 - ToolbarActions utility has pure functions (no side effects) - easy to unit test
