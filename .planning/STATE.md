@@ -20,18 +20,18 @@ Progress: [██░░░░░░░░] 19%
 
 **Velocity:**
 - Total plans completed: 3
-- Average duration: 2.8 min
-- Total execution time: 0.14 hours
+- Average duration: 3.2 min
+- Total execution time: 0.16 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation-infrastructure | 3/3 | 8.2min | 2.7min |
+| 01-foundation-infrastructure | 3/3 | 9.5min | 3.2min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2.6min), 01-02 (2.6min), 01-03 (3.0min)
-- Trend: Consistent velocity
+- Last 5 plans: 01-01 (2.6min), 01-02 (4.5min), 01-03 (3.0min)
+- Trend: Stable with slight variation (testing setup added overhead to 01-02)
 
 *Updated after each plan completion*
 
@@ -48,6 +48,9 @@ Recent decisions affecting current work:
 - 01-01: dist-custom-elements output via dist/components/ (Stencil v4 behavior)
 - 01-01: customElementsExportBehavior: auto-define-custom-elements for automatic registration
 - 01-01: externalRuntime: false to bundle Stencil runtime for easier consumption
+- 01-02: DWC tokens use var(--dwc-external-*, fallback) pattern for external override capability
+- 01-02: Theme overrides via :host(.theme-light) and :host(.theme-dark) CSS classes
+- 01-02: Test suite uses Jest for spec tests, Playwright for E2E tests
 - 01-03: ESLint 8 chosen over ESLint 9 for .eslintrc.json format compatibility
 - 01-03: Repository uses 'master' branch instead of 'main' - Changesets and workflows configured accordingly
 - 01-03: Node 20.x/22.x in CI, Node 24.x in Release for latest publishing features
