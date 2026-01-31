@@ -82,6 +82,21 @@
   color: var(--dwc-color-primary, #1976d2);
 }
 
+.toolbar-btn.listening {
+  animation: listening-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes listening-pulse {
+  0%, 100% {
+    background: var(--dwc-color-primary-lightest, #e3f2fd);
+    transform: scale(1);
+  }
+  50% {
+    background: var(--dwc-color-primary-lighter, #bbdefb);
+    transform: scale(1.05);
+  }
+}
+
 .toolbar-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
