@@ -77,13 +77,68 @@
     </div>
   </div>
 
+  <div class="demo-section" style="grid-column: 1 / -1;">
+    <h2>OrgChart Component</h2>
+    <p>Hierarchical organization chart with drag-and-drop, filtering, and selection. Toggle editable mode with checkbox.</p>
+    <label style="margin-bottom: 1rem; display: block;">
+      <input type="checkbox" id="editableToggle" />
+      Enable editable mode (drag-and-drop & long-press delete)
+    </label>
+    <sp-org-chart id="orgChart"></sp-org-chart>
+  </div>
+
   <script>
-    // Event listener demo
+    // Event listener demo for sp-example
     document.querySelectorAll('sp-example').forEach(el => {
       el.addEventListener('spExampleClick', (e) => {
         console.log('Button clicked on:', e.target);
         alert('sp-example-click event fired!');
       });
+    });
+
+    // OrgChart demo data and event handling
+    const orgChart = document.getElementById('orgChart');
+    const editableToggle = document.getElementById('editableToggle');
+
+    // Sample hierarchical data
+    const sampleUsers = [
+      { id: '1', name: 'Alice Johnson', role: 'CEO', reportsTo: undefined },
+      { id: '2', name: 'Bob Smith', role: 'CTO', reportsTo: '1' },
+      { id: '3', name: 'Carol Williams', role: 'CFO', reportsTo: '1' },
+      { id: '4', name: 'David Brown', role: 'VP Engineering', reportsTo: '2' },
+      { id: '5', name: 'Eve Davis', role: 'Senior Engineer', reportsTo: '4' },
+      { id: '6', name: 'Frank Miller', role: 'Engineer', reportsTo: '4' },
+      { id: '7', name: 'Grace Wilson', role: 'VP Finance', reportsTo: '3' },
+      { id: '8', name: 'Henry Moore', role: 'Accountant', reportsTo: '7' },
+      { id: '9', name: 'Ivy Taylor', role: 'VP Product', reportsTo: '1' },
+      { id: '10', name: 'Jack Anderson', role: 'Product Manager', reportsTo: '9' },
+    ];
+
+    orgChart.users = sampleUsers;
+
+    // Toggle editable mode
+    editableToggle.addEventListener('change', (e) => {
+      orgChart.editable = e.target.checked;
+    });
+
+    // Event listeners
+    orgChart.addEventListener('userClick', (e) => {
+      console.log('User clicked:', e.detail);
+    });
+
+    orgChart.addEventListener('userDblclick', (e) => {
+      console.log('User double-clicked:', e.detail);
+      alert(`Double-clicked: ${e.detail.user.name} (${e.detail.user.role})`);
+    });
+
+    orgChart.addEventListener('hierarchyChange', (e) => {
+      console.log('Hierarchy changed:', e.detail);
+      alert(`Moved user ${e.detail.userId} from ${e.detail.oldManagerId} to ${e.detail.newManagerId}`);
+    });
+
+    orgChart.addEventListener('userDelete', (e) => {
+      console.log('User deleted:', e.detail);
+      alert(`Deleted: ${e.detail.user.name}`);
     });
   </script>
 </body>
