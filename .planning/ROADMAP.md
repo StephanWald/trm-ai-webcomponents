@@ -12,7 +12,7 @@ This roadmap transforms three existing vanilla JS components into production-rea
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Infrastructure** - Stencil project, build pipeline, theming system, CI/CD
+- [x] **Phase 1: Foundation & Infrastructure** - Stencil project, build pipeline, theming system, CI/CD
 - [ ] **Phase 2: OrgChart Component** - Simplest component with drag-and-drop, filtering, tests
 - [ ] **Phase 3: Walkthrough Component** - Medium component with timeline, DOM highlighting, author mode
 - [ ] **Phase 4: Markdown Editor Component** - Complex component with WYSIWYG, peer deps, voice dictation
@@ -34,9 +34,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Stencil project scaffolding with dual output targets, package.json, peer dependencies
-- [ ] 01-02-PLAN.md -- DWC theming system, sp-example component, spec + E2E tests
-- [ ] 01-03-PLAN.md -- GitHub Actions CI/CD workflows, Changesets, ESLint
+- [x] 01-01-PLAN.md -- Stencil project scaffolding with dual output targets, package.json, peer dependencies
+- [x] 01-02-PLAN.md -- DWC theming system, sp-example component, spec + E2E tests
+- [x] 01-03-PLAN.md -- GitHub Actions CI/CD workflows, Changesets, ESLint
 
 ### Phase 2: OrgChart Component
 **Goal**: Fully functional sp-org-chart component with hierarchical rendering, drag-and-drop reorganization, filtering, and comprehensive tests proving component patterns work
@@ -125,7 +125,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Infrastructure | 0/3 | Planned | - |
+| 1. Foundation & Infrastructure | 3/3 | ✓ Complete | 2026-01-31 |
 | 2. OrgChart Component | 0/2 | Not started | - |
 | 3. Walkthrough Component | 0/3 | Not started | - |
 | 4. Markdown Editor Component | 0/4 | Not started | - |
@@ -134,4 +134,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 ---
 *Roadmap created: 2026-01-31*
-*Last updated: 2026-01-31*
+*Last updated: 2026-01-31 — Phase 1 complete*

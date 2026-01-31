@@ -7,21 +7,21 @@
 
 ### Infrastructure
 
-- [ ] **INFRA-01**: Stencil.js project compiles TypeScript components to web components with lazy-loading support
-- [ ] **INFRA-02**: Build produces dual output targets: `dist` (lazy-loaded/CDN) and `dist-custom-elements` (tree-shakeable/bundler)
-- [ ] **INFRA-03**: Package published to npm as `@skillspilot/webcomponents` with correct exports and type definitions
-- [ ] **INFRA-04**: Components loadable via CDN script tag from unpkg/jsdelivr and auto-register custom elements
-- [ ] **INFRA-05**: Heavy libraries (marked, DOMPurify, Prism.js, Turndown) configured as peer dependencies, not bundled
-- [ ] **INFRA-06**: GitHub Actions CI pipeline runs build, lint, and tests on every push/PR
+- [x] **INFRA-01**: Stencil.js project compiles TypeScript components to web components with lazy-loading support
+- [x] **INFRA-02**: Build produces dual output targets: `dist` (lazy-loaded/CDN) and `dist-custom-elements` (tree-shakeable/bundler)
+- [x] **INFRA-03**: Package published to npm as `@skillspilot/webcomponents` with correct exports and type definitions
+- [x] **INFRA-04**: Components loadable via CDN script tag from unpkg/jsdelivr and auto-register custom elements
+- [x] **INFRA-05**: Heavy libraries (marked, DOMPurify, Prism.js, Turndown) configured as peer dependencies, not bundled
+- [x] **INFRA-06**: GitHub Actions CI pipeline runs build, lint, and tests on every push/PR
 - [ ] **INFRA-07**: GitHub Actions CD pipeline publishes to npm on release with provenance
-- [ ] **INFRA-08**: Changesets configured for version management and automated changelog generation
+- [x] **INFRA-08**: Changesets configured for version management and automated changelog generation
 
 ### Theming
 
-- [ ] **THEME-01**: All components consume `--dwc-*` CSS custom properties for colors, typography, and spacing
-- [ ] **THEME-02**: Components expose `::part()` selectors for structural styling override
-- [ ] **THEME-03**: Components support light and dark mode via `--dwc-*` color tokens
-- [ ] **THEME-04**: Components render with sensible visual defaults when no DWC theme is loaded
+- [x] **THEME-01**: All components consume `--dwc-*` CSS custom properties for colors, typography, and spacing
+- [x] **THEME-02**: Components expose `::part()` selectors for structural styling override
+- [x] **THEME-03**: Components support light and dark mode via `--dwc-*` color tokens
+- [x] **THEME-04**: Components render with sensible visual defaults when no DWC theme is loaded
 
 ### Markdown Editor (`<sp-markdown-editor>`)
 
@@ -131,18 +131,18 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 1 | Pending |
-| INFRA-02 | Phase 1 | Pending |
-| INFRA-03 | Phase 1 | Pending |
-| INFRA-04 | Phase 1 | Pending |
-| INFRA-05 | Phase 1 | Pending |
-| INFRA-06 | Phase 1 | Pending |
+| INFRA-01 | Phase 1 | Complete |
+| INFRA-02 | Phase 1 | Complete |
+| INFRA-03 | Phase 1 | Complete |
+| INFRA-04 | Phase 1 | Complete |
+| INFRA-05 | Phase 1 | Complete |
+| INFRA-06 | Phase 1 | Complete |
 | INFRA-07 | Phase 6 | Pending |
-| INFRA-08 | Phase 1 | Pending |
-| THEME-01 | Phase 1 | Pending |
-| THEME-02 | Phase 1 | Pending |
-| THEME-03 | Phase 1 | Pending |
-| THEME-04 | Phase 1 | Pending |
+| INFRA-08 | Phase 1 | Complete |
+| THEME-01 | Phase 1 | Complete |
+| THEME-02 | Phase 1 | Complete |
+| THEME-03 | Phase 1 | Complete |
+| THEME-04 | Phase 1 | Complete |
 | MDED-01 | Phase 4 | Pending |
 | MDED-02 | Phase 4 | Pending |
 | MDED-03 | Phase 4 | Pending |
@@ -207,4 +207,4 @@
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-31 after roadmap creation*
+*Last updated: 2026-01-31 — Phase 1 requirements complete*
