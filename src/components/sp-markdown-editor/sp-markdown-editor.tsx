@@ -12,9 +12,9 @@ import type {
 } from './types/editor.types';
 import { HistoryManager } from './utils/history-manager';
 import { ToolbarActions, type ActionResult } from './utils/toolbar-actions';
-// import { MarkdownRenderer } from './utils/markdown-renderer';
-// import { FileHandler } from './utils/file-handler';
-// import { SpeechRecognizer } from './utils/speech-recognizer';
+import { MarkdownRenderer } from './utils/markdown-renderer';
+// import { FileHandler } from './utils/file-handler'; // Task 2
+import { SpeechRecognizer } from './utils/speech-recognizer';
 
 @Component({
   tag: 'sp-markdown-editor',
@@ -60,8 +60,8 @@ export class SpMarkdownEditor {
 
   // Private members
   private historyManager: HistoryManager;
-  // private markdownRenderer: MarkdownRenderer;
-  // private speechRecognizer: SpeechRecognizer;
+  private markdownRenderer: MarkdownRenderer;
+  private speechRecognizer: SpeechRecognizer;
   private autoSaveTimer: ReturnType<typeof setTimeout> | null = null;
   private sourceTextareaRef: HTMLTextAreaElement;
   private lastHistoryPush: number = 0;
@@ -69,8 +69,8 @@ export class SpMarkdownEditor {
   componentWillLoad() {
     // Initialize utilities
     this.historyManager = new HistoryManager(this.maxHistory);
-    // this.markdownRenderer = new MarkdownRenderer();
-    // this.speechRecognizer = new SpeechRecognizer();
+    this.markdownRenderer = new MarkdownRenderer();
+    this.speechRecognizer = new SpeechRecognizer();
 
     // Set initial content from value prop
     this.content = this.value;
@@ -90,8 +90,10 @@ export class SpMarkdownEditor {
       this.autoSaveTimer = null;
     }
 
-    // Clean up speech recognizer (Plan 02 will uncomment)
-    // this.speechRecognizer.destroy();
+    // Clean up speech recognizer
+    if (this.speechRecognizer) {
+      this.speechRecognizer.destroy();
+    }
   }
 
   @Watch('value')
@@ -245,6 +247,88 @@ export class SpMarkdownEditor {
       return <span class="save-indicator dirty">Unsaved changes</span>;
     }
     return <span class="save-indicator saved">Saved</span>;
+  }
+
+  // Handle mode switch
+  private handleModeSwitch = (newMode: EditorMode) => {
+    const oldMode = this.currentMode;
+    if (oldMode === newMode) {
+      return;
+    }
+
+    this.currentMode = newMode;
+    this.modeChange.emit({ oldMode, newMode });
+
+    // Focus appropriate element after mode switch
+    requestAnimationFrame(() => {
+      if (newMode === 'source' && this.sourceTextareaRef) {
+        this.sourceTextareaRef.focus();
+      }
+    });
+  };
+
+  // Render WYSIWYG preview mode
+  private renderWysiwyg() {
+    const html = this.markdownRenderer.render(this.content);
+
+    return (
+      <div
+        class="wysiwyg-editor"
+        part="wysiwyg-editor"
+        innerHTML={html}
+      ></div>
+    );
+  }
+
+  // Render split mode (source + preview side by side)
+  private renderSplit() {
+    const html = this.markdownRenderer.render(this.content);
+
+    return (
+      <div class="split-editor">
+        <div class="split-pane split-source">
+          <textarea
+            class="source-editor"
+            value={this.content}
+            placeholder={this.placeholder}
+            onInput={this.handleInput}
+            ref={el => (this.sourceTextareaRef = el as HTMLTextAreaElement)}
+          ></textarea>
+        </div>
+        <div class="split-pane split-preview">
+          <div class="wysiwyg-preview" innerHTML={html}></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Render mode switcher tabs
+  private renderModeSwitcher() {
+    return (
+      <div class="mode-switcher" part="mode-switcher">
+        <button
+          class={`mode-tab ${this.currentMode === 'source' ? 'active' : ''}`}
+          onClick={() => this.handleModeSwitch('source')}
+          title="Source mode"
+        >
+          Source
+        </button>
+        <button
+          class={`mode-tab ${this.currentMode === 'wysiwyg' ? 'active' : ''}`}
+          onClick={() => this.handleModeSwitch('wysiwyg')}
+          title="Preview mode"
+        >
+          Preview
+        </button>
+        <button
+          class={`mode-tab ${this.currentMode === 'split' ? 'active' : ''}`}
+          onClick={() => this.handleModeSwitch('split')}
+          title="Split mode"
+        >
+          Split
+        </button>
+      </div>
+    );
   }
 
   // Apply toolbar action helper
@@ -539,10 +623,13 @@ export class SpMarkdownEditor {
   render() {
     return (
       <div class="editor-container">
-        {/* Toolbar */}
-        {this.renderToolbar()}
+        {/* Toolbar with mode switcher */}
+        <div class="toolbar-container">
+          {this.renderToolbar()}
+          {this.renderModeSwitcher()}
+        </div>
 
-        {/* Editor body */}
+        {/* Editor body - conditional rendering based on mode */}
         <div class="editor-body">
           {this.currentMode === 'source' && (
             <textarea
@@ -555,17 +642,9 @@ export class SpMarkdownEditor {
             ></textarea>
           )}
 
-          {this.currentMode === 'wysiwyg' && (
-            <div class="wysiwyg-editor" part="wysiwyg-editor">
-              {/* Plan 03 will populate WYSIWYG mode */}
-            </div>
-          )}
+          {this.currentMode === 'wysiwyg' && this.renderWysiwyg()}
 
-          {this.currentMode === 'split' && (
-            <div class="split-editor">
-              {/* Plan 03 will populate split mode */}
-            </div>
-          )}
+          {this.currentMode === 'split' && this.renderSplit()}
         </div>
 
         {/* Footer */}
