@@ -48,11 +48,11 @@ Plans:
   3. User can filter org chart by name/role and see filtered user plus all subordinates plus full chain of command, with non-matches dimmed
   4. User can select tile (single-click), double-click to trigger custom action, or long-press 4 seconds to delete with countdown timer
   5. Test suite covers props, state, events, methods (Jest spec) and rendering, interactions, accessibility (E2E)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md — Core component with types, utilities, rendering, interactions, filtering, and public API
+- [ ] 02-02-PLAN.md — Jest spec tests and Playwright E2E tests for full coverage
 
 ### Phase 3: Walkthrough Component
 **Goal**: Fully functional sp-walkthrough component with video playback, scene timeline synchronization, DOM element highlighting, author mode, and tests validating cross-boundary DOM interaction
