@@ -1,2 +1,99 @@
-/* DWC Theme CSS - Placeholder for Plan 02 */
-/* This file will be populated with DWC token mappings in the theming plan */
+/**
+ * DWC Theme CSS - Core Token Mappings
+ *
+ * Maps DWC design tokens to CSS custom properties with sensible fallback defaults.
+ * Components consume these tokens via var(--dwc-*) for consistent theming.
+ *
+ * Pattern: var(--dwc-external-token, fallback-value)
+ * When DWC tokens are present, they override. Otherwise, fallbacks provide clean standalone styling.
+ */
+
+:root {
+  /* === Colors === */
+
+  /* Primary brand color */
+  --dwc-color-primary: var(--dwc-external-color-primary, #0066cc);
+  --dwc-color-primary-hover: var(--dwc-external-color-primary-hover, #0052a3);
+  --dwc-color-primary-text: var(--dwc-external-color-primary-text, #ffffff);
+
+  /* Surface colors */
+  --dwc-color-surface: var(--dwc-external-color-surface, #ffffff);
+  --dwc-color-surface-secondary: var(--dwc-external-color-surface-secondary, #f5f5f5);
+
+  /* Text colors */
+  --dwc-color-text: var(--dwc-external-color-text, #1a1a1a);
+  --dwc-color-on-surface: var(--dwc-external-color-on-surface, #1a1a1a);
+  --dwc-color-text-secondary: var(--dwc-external-color-text-secondary, #666666);
+
+  /* Border colors */
+  --dwc-color-border: var(--dwc-external-color-border, #e0e0e0);
+  --dwc-color-border-hover: var(--dwc-external-color-border-hover, #cccccc);
+
+  /* Semantic colors */
+  --dwc-color-danger: var(--dwc-external-color-danger, #dc3545);
+  --dwc-color-danger-hover: var(--dwc-external-color-danger-hover, #c82333);
+  --dwc-color-success: var(--dwc-external-color-success, #28a745);
+  --dwc-color-success-hover: var(--dwc-external-color-success-hover, #218838);
+  --dwc-color-warning: var(--dwc-external-color-warning, #ffc107);
+  --dwc-color-info: var(--dwc-external-color-info, #17a2b8);
+
+  /* === Typography === */
+
+  /* Font families */
+  --dwc-font-family: var(--dwc-external-font-family, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+  --dwc-font-family-mono: var(--dwc-external-font-family-mono, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace);
+
+  /* Font sizes */
+  --dwc-font-size-xs: var(--dwc-external-font-size-xs, 0.75rem);
+  --dwc-font-size-sm: var(--dwc-external-font-size-sm, 0.875rem);
+  --dwc-font-size-base: var(--dwc-external-font-size-base, 1rem);
+  --dwc-font-size-lg: var(--dwc-external-font-size-lg, 1.25rem);
+  --dwc-font-size-xl: var(--dwc-external-font-size-xl, 1.5rem);
+
+  /* Line heights */
+  --dwc-line-height-tight: var(--dwc-external-line-height-tight, 1.25);
+  --dwc-line-height-normal: var(--dwc-external-line-height-normal, 1.5);
+  --dwc-line-height-relaxed: var(--dwc-external-line-height-relaxed, 1.75);
+
+  /* Font weights */
+  --dwc-font-weight-normal: var(--dwc-external-font-weight-normal, 400);
+  --dwc-font-weight-medium: var(--dwc-external-font-weight-medium, 500);
+  --dwc-font-weight-semibold: var(--dwc-external-font-weight-semibold, 600);
+  --dwc-font-weight-bold: var(--dwc-external-font-weight-bold, 700);
+
+  /* === Spacing === */
+
+  --dwc-spacing-xs: var(--dwc-external-spacing-xs, 0.25rem);
+  --dwc-spacing-sm: var(--dwc-external-spacing-sm, 0.5rem);
+  --dwc-spacing-md: var(--dwc-external-spacing-md, 1rem);
+  --dwc-spacing-lg: var(--dwc-external-spacing-lg, 1.5rem);
+  --dwc-spacing-xl: var(--dwc-external-spacing-xl, 2rem);
+  --dwc-spacing-2xl: var(--dwc-external-spacing-2xl, 3rem);
+
+  /* === Border Radius === */
+
+  --dwc-border-radius: var(--dwc-external-border-radius, 4px);
+  --dwc-border-radius-sm: var(--dwc-external-border-radius-sm, 2px);
+  --dwc-border-radius-lg: var(--dwc-external-border-radius-lg, 8px);
+  --dwc-border-radius-xl: var(--dwc-external-border-radius-xl, 12px);
+  --dwc-border-radius-full: var(--dwc-external-border-radius-full, 9999px);
+
+  /* === Shadows === */
+
+  --dwc-shadow-sm: var(--dwc-external-shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
+  --dwc-shadow-md: var(--dwc-external-shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06));
+  --dwc-shadow-lg: var(--dwc-external-shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05));
+  --dwc-shadow-xl: var(--dwc-external-shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04));
+
+  /* === Transitions === */
+
+  --dwc-transition-fast: var(--dwc-external-transition-fast, 150ms);
+  --dwc-transition-base: var(--dwc-external-transition-base, 200ms);
+  --dwc-transition-slow: var(--dwc-external-transition-slow, 300ms);
+
+  /* === Z-index === */
+
+  --dwc-z-dropdown: var(--dwc-external-z-dropdown, 1000);
+  --dwc-z-modal: var(--dwc-external-z-modal, 1050);
+  --dwc-z-tooltip: var(--dwc-external-z-tooltip, 1100);
+}

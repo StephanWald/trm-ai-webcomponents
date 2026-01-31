@@ -7,10 +7,36 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface SpExample {
+        /**
+          * Heading text to display
+          * @default 'Example Component'
+         */
+        "heading": string;
+        /**
+          * Theme override for standalone usage
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme": 'light' | 'dark' | 'auto';
     }
 }
+export interface SpExampleCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpExampleElement;
+}
 declare global {
+    interface HTMLSpExampleElementEventMap {
+        "spExampleClick": void;
+    }
     interface HTMLSpExampleElement extends Components.SpExample, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpExampleElementEventMap>(type: K, listener: (this: HTMLSpExampleElement, ev: SpExampleCustomEvent<HTMLSpExampleElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpExampleElementEventMap>(type: K, listener: (this: HTMLSpExampleElement, ev: SpExampleCustomEvent<HTMLSpExampleElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLSpExampleElement: {
         prototype: HTMLSpExampleElement;
@@ -22,6 +48,21 @@ declare global {
 }
 declare namespace LocalJSX {
     interface SpExample {
+        /**
+          * Heading text to display
+          * @default 'Example Component'
+         */
+        "heading"?: string;
+        /**
+          * Emitted when the button is clicked
+         */
+        "onSpExampleClick"?: (event: SpExampleCustomEvent<void>) => void;
+        /**
+          * Theme override for standalone usage
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme"?: 'light' | 'dark' | 'auto';
     }
     interface IntrinsicElements {
         "sp-example": SpExample;

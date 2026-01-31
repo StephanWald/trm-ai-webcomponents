@@ -1,15 +1,123 @@
+/**
+ * sp-example component styles
+ * Consumes DWC tokens with fallback defaults
+ */
+
 :host {
   display: block;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  font-family: var(--dwc-font-family);
+  font-size: var(--dwc-font-size-base);
+  line-height: var(--dwc-line-height-normal);
 }
 
-div {
-  font-family: system-ui, sans-serif;
+.container {
+  background: var(--dwc-color-surface);
+  color: var(--dwc-color-text);
+  padding: var(--dwc-spacing-lg);
+  border: 1px solid var(--dwc-color-border);
+  border-radius: var(--dwc-border-radius);
+  box-shadow: var(--dwc-shadow-sm);
+  transition: box-shadow var(--dwc-transition-base) ease;
 }
 
-h2 {
-  margin-top: 0;
+.container:hover {
+  box-shadow: var(--dwc-shadow-md);
+}
+
+.heading {
+  margin: 0 0 var(--dwc-spacing-md) 0;
+  color: var(--dwc-color-primary);
+  font-size: var(--dwc-font-size-xl);
+  font-weight: var(--dwc-font-weight-semibold);
+  line-height: var(--dwc-line-height-tight);
+}
+
+.content {
+  margin: 0 0 var(--dwc-spacing-lg) 0;
+  color: var(--dwc-color-text-secondary);
+  font-size: var(--dwc-font-size-base);
+  line-height: var(--dwc-line-height-relaxed);
+}
+
+.button {
+  display: inline-block;
+  padding: var(--dwc-spacing-sm) var(--dwc-spacing-lg);
+  background: var(--dwc-color-primary);
+  color: var(--dwc-color-primary-text);
+  border: none;
+  border-radius: var(--dwc-border-radius);
+  font-family: var(--dwc-font-family);
+  font-size: var(--dwc-font-size-base);
+  font-weight: var(--dwc-font-weight-medium);
+  cursor: pointer;
+  transition: background var(--dwc-transition-fast) ease,
+              box-shadow var(--dwc-transition-fast) ease;
+  box-shadow: var(--dwc-shadow-sm);
+}
+
+.button:hover {
+  background: var(--dwc-color-primary-hover);
+  box-shadow: var(--dwc-shadow-md);
+}
+
+.button:focus {
+  outline: 2px solid var(--dwc-color-primary);
+  outline-offset: 2px;
+}
+
+.button:active {
+  transform: translateY(1px);
+  box-shadow: var(--dwc-shadow-sm);
+}
+
+/* Theme overrides */
+
+:host(.theme-light) .container {
+  background: #ffffff;
+  color: #1a1a1a;
+  border-color: #e0e0e0;
+}
+
+:host(.theme-light) .heading {
   color: #0066cc;
+}
+
+:host(.theme-light) .content {
+  color: #666666;
+}
+
+:host(.theme-light) .button {
+  background: #0066cc;
+  color: #ffffff;
+}
+
+:host(.theme-light) .button:hover {
+  background: #0052a3;
+}
+
+:host(.theme-dark) .container {
+  background: #1e1e2e;
+  color: #e0e0e0;
+  border-color: #3a3a4a;
+}
+
+:host(.theme-dark) .heading {
+  color: #4da6ff;
+}
+
+:host(.theme-dark) .content {
+  color: #b0b0c0;
+}
+
+:host(.theme-dark) .button {
+  background: #4da6ff;
+  color: #1a1a1a;
+}
+
+:host(.theme-dark) .button:hover {
+  background: #66b3ff;
+}
+
+:host(.theme-dark) .button:focus {
+  outline-color: #4da6ff;
 }

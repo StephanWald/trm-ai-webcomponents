@@ -7,12 +7,84 @@
   <script type="module" src="/build/skillspilot.esm.js"></script>
   <script nomodule src="/build/skillspilot.js"></script>
   <link rel="stylesheet" href="/build/skillspilot.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f5f5f5;
+    }
+    h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      color: #1a1a1a;
+    }
+    .subtitle {
+      margin: 0 0 2rem 0;
+      color: #666;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .demo-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .demo-section h2 {
+      margin: 0 0 1rem 0;
+      font-size: 1.25rem;
+      color: #1a1a1a;
+    }
+    .demo-section p {
+      margin: 0 0 1rem 0;
+      font-size: 0.875rem;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
   <h1>Skillspilot Web Components</h1>
-  <p>Development environment for testing components.</p>
+  <p class="subtitle">Development environment for testing components with DWC theming.</p>
 
-  <!-- Placeholder component - will be created in Plan 02 -->
-  <sp-example></sp-example>
+  <div class="grid">
+    <div class="demo-section">
+      <h2>Default Theme (Auto)</h2>
+      <p>Component uses DWC tokens with fallback defaults. No theme attribute specified.</p>
+      <sp-example></sp-example>
+    </div>
+
+    <div class="demo-section">
+      <h2>Light Theme Override</h2>
+      <p>Component with <code>theme="light"</code> attribute for explicit light mode.</p>
+      <sp-example theme="light" heading="Light Theme"></sp-example>
+    </div>
+
+    <div class="demo-section">
+      <h2>Dark Theme Override</h2>
+      <p>Component with <code>theme="dark"</code> attribute for dark mode styling.</p>
+      <sp-example theme="dark" heading="Dark Mode"></sp-example>
+    </div>
+
+    <div class="demo-section">
+      <h2>Custom Heading</h2>
+      <p>Component with custom heading text via <code>heading</code> prop.</p>
+      <sp-example heading="Custom Heading Example"></sp-example>
+    </div>
+  </div>
+
+  <script>
+    // Event listener demo
+    document.querySelectorAll('sp-example').forEach(el => {
+      el.addEventListener('spExampleClick', (e) => {
+        console.log('Button clicked on:', e.target);
+        alert('sp-example-click event fired!');
+      });
+    });
+  </script>
 </body>
 </html>
