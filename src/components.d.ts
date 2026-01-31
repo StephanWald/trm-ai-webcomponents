@@ -70,7 +70,7 @@ export namespace Components {
          */
         "abort": () => Promise<void>;
         /**
-          * Author mode (stub for Plan 02)
+          * Author mode - enables scene editing and pointer tool
           * @default false
          */
         "authorMode": boolean;
@@ -260,7 +260,7 @@ declare namespace LocalJSX {
      */
     interface SpWalkthrough {
         /**
-          * Author mode (stub for Plan 02)
+          * Author mode - enables scene editing and pointer tool
           * @default false
          */
         "authorMode"?: boolean;
