@@ -96,10 +96,12 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. CI enforces minimum 70% code coverage across all metrics (lines, branches, functions, statements) and fails builds below threshold
   2. All three components (sp-org-chart, sp-walkthrough, sp-markdown-editor) render with sensible visual defaults when DWC theme is not loaded
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: TBD
+- [ ] 05-01-PLAN.md — Coverage threshold config in stencil.config.ts, CI update, and sp-org-chart gap + fallback tests
+- [ ] 05-02-PLAN.md — sp-walkthrough and utility (draggable-mixin, youtube-wrapper) gap + fallback tests
+- [ ] 05-03-PLAN.md — sp-markdown-editor gap + fallback tests
 
 ### Phase 6: Documentation & Publishing
 **Goal**: Comprehensive Docusaurus documentation site live on GitHub Pages, published npm package, CDN availability, and automated release workflow with changelogs
@@ -129,9 +131,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 2. OrgChart Component | 2/2 | ✓ Complete | 2026-01-31 |
 | 3. Walkthrough Component | 3/3 | ✓ Complete | 2026-01-31 |
 | 4. Markdown Editor Component | 4/4 | ✓ Complete | 2026-01-31 |
-| 5. Testing & Quality | 0/1 | Not started | - |
+| 5. Testing & Quality | 0/3 | Not started | - |
 | 6. Documentation & Publishing | 0/3 | Not started | - |
 
 ---
 *Roadmap created: 2026-01-31*
-*Last updated: 2026-01-31 — Phase 4 complete*
+*Last updated: 2026-01-31 — Phase 5 planned*
