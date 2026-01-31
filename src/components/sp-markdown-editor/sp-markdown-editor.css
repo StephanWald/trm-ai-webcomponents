@@ -29,6 +29,62 @@
   background: var(--dwc-color-surface-secondary, #f5f5f5);
   border-bottom: 1px solid var(--dwc-color-border, #e0e0e0);
   min-height: 36px;
+  align-items: center;
+}
+
+/* Toolbar groups */
+.toolbar-group {
+  display: flex;
+  gap: 1px;
+  align-items: center;
+}
+
+/* Toolbar buttons */
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+  border-radius: var(--dwc-border-radius, 3px);
+  background: transparent;
+  color: var(--dwc-color-text, #333);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.toolbar-btn:hover:not(:disabled) {
+  background: var(--dwc-color-primary-lightest, #e3f2fd);
+  border-color: var(--dwc-border-color, #ddd);
+}
+
+.toolbar-btn:active:not(:disabled) {
+  background: var(--dwc-color-primary-lighter, #bbdefb);
+}
+
+.toolbar-btn.active {
+  background: var(--dwc-color-primary-lightest, #e3f2fd);
+  border-color: var(--dwc-color-primary, #1976d2);
+  color: var(--dwc-color-primary, #1976d2);
+}
+
+.toolbar-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Toolbar separator */
+.toolbar-separator {
+  width: 1px;
+  height: 20px;
+  background: var(--dwc-border-color, #ddd);
+  margin: 4px 4px;
+  align-self: center;
 }
 
 /* Editor body */
@@ -123,6 +179,23 @@
 :host(.theme-dark) .toolbar {
   background: #2d2d2d;
   border-bottom-color: #444;
+}
+
+:host(.theme-dark) .toolbar-btn {
+  color: #d4d4d4;
+}
+
+:host(.theme-dark) .toolbar-btn:hover:not(:disabled) {
+  background: #3a3a3a;
+  border-color: #555;
+}
+
+:host(.theme-dark) .toolbar-btn:active:not(:disabled) {
+  background: #444;
+}
+
+:host(.theme-dark) .toolbar-separator {
+  background: #555;
 }
 
 :host(.theme-dark) .source-editor {

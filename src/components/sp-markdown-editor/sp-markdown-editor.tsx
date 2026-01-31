@@ -1,4 +1,4 @@
-import { Component, Prop, State, Event, EventEmitter, Method, Watch, h } from '@stencil/core';
+import { Component, Prop, State, Event, EventEmitter, Method, Watch, Listen, h } from '@stencil/core';
 import type {
   EditorMode,
   ToolbarState,
@@ -11,6 +11,7 @@ import type {
   ImagePasteEvent,
 } from './types/editor.types';
 import { HistoryManager } from './utils/history-manager';
+import { ToolbarActions, type ActionResult } from './utils/toolbar-actions';
 // import { MarkdownRenderer } from './utils/markdown-renderer';
 // import { FileHandler } from './utils/file-handler';
 // import { SpeechRecognizer } from './utils/speech-recognizer';
@@ -246,11 +247,300 @@ export class SpMarkdownEditor {
     return <span class="save-indicator saved">Saved</span>;
   }
 
+  // Apply toolbar action helper
+  private applyToolbarAction(actionFn: (content: string, start: number, end: number) => ActionResult) {
+    if (!this.sourceTextareaRef) {
+      return;
+    }
+
+    const start = this.sourceTextareaRef.selectionStart;
+    const end = this.sourceTextareaRef.selectionEnd;
+    const result = actionFn(this.content, start, end);
+
+    // Update content
+    this.content = result.content;
+    this.isDirtyState = true;
+
+    // Update stats
+    this.updateStats();
+
+    // Push to history
+    this.historyManager.push(this.content);
+
+    // Emit content change
+    this.emitContentChange();
+
+    // Update cursor position after render
+    requestAnimationFrame(() => {
+      if (this.sourceTextareaRef) {
+        this.sourceTextareaRef.selectionStart = result.selectionStart;
+        this.sourceTextareaRef.selectionEnd = result.selectionEnd;
+        this.sourceTextareaRef.focus();
+      }
+    });
+
+    // Trigger auto-save
+    this.triggerAutoSave();
+  }
+
+  // Toolbar button handlers
+  private handleUndo = () => {
+    const previousState = this.historyManager.undo();
+    if (previousState !== null) {
+      this.content = previousState;
+      this.updateStats();
+      this.emitContentChange();
+      if (this.sourceTextareaRef) {
+        this.sourceTextareaRef.focus();
+      }
+    }
+  };
+
+  private handleRedo = () => {
+    const nextState = this.historyManager.redo();
+    if (nextState !== null) {
+      this.content = nextState;
+      this.updateStats();
+      this.emitContentChange();
+      if (this.sourceTextareaRef) {
+        this.sourceTextareaRef.focus();
+      }
+    }
+  };
+
+  // Keyboard shortcut handler
+  @Listen('keydown')
+  handleKeyDown(event: KeyboardEvent) {
+    const isCtrlOrCmd = event.ctrlKey || event.metaKey;
+
+    if (!isCtrlOrCmd) {
+      return;
+    }
+
+    // Ctrl+B - Bold
+    if (event.key === 'b' || event.key === 'B') {
+      event.preventDefault();
+      this.applyToolbarAction(ToolbarActions.bold);
+      return;
+    }
+
+    // Ctrl+I - Italic
+    if (event.key === 'i' || event.key === 'I') {
+      event.preventDefault();
+      this.applyToolbarAction(ToolbarActions.italic);
+      return;
+    }
+
+    // Ctrl+K - Link
+    if (event.key === 'k' || event.key === 'K') {
+      event.preventDefault();
+      this.applyToolbarAction(ToolbarActions.link);
+      return;
+    }
+
+    // Ctrl+S - Save
+    if (event.key === 's' || event.key === 'S') {
+      event.preventDefault();
+      // Flush auto-save immediately
+      if (this.autoSaveTimer) {
+        clearTimeout(this.autoSaveTimer);
+        this.autoSaveTimer = null;
+      }
+      this.performAutoSave();
+      return;
+    }
+
+    // Ctrl+Z - Undo
+    if (event.key === 'z' || event.key === 'Z') {
+      if (!event.shiftKey) {
+        event.preventDefault();
+        this.handleUndo();
+        return;
+      }
+    }
+
+    // Ctrl+Y or Ctrl+Shift+Z - Redo
+    if (event.key === 'y' || event.key === 'Y' || (event.shiftKey && (event.key === 'z' || event.key === 'Z'))) {
+      event.preventDefault();
+      this.handleRedo();
+      return;
+    }
+  }
+
+  // Render toolbar
+  private renderToolbar() {
+    const canUndo = this.historyManager.canUndo();
+    const canRedo = this.historyManager.canRedo();
+
+    return (
+      <div class="toolbar" part="toolbar">
+        {/* Group 1: History */}
+        <div class="toolbar-group">
+          <button class="toolbar-btn" title="Undo (Ctrl+Z)" disabled={!canUndo} onClick={this.handleUndo}>
+            ↶
+          </button>
+          <button class="toolbar-btn" title="Redo (Ctrl+Y)" disabled={!canRedo} onClick={this.handleRedo}>
+            ↷
+          </button>
+        </div>
+
+        <div class="toolbar-separator"></div>
+
+        {/* Group 2: Inline formatting */}
+        <div class="toolbar-group">
+          <button
+            class="toolbar-btn"
+            title="Bold (Ctrl+B)"
+            onClick={() => this.applyToolbarAction(ToolbarActions.bold)}
+          >
+            B
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Italic (Ctrl+I)"
+            onClick={() => this.applyToolbarAction(ToolbarActions.italic)}
+          >
+            I
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Strikethrough"
+            onClick={() => this.applyToolbarAction(ToolbarActions.strikethrough)}
+          >
+            S
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Inline Code"
+            onClick={() => this.applyToolbarAction(ToolbarActions.inlineCode)}
+          >
+            `
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Clear Formatting"
+            onClick={() => this.applyToolbarAction(ToolbarActions.clearFormatting)}
+          >
+            Tx
+          </button>
+        </div>
+
+        <div class="toolbar-separator"></div>
+
+        {/* Group 3: Headings */}
+        <div class="toolbar-group">
+          <button
+            class="toolbar-btn"
+            title="Heading 1"
+            onClick={() => this.applyToolbarAction((c, s, e) => ToolbarActions.heading(c, s, e, 1))}
+          >
+            H1
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Heading 2"
+            onClick={() => this.applyToolbarAction((c, s, e) => ToolbarActions.heading(c, s, e, 2))}
+          >
+            H2
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Heading 3"
+            onClick={() => this.applyToolbarAction((c, s, e) => ToolbarActions.heading(c, s, e, 3))}
+          >
+            H3
+          </button>
+        </div>
+
+        <div class="toolbar-separator"></div>
+
+        {/* Group 4: Block formatting */}
+        <div class="toolbar-group">
+          <button
+            class="toolbar-btn"
+            title="Blockquote"
+            onClick={() => this.applyToolbarAction(ToolbarActions.blockquote)}
+          >
+            "
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Code Block"
+            onClick={() => this.applyToolbarAction(ToolbarActions.codeBlock)}
+          >
+            {'{}'}
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Link (Ctrl+K)"
+            onClick={() => this.applyToolbarAction(ToolbarActions.link)}
+          >
+            🔗
+          </button>
+        </div>
+
+        <div class="toolbar-separator"></div>
+
+        {/* Group 5: Lists */}
+        <div class="toolbar-group">
+          <button
+            class="toolbar-btn"
+            title="Bullet List"
+            onClick={() => this.applyToolbarAction(ToolbarActions.bulletList)}
+          >
+            •
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Numbered List"
+            onClick={() => this.applyToolbarAction(ToolbarActions.numberedList)}
+          >
+            1.
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Task List"
+            onClick={() => this.applyToolbarAction(ToolbarActions.taskList)}
+          >
+            ☐
+          </button>
+        </div>
+
+        <div class="toolbar-separator"></div>
+
+        {/* Group 6: Insert */}
+        <div class="toolbar-group">
+          <button
+            class="toolbar-btn"
+            title="Insert Image"
+            onClick={() => this.applyToolbarAction(ToolbarActions.image)}
+          >
+            IMG
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Insert Table"
+            onClick={() => this.applyToolbarAction(ToolbarActions.table)}
+          >
+            ⊞
+          </button>
+          <button
+            class="toolbar-btn"
+            title="Horizontal Rule"
+            onClick={() => this.applyToolbarAction(ToolbarActions.horizontalRule)}
+          >
+            ―
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div class="editor-container">
-        {/* Toolbar placeholder - Plan 02 will populate */}
-        <div class="toolbar" part="toolbar"></div>
+        {/* Toolbar */}
+        {this.renderToolbar()}
 
         {/* Editor body */}
         <div class="editor-body">
