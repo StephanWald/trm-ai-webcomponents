@@ -64,12 +64,12 @@ Plans:
   3. User can navigate manually (prev/next) when no video present, jump to scenes via dropdown, and control volume/mute/captions
   4. Author can toggle author mode, use pointer tool to select DOM elements for highlighting, create/edit/delete scenes, and save via event emission
   5. User can press ESC to abort walkthrough, triggering cleanup of overlays and panel hide
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01-PLAN.md — Types, utilities, core component with video playback, timeline sync, navigation, and controls
+- [ ] 03-02-PLAN.md — Author mode with pointer tool, scene CRUD, and event-based persistence
+- [ ] 03-03-PLAN.md — Jest spec tests and Playwright E2E tests for full coverage
 
 ### Phase 4: Markdown Editor Component
 **Goal**: Fully functional sp-markdown-editor with source/WYSIWYG/split modes, formatting toolbar, voice dictation, import/export, undo/redo, using peer dependencies for marked/DOMPurify/Prism/Turndown
@@ -134,4 +134,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 ---
 *Roadmap created: 2026-01-31*
-*Last updated: 2026-01-31 — Phase 2 complete*
+*Last updated: 2026-01-31 — Phase 3 planned*
