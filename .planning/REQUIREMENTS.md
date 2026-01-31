@@ -25,24 +25,24 @@
 
 ### Markdown Editor (`<sp-markdown-editor>`)
 
-- [ ] **MDED-01**: Component renders a source mode editor (textarea) with monospace font and syntax-aware styling
-- [ ] **MDED-02**: Component renders a WYSIWYG mode editor (contenteditable) with live markdown preview
-- [ ] **MDED-03**: User can switch between source and WYSIWYG modes while preserving content
-- [ ] **MDED-04**: Formatting toolbar provides bold, italic, strikethrough, inline code, and clear formatting
-- [ ] **MDED-05**: Formatting toolbar provides heading levels (H1, H2, H3)
-- [ ] **MDED-06**: Formatting toolbar provides block-level formatting (quote, code block, link)
-- [ ] **MDED-07**: Formatting toolbar provides list formatting (bullet, numbered, task list)
-- [ ] **MDED-08**: Formatting toolbar provides insert actions (image, table, horizontal rule)
-- [ ] **MDED-09**: Undo/redo works across both editing modes (up to 50 states)
-- [ ] **MDED-10**: Keyboard shortcuts work for common formatting (Ctrl+B, Ctrl+I, Ctrl+K, Ctrl+S, Ctrl+Z, Ctrl+Y)
-- [ ] **MDED-11**: User can import a `.md` file and have its content loaded into the editor
-- [ ] **MDED-12**: User can export editor content as a `.md` file download
-- [ ] **MDED-13**: Voice dictation via Web Speech API can be activated to input text by speaking
-- [ ] **MDED-14**: Component emits events: `content-change`, `save`, `mode-change`, `import`, `export`, `image-paste`
-- [ ] **MDED-15**: Component exposes API methods: `getContent()`, `setContent()`, `clear()`, `getMode()`, `setMode()`, `isDirty()`, `focus()`
-- [ ] **MDED-16**: Auto-save with debounce (2-second delay) and save indicator UI
-- [ ] **MDED-17**: Character and word count displayed in editor footer
-- [ ] **MDED-18**: Print support renders formatted markdown in print-friendly layout
+- [x] **MDED-01**: Component renders a source mode editor (textarea) with monospace font and syntax-aware styling
+- [x] **MDED-02**: Component renders a WYSIWYG mode editor (preview-only with rendered markdown) *(design decision: preview-only, not contenteditable)*
+- [x] **MDED-03**: User can switch between source, WYSIWYG, and split modes while preserving content
+- [x] **MDED-04**: Formatting toolbar provides bold, italic, strikethrough, inline code, and clear formatting
+- [x] **MDED-05**: Formatting toolbar provides heading levels (H1, H2, H3)
+- [x] **MDED-06**: Formatting toolbar provides block-level formatting (quote, code block, link)
+- [x] **MDED-07**: Formatting toolbar provides list formatting (bullet, numbered, task list)
+- [x] **MDED-08**: Formatting toolbar provides insert actions (image, table, horizontal rule)
+- [x] **MDED-09**: Undo/redo works in source/split modes (up to 50 states) *(WYSIWYG is preview-only)*
+- [x] **MDED-10**: Keyboard shortcuts work for common formatting (Ctrl+B, Ctrl+I, Ctrl+K, Ctrl+S, Ctrl+Z, Ctrl+Y)
+- [x] **MDED-11**: User can import a `.md` file and have its content loaded into the editor
+- [x] **MDED-12**: User can export editor content as a `.md` file download
+- [x] **MDED-13**: Voice dictation via Web Speech API can be activated to input text by speaking
+- [x] **MDED-14**: Component emits events: `content-change`, `save`, `mode-change`, `import`, `export`, `image-paste`
+- [x] **MDED-15**: Component exposes API methods: `getContent()`, `setContent()`, `clear()`, `getMode()`, `setMode()`, `isDirty()`, `focusEditor()` *(renamed from focus() due to Stencil naming conflict)*
+- [x] **MDED-16**: Auto-save with debounce (2-second delay) and save indicator UI
+- [x] **MDED-17**: Character and word count displayed in editor footer
+- [x] **MDED-18**: Print support renders formatted markdown in print-friendly layout
 
 ### Walkthrough (`<sp-walkthrough>`)
 
@@ -80,8 +80,8 @@
 
 ### Testing
 
-- [ ] **TEST-01**: Each component has Jest spec tests covering props, state, events, and methods
-- [ ] **TEST-02**: Each component has E2E tests covering rendering, user interaction, and accessibility
+- [x] **TEST-01**: Each component has Jest spec tests covering props, state, events, and methods
+- [x] **TEST-02**: Each component has E2E tests covering rendering, user interaction, and accessibility
 - [ ] **TEST-03**: CI enforces minimum 70% code coverage across all metrics
 - [ ] **TEST-04**: Tests validate that components work without DWC theme loaded (fallback defaults)
 
@@ -143,24 +143,24 @@
 | THEME-02 | Phase 1 | Complete |
 | THEME-03 | Phase 1 | Complete |
 | THEME-04 | Phase 1 | Complete |
-| MDED-01 | Phase 4 | Pending |
-| MDED-02 | Phase 4 | Pending |
-| MDED-03 | Phase 4 | Pending |
-| MDED-04 | Phase 4 | Pending |
-| MDED-05 | Phase 4 | Pending |
-| MDED-06 | Phase 4 | Pending |
-| MDED-07 | Phase 4 | Pending |
-| MDED-08 | Phase 4 | Pending |
-| MDED-09 | Phase 4 | Pending |
-| MDED-10 | Phase 4 | Pending |
-| MDED-11 | Phase 4 | Pending |
-| MDED-12 | Phase 4 | Pending |
-| MDED-13 | Phase 4 | Pending |
-| MDED-14 | Phase 4 | Pending |
-| MDED-15 | Phase 4 | Pending |
-| MDED-16 | Phase 4 | Pending |
-| MDED-17 | Phase 4 | Pending |
-| MDED-18 | Phase 4 | Pending |
+| MDED-01 | Phase 4 | Complete |
+| MDED-02 | Phase 4 | Complete |
+| MDED-03 | Phase 4 | Complete |
+| MDED-04 | Phase 4 | Complete |
+| MDED-05 | Phase 4 | Complete |
+| MDED-06 | Phase 4 | Complete |
+| MDED-07 | Phase 4 | Complete |
+| MDED-08 | Phase 4 | Complete |
+| MDED-09 | Phase 4 | Complete |
+| MDED-10 | Phase 4 | Complete |
+| MDED-11 | Phase 4 | Complete |
+| MDED-12 | Phase 4 | Complete |
+| MDED-13 | Phase 4 | Complete |
+| MDED-14 | Phase 4 | Complete |
+| MDED-15 | Phase 4 | Complete |
+| MDED-16 | Phase 4 | Complete |
+| MDED-17 | Phase 4 | Complete |
+| MDED-18 | Phase 4 | Complete |
 | WALK-01 | Phase 3 | Complete |
 | WALK-02 | Phase 3 | Complete |
 | WALK-03 | Phase 3 | Complete |
@@ -189,8 +189,8 @@
 | ORGC-11 | Phase 2 | Complete |
 | ORGC-12 | Phase 2 | Complete |
 | ORGC-13 | Phase 2 | Complete |
-| TEST-01 | Phase 2, 3, 4 | Pending |
-| TEST-02 | Phase 2, 3, 4 | Pending |
+| TEST-01 | Phase 2, 3, 4 | Complete |
+| TEST-02 | Phase 2, 3, 4 | Complete |
 | TEST-03 | Phase 5 | Pending |
 | TEST-04 | Phase 5 | Pending |
 | DOCS-01 | Phase 6 | Pending |
@@ -207,4 +207,4 @@
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-31 — Phase 3 requirements complete*
+*Last updated: 2026-01-31 — Phase 4 requirements complete*
