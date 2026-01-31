@@ -13,7 +13,7 @@ This roadmap transforms three existing vanilla JS components into production-rea
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Infrastructure** - Stencil project, build pipeline, theming system, CI/CD
-- [ ] **Phase 2: OrgChart Component** - Simplest component with drag-and-drop, filtering, tests
+- [x] **Phase 2: OrgChart Component** - Simplest component with drag-and-drop, filtering, tests
 - [ ] **Phase 3: Walkthrough Component** - Medium component with timeline, DOM highlighting, author mode
 - [ ] **Phase 4: Markdown Editor Component** - Complex component with WYSIWYG, peer deps, voice dictation
 - [ ] **Phase 5: Testing & Quality** - Coverage enforcement, accessibility testing, fallback validation
@@ -51,8 +51,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Core component with types, utilities, rendering, interactions, filtering, and public API
-- [ ] 02-02-PLAN.md — Jest spec tests and Playwright E2E tests for full coverage
+- [x] 02-01-PLAN.md — Core component with types, utilities, rendering, interactions, filtering, and public API
+- [x] 02-02-PLAN.md — Jest spec tests and Playwright E2E tests for full coverage
 
 ### Phase 3: Walkthrough Component
 **Goal**: Fully functional sp-walkthrough component with video playback, scene timeline synchronization, DOM element highlighting, author mode, and tests validating cross-boundary DOM interaction
@@ -126,7 +126,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Infrastructure | 3/3 | ✓ Complete | 2026-01-31 |
-| 2. OrgChart Component | 0/2 | Not started | - |
+| 2. OrgChart Component | 2/2 | ✓ Complete | 2026-01-31 |
 | 3. Walkthrough Component | 0/3 | Not started | - |
 | 4. Markdown Editor Component | 0/4 | Not started | - |
 | 5. Testing & Quality | 0/1 | Not started | - |
@@ -134,4 +134,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 ---
 *Roadmap created: 2026-01-31*
-*Last updated: 2026-01-31 — Phase 1 complete*
+*Last updated: 2026-01-31 — Phase 2 complete*

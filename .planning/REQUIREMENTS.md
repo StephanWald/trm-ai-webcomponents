@@ -64,19 +64,19 @@
 
 ### OrgChart (`<sp-org-chart>`)
 
-- [ ] **ORGC-01**: Component renders hierarchical tree from flat user array using `reportsTo` relationships
-- [ ] **ORGC-02**: Users are sorted alphabetically within each level
-- [ ] **ORGC-03**: Visual connectors (vertical/horizontal lines) link parent-child relationships
-- [ ] **ORGC-04**: Drag-and-drop reassigns a user's manager and emits `hierarchy-change` event
-- [ ] **ORGC-05**: Drop zones (Unlink, Delete) appear during drag operations
-- [ ] **ORGC-06**: Branch filtering shows filtered user + all subordinates + full chain of command, dimming non-matching users
-- [ ] **ORGC-07**: Single-click selects a user tile (highlighted with blue border)
-- [ ] **ORGC-08**: Double-click emits `user-dblclick` event for custom actions
-- [ ] **ORGC-09**: Long-press (4 seconds) triggers user deletion with visual countdown timer
-- [ ] **ORGC-10**: Component exposes API methods: `getSelected()`, `highlightUser()`, `clearHighlight()`, `scrollToUser()`
-- [ ] **ORGC-11**: Component emits events: `user-click`, `user-dblclick`, `hierarchy-change`, `user-delete`
-- [ ] **ORGC-12**: Custom no-data message displayed when user array is empty
-- [ ] **ORGC-13**: Editable mode can be toggled on/off via attribute
+- [x] **ORGC-01**: Component renders hierarchical tree from flat user array using `reportsTo` relationships
+- [x] **ORGC-02**: Users are sorted alphabetically within each level
+- [x] **ORGC-03**: Visual connectors (vertical/horizontal lines) link parent-child relationships
+- [x] **ORGC-04**: Drag-and-drop reassigns a user's manager and emits `hierarchy-change` event
+- [x] **ORGC-05**: Drop zones (Unlink, Delete) appear during drag operations
+- [x] **ORGC-06**: Branch filtering shows filtered user + all subordinates + full chain of command, dimming non-matching users
+- [x] **ORGC-07**: Single-click selects a user tile (highlighted with blue border)
+- [x] **ORGC-08**: Double-click emits `user-dblclick` event for custom actions
+- [x] **ORGC-09**: Long-press (4 seconds) triggers user deletion with visual countdown timer
+- [x] **ORGC-10**: Component exposes API methods: `getSelected()`, `highlightUser()`, `clearHighlight()`, `scrollToUser()`
+- [x] **ORGC-11**: Component emits events: `user-click`, `user-dblclick`, `hierarchy-change`, `user-delete`
+- [x] **ORGC-12**: Custom no-data message displayed when user array is empty
+- [x] **ORGC-13**: Editable mode can be toggled on/off via attribute
 
 ### Testing
 
@@ -176,19 +176,19 @@
 | WALK-13 | Phase 3 | Pending |
 | WALK-14 | Phase 3 | Pending |
 | WALK-15 | Phase 3 | Pending |
-| ORGC-01 | Phase 2 | Pending |
-| ORGC-02 | Phase 2 | Pending |
-| ORGC-03 | Phase 2 | Pending |
-| ORGC-04 | Phase 2 | Pending |
-| ORGC-05 | Phase 2 | Pending |
-| ORGC-06 | Phase 2 | Pending |
-| ORGC-07 | Phase 2 | Pending |
-| ORGC-08 | Phase 2 | Pending |
-| ORGC-09 | Phase 2 | Pending |
-| ORGC-10 | Phase 2 | Pending |
-| ORGC-11 | Phase 2 | Pending |
-| ORGC-12 | Phase 2 | Pending |
-| ORGC-13 | Phase 2 | Pending |
+| ORGC-01 | Phase 2 | Complete |
+| ORGC-02 | Phase 2 | Complete |
+| ORGC-03 | Phase 2 | Complete |
+| ORGC-04 | Phase 2 | Complete |
+| ORGC-05 | Phase 2 | Complete |
+| ORGC-06 | Phase 2 | Complete |
+| ORGC-07 | Phase 2 | Complete |
+| ORGC-08 | Phase 2 | Complete |
+| ORGC-09 | Phase 2 | Complete |
+| ORGC-10 | Phase 2 | Complete |
+| ORGC-11 | Phase 2 | Complete |
+| ORGC-12 | Phase 2 | Complete |
+| ORGC-13 | Phase 2 | Complete |
 | TEST-01 | Phase 2, 3, 4 | Pending |
 | TEST-02 | Phase 2, 3, 4 | Pending |
 | TEST-03 | Phase 5 | Pending |
@@ -207,4 +207,4 @@
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-31 — Phase 1 requirements complete*
+*Last updated: 2026-01-31 — Phase 2 requirements complete*
