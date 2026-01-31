@@ -81,13 +81,13 @@ Plans:
   3. User can undo/redo up to 50 states across both editing modes without losing work
   4. User can import .md file and export content as .md download, activate voice dictation via Web Speech API, and print formatted markdown
   5. Component emits events (content-change, save, mode-change, import, export, image-paste) and exposes API methods (getContent, setContent, clear, getMode, setMode, isDirty, focus) with auto-save indicator and char/word count
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
-- [ ] 04-03: TBD
-- [ ] 04-04: TBD
+- [ ] 04-01-PLAN.md — Types, utilities, core component with source mode, API methods, auto-save, and footer
+- [ ] 04-02-PLAN.md — Formatting toolbar with all actions and keyboard shortcuts
+- [ ] 04-03-PLAN.md — WYSIWYG/split modes, import/export, voice dictation, print, and event wiring
+- [ ] 04-04-PLAN.md — Jest spec tests and Playwright E2E tests for full coverage
 
 ### Phase 5: Testing & Quality
 **Goal**: Comprehensive test coverage enforcement, accessibility validation, and fallback behavior verification across all components
