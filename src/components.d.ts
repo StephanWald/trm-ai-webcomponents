@@ -6,7 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
+import { Scene, SceneChangeDetail, TimelineUpdateDetail } from "./components/sp-walkthrough/types/walkthrough.types";
 export { HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
+export { Scene, SceneChangeDetail, TimelineUpdateDetail } from "./components/sp-walkthrough/types/walkthrough.types";
 export namespace Components {
     interface SpExample {
         /**
@@ -59,6 +61,63 @@ export namespace Components {
          */
         "users": User[];
     }
+    /**
+     * Interactive walkthrough component with video playback and DOM element highlighting
+     */
+    interface SpWalkthrough {
+        /**
+          * Abort walkthrough (cleans up and hides)
+         */
+        "abort": () => Promise<void>;
+        /**
+          * Author mode (stub for Plan 02)
+          * @default false
+         */
+        "authorMode": boolean;
+        /**
+          * Auto-play video on show
+          * @default false
+         */
+        "autoPlay": boolean;
+        /**
+          * WebVTT captions file URL
+         */
+        "captionsSrc"?: string;
+        /**
+          * Hide the walkthrough
+         */
+        "hide": () => Promise<void>;
+        /**
+          * Pause video
+         */
+        "pause": () => Promise<void>;
+        /**
+          * Play video
+         */
+        "play": () => Promise<void>;
+        /**
+          * Restart walkthrough from beginning
+         */
+        "restart": () => Promise<void>;
+        /**
+          * Array of walkthrough scenes
+          * @default []
+         */
+        "scenes": Scene[];
+        /**
+          * Show the walkthrough
+         */
+        "show": () => Promise<void>;
+        /**
+          * Theme override
+          * @default 'auto'
+         */
+        "theme": 'light' | 'dark' | 'auto';
+        /**
+          * Video source URL (MP4/WebM/YouTube) - optional for manual-only mode
+         */
+        "videoSrc"?: string;
+    }
 }
 export interface SpExampleCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -67,6 +126,10 @@ export interface SpExampleCustomEvent<T> extends CustomEvent<T> {
 export interface SpOrgChartCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSpOrgChartElement;
+}
+export interface SpWalkthroughCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpWalkthroughElement;
 }
 declare global {
     interface HTMLSpExampleElementEventMap {
@@ -106,9 +169,34 @@ declare global {
         prototype: HTMLSpOrgChartElement;
         new (): HTMLSpOrgChartElement;
     };
+    interface HTMLSpWalkthroughElementEventMap {
+        "walkthroughShown": void;
+        "walkthroughHidden": void;
+        "walkthroughAborted": void;
+        "sceneChanged": SceneChangeDetail;
+        "timelineUpdated": TimelineUpdateDetail;
+    }
+    /**
+     * Interactive walkthrough component with video playback and DOM element highlighting
+     */
+    interface HTMLSpWalkthroughElement extends Components.SpWalkthrough, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpWalkthroughElementEventMap>(type: K, listener: (this: HTMLSpWalkthroughElement, ev: SpWalkthroughCustomEvent<HTMLSpWalkthroughElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpWalkthroughElementEventMap>(type: K, listener: (this: HTMLSpWalkthroughElement, ev: SpWalkthroughCustomEvent<HTMLSpWalkthroughElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpWalkthroughElement: {
+        prototype: HTMLSpWalkthroughElement;
+        new (): HTMLSpWalkthroughElement;
+    };
     interface HTMLElementTagNameMap {
         "sp-example": HTMLSpExampleElement;
         "sp-org-chart": HTMLSpOrgChartElement;
+        "sp-walkthrough": HTMLSpWalkthroughElement;
     }
 }
 declare namespace LocalJSX {
@@ -167,9 +255,63 @@ declare namespace LocalJSX {
          */
         "users"?: User[];
     }
+    /**
+     * Interactive walkthrough component with video playback and DOM element highlighting
+     */
+    interface SpWalkthrough {
+        /**
+          * Author mode (stub for Plan 02)
+          * @default false
+         */
+        "authorMode"?: boolean;
+        /**
+          * Auto-play video on show
+          * @default false
+         */
+        "autoPlay"?: boolean;
+        /**
+          * WebVTT captions file URL
+         */
+        "captionsSrc"?: string;
+        /**
+          * Emitted when scene changes
+         */
+        "onSceneChanged"?: (event: SpWalkthroughCustomEvent<SceneChangeDetail>) => void;
+        /**
+          * Emitted when timeline is updated (author mode)
+         */
+        "onTimelineUpdated"?: (event: SpWalkthroughCustomEvent<TimelineUpdateDetail>) => void;
+        /**
+          * Emitted when walkthrough is aborted (ESC key or abort method)
+         */
+        "onWalkthroughAborted"?: (event: SpWalkthroughCustomEvent<void>) => void;
+        /**
+          * Emitted when walkthrough is hidden
+         */
+        "onWalkthroughHidden"?: (event: SpWalkthroughCustomEvent<void>) => void;
+        /**
+          * Emitted when walkthrough is shown
+         */
+        "onWalkthroughShown"?: (event: SpWalkthroughCustomEvent<void>) => void;
+        /**
+          * Array of walkthrough scenes
+          * @default []
+         */
+        "scenes"?: Scene[];
+        /**
+          * Theme override
+          * @default 'auto'
+         */
+        "theme"?: 'light' | 'dark' | 'auto';
+        /**
+          * Video source URL (MP4/WebM/YouTube) - optional for manual-only mode
+         */
+        "videoSrc"?: string;
+    }
     interface IntrinsicElements {
         "sp-example": SpExample;
         "sp-org-chart": SpOrgChart;
+        "sp-walkthrough": SpWalkthrough;
     }
 }
 export { LocalJSX as JSX };
@@ -178,6 +320,10 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "sp-example": LocalJSX.SpExample & JSXBase.HTMLAttributes<HTMLSpExampleElement>;
             "sp-org-chart": LocalJSX.SpOrgChart & JSXBase.HTMLAttributes<HTMLSpOrgChartElement>;
+            /**
+             * Interactive walkthrough component with video playback and DOM element highlighting
+             */
+            "sp-walkthrough": LocalJSX.SpWalkthrough & JSXBase.HTMLAttributes<HTMLSpWalkthroughElement>;
         }
     }
 }
