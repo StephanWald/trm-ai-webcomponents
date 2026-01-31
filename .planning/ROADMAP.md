@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Infrastructure** - Stencil project, build pipeline, theming system, CI/CD
 - [x] **Phase 2: OrgChart Component** - Simplest component with drag-and-drop, filtering, tests
-- [ ] **Phase 3: Walkthrough Component** - Medium component with timeline, DOM highlighting, author mode
+- [x] **Phase 3: Walkthrough Component** - Medium component with timeline, DOM highlighting, author mode
 - [ ] **Phase 4: Markdown Editor Component** - Complex component with WYSIWYG, peer deps, voice dictation
 - [ ] **Phase 5: Testing & Quality** - Coverage enforcement, accessibility testing, fallback validation
 - [ ] **Phase 6: Documentation & Publishing** - Docusaurus site, GitHub Pages, npm/CDN distribution
@@ -67,9 +67,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Types, utilities, core component with video playback, timeline sync, navigation, and controls
-- [ ] 03-02-PLAN.md — Author mode with pointer tool, scene CRUD, and event-based persistence
-- [ ] 03-03-PLAN.md — Jest spec tests and Playwright E2E tests for full coverage
+- [x] 03-01-PLAN.md — Types, utilities, core component with video playback, timeline sync, navigation, and controls
+- [x] 03-02-PLAN.md — Author mode with pointer tool, scene CRUD, and event-based persistence
+- [x] 03-03-PLAN.md — Jest spec tests and Playwright E2E tests for full coverage
 
 ### Phase 4: Markdown Editor Component
 **Goal**: Fully functional sp-markdown-editor with source/WYSIWYG/split modes, formatting toolbar, voice dictation, import/export, undo/redo, using peer dependencies for marked/DOMPurify/Prism/Turndown
@@ -127,11 +127,11 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 |-------|----------------|--------|-----------|
 | 1. Foundation & Infrastructure | 3/3 | ✓ Complete | 2026-01-31 |
 | 2. OrgChart Component | 2/2 | ✓ Complete | 2026-01-31 |
-| 3. Walkthrough Component | 0/3 | Not started | - |
+| 3. Walkthrough Component | 3/3 | ✓ Complete | 2026-01-31 |
 | 4. Markdown Editor Component | 0/4 | Not started | - |
 | 5. Testing & Quality | 0/1 | Not started | - |
 | 6. Documentation & Publishing | 0/3 | Not started | - |
 
 ---
 *Roadmap created: 2026-01-31*
-*Last updated: 2026-01-31 — Phase 3 planned*
+*Last updated: 2026-01-31 — Phase 3 complete*

@@ -46,21 +46,21 @@
 
 ### Walkthrough (`<sp-walkthrough>`)
 
-- [ ] **WALK-01**: Component plays video in a fixed-position panel (lower right by default)
-- [ ] **WALK-02**: Timeline entries synchronize with video playback, advancing scenes at configured timestamps
-- [ ] **WALK-03**: DOM elements specified in timeline entries are highlighted with visual overlays during their scene
-- [ ] **WALK-04**: Component supports standard video files (MP4, WebM) and YouTube embeds
-- [ ] **WALK-05**: Manual navigation mode works when no video is present (prev/next buttons)
-- [ ] **WALK-06**: User can drag the walkthrough panel to reposition it on screen
-- [ ] **WALK-07**: Author mode allows real-time editing of walkthrough content (scene creation/editing/deletion)
-- [ ] **WALK-08**: Author mode includes pointer tool for selecting DOM elements to highlight
-- [ ] **WALK-09**: Author mode saves configuration via event emission (for persistence by parent app)
-- [ ] **WALK-10**: WebVTT captions display with toggle on/off capability
-- [ ] **WALK-11**: Volume control with mute/unmute functionality
-- [ ] **WALK-12**: Scene list dropdown for quick navigation to specific scenes
-- [ ] **WALK-13**: Component emits events: `walkthrough-shown`, `walkthrough-hidden`, `walkthrough-aborted`, `scene-changed`, `timeline-updated`
-- [ ] **WALK-14**: Component exposes API methods: `show()`, `hide()`, `play()`, `pause()`, `restart()`, `abort()`
-- [ ] **WALK-15**: ESC key aborts the walkthrough
+- [x] **WALK-01**: Component plays video in a fixed-position panel (lower right by default)
+- [x] **WALK-02**: Timeline entries synchronize with video playback, advancing scenes at configured timestamps
+- [x] **WALK-03**: DOM elements specified in timeline entries are highlighted with visual overlays during their scene
+- [x] **WALK-04**: Component supports standard video files (MP4, WebM) and YouTube embeds
+- [x] **WALK-05**: Manual navigation mode works when no video is present (prev/next buttons)
+- [x] **WALK-06**: User can drag the walkthrough panel to reposition it on screen
+- [x] **WALK-07**: Author mode allows real-time editing of walkthrough content (scene creation/editing/deletion)
+- [x] **WALK-08**: Author mode includes pointer tool for selecting DOM elements to highlight
+- [x] **WALK-09**: Author mode saves configuration via event emission (for persistence by parent app)
+- [x] **WALK-10**: WebVTT captions display with toggle on/off capability
+- [x] **WALK-11**: Volume control with mute/unmute functionality
+- [x] **WALK-12**: Scene list dropdown for quick navigation to specific scenes
+- [x] **WALK-13**: Component emits events: `walkthrough-shown`, `walkthrough-hidden`, `walkthrough-aborted`, `scene-changed`, `timeline-updated`
+- [x] **WALK-14**: Component exposes API methods: `show()`, `hide()`, `play()`, `pause()`, `restart()`, `abort()`
+- [x] **WALK-15**: ESC key aborts the walkthrough
 
 ### OrgChart (`<sp-org-chart>`)
 
@@ -161,21 +161,21 @@
 | MDED-16 | Phase 4 | Pending |
 | MDED-17 | Phase 4 | Pending |
 | MDED-18 | Phase 4 | Pending |
-| WALK-01 | Phase 3 | Pending |
-| WALK-02 | Phase 3 | Pending |
-| WALK-03 | Phase 3 | Pending |
-| WALK-04 | Phase 3 | Pending |
-| WALK-05 | Phase 3 | Pending |
-| WALK-06 | Phase 3 | Pending |
-| WALK-07 | Phase 3 | Pending |
-| WALK-08 | Phase 3 | Pending |
-| WALK-09 | Phase 3 | Pending |
-| WALK-10 | Phase 3 | Pending |
-| WALK-11 | Phase 3 | Pending |
-| WALK-12 | Phase 3 | Pending |
-| WALK-13 | Phase 3 | Pending |
-| WALK-14 | Phase 3 | Pending |
-| WALK-15 | Phase 3 | Pending |
+| WALK-01 | Phase 3 | Complete |
+| WALK-02 | Phase 3 | Complete |
+| WALK-03 | Phase 3 | Complete |
+| WALK-04 | Phase 3 | Complete |
+| WALK-05 | Phase 3 | Complete |
+| WALK-06 | Phase 3 | Complete |
+| WALK-07 | Phase 3 | Complete |
+| WALK-08 | Phase 3 | Complete |
+| WALK-09 | Phase 3 | Complete |
+| WALK-10 | Phase 3 | Complete |
+| WALK-11 | Phase 3 | Complete |
+| WALK-12 | Phase 3 | Complete |
+| WALK-13 | Phase 3 | Complete |
+| WALK-14 | Phase 3 | Complete |
+| WALK-15 | Phase 3 | Complete |
 | ORGC-01 | Phase 2 | Complete |
 | ORGC-02 | Phase 2 | Complete |
 | ORGC-03 | Phase 2 | Complete |
@@ -207,4 +207,4 @@
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-31 — Phase 2 requirements complete*
+*Last updated: 2026-01-31 — Phase 3 requirements complete*
