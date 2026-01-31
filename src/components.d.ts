@@ -5,8 +5,10 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ContentChangeEvent, EditorMode, ExportEvent, ImagePasteEvent, ImportEvent, ModeChangeEvent, SaveEvent } from "./components/sp-markdown-editor/types/editor.types";
 import { HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
 import { Scene, SceneChangeDetail, TimelineUpdateDetail } from "./components/sp-walkthrough/types/walkthrough.types";
+export { ContentChangeEvent, EditorMode, ExportEvent, ImagePasteEvent, ImportEvent, ModeChangeEvent, SaveEvent } from "./components/sp-markdown-editor/types/editor.types";
 export { HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
 export { Scene, SceneChangeDetail, TimelineUpdateDetail } from "./components/sp-walkthrough/types/walkthrough.types";
 export namespace Components {
@@ -22,6 +24,39 @@ export namespace Components {
           * @default 'auto'
          */
         "theme": 'light' | 'dark' | 'auto';
+    }
+    interface SpMarkdownEditor {
+        /**
+          * @default true
+         */
+        "autoSave": boolean;
+        /**
+          * @default 2000
+         */
+        "autoSaveDelay": number;
+        "clear": () => Promise<void>;
+        "focusEditor": () => Promise<void>;
+        "getContent": () => Promise<string>;
+        "getMode": () => Promise<EditorMode>;
+        "isDirty": () => Promise<boolean>;
+        /**
+          * @default 50
+         */
+        "maxHistory": number;
+        /**
+          * @default 'source'
+         */
+        "mode": EditorMode;
+        /**
+          * @default 'Start typing markdown...'
+         */
+        "placeholder": string;
+        "setContent": (value: string) => Promise<void>;
+        "setMode": (mode: EditorMode) => Promise<void>;
+        /**
+          * @default ''
+         */
+        "value": string;
     }
     interface SpOrgChart {
         /**
@@ -123,6 +158,10 @@ export interface SpExampleCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSpExampleElement;
 }
+export interface SpMarkdownEditorCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpMarkdownEditorElement;
+}
 export interface SpOrgChartCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSpOrgChartElement;
@@ -148,6 +187,28 @@ declare global {
     var HTMLSpExampleElement: {
         prototype: HTMLSpExampleElement;
         new (): HTMLSpExampleElement;
+    };
+    interface HTMLSpMarkdownEditorElementEventMap {
+        "contentChange": ContentChangeEvent;
+        "save": SaveEvent;
+        "modeChange": ModeChangeEvent;
+        "importFile": ImportEvent;
+        "exportFile": ExportEvent;
+        "imagePaste": ImagePasteEvent;
+    }
+    interface HTMLSpMarkdownEditorElement extends Components.SpMarkdownEditor, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpMarkdownEditorElementEventMap>(type: K, listener: (this: HTMLSpMarkdownEditorElement, ev: SpMarkdownEditorCustomEvent<HTMLSpMarkdownEditorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpMarkdownEditorElementEventMap>(type: K, listener: (this: HTMLSpMarkdownEditorElement, ev: SpMarkdownEditorCustomEvent<HTMLSpMarkdownEditorElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpMarkdownEditorElement: {
+        prototype: HTMLSpMarkdownEditorElement;
+        new (): HTMLSpMarkdownEditorElement;
     };
     interface HTMLSpOrgChartElementEventMap {
         "userClick": UserEventDetail;
@@ -195,6 +256,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "sp-example": HTMLSpExampleElement;
+        "sp-markdown-editor": HTMLSpMarkdownEditorElement;
         "sp-org-chart": HTMLSpOrgChartElement;
         "sp-walkthrough": HTMLSpWalkthroughElement;
     }
@@ -216,6 +278,38 @@ declare namespace LocalJSX {
           * @default 'auto'
          */
         "theme"?: 'light' | 'dark' | 'auto';
+    }
+    interface SpMarkdownEditor {
+        /**
+          * @default true
+         */
+        "autoSave"?: boolean;
+        /**
+          * @default 2000
+         */
+        "autoSaveDelay"?: number;
+        /**
+          * @default 50
+         */
+        "maxHistory"?: number;
+        /**
+          * @default 'source'
+         */
+        "mode"?: EditorMode;
+        "onContentChange"?: (event: SpMarkdownEditorCustomEvent<ContentChangeEvent>) => void;
+        "onExportFile"?: (event: SpMarkdownEditorCustomEvent<ExportEvent>) => void;
+        "onImagePaste"?: (event: SpMarkdownEditorCustomEvent<ImagePasteEvent>) => void;
+        "onImportFile"?: (event: SpMarkdownEditorCustomEvent<ImportEvent>) => void;
+        "onModeChange"?: (event: SpMarkdownEditorCustomEvent<ModeChangeEvent>) => void;
+        "onSave"?: (event: SpMarkdownEditorCustomEvent<SaveEvent>) => void;
+        /**
+          * @default 'Start typing markdown...'
+         */
+        "placeholder"?: string;
+        /**
+          * @default ''
+         */
+        "value"?: string;
     }
     interface SpOrgChart {
         /**
@@ -310,6 +404,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "sp-example": SpExample;
+        "sp-markdown-editor": SpMarkdownEditor;
         "sp-org-chart": SpOrgChart;
         "sp-walkthrough": SpWalkthrough;
     }
@@ -319,6 +414,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "sp-example": LocalJSX.SpExample & JSXBase.HTMLAttributes<HTMLSpExampleElement>;
+            "sp-markdown-editor": LocalJSX.SpMarkdownEditor & JSXBase.HTMLAttributes<HTMLSpMarkdownEditorElement>;
             "sp-org-chart": LocalJSX.SpOrgChart & JSXBase.HTMLAttributes<HTMLSpOrgChartElement>;
             /**
              * Interactive walkthrough component with video playback and DOM element highlighting

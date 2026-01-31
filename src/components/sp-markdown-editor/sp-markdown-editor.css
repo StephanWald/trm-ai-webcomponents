@@ -1,0 +1,170 @@
+/**
+ * sp-markdown-editor component styles
+ * DWC-themed markdown editor with source/WYSIWYG/split modes
+ */
+
+:host {
+  display: block;
+  font-family: var(--dwc-font-family, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
+  border: 1px solid var(--dwc-color-border, #e0e0e0);
+  border-radius: var(--dwc-border-radius, 4px);
+  overflow: hidden;
+  background: var(--dwc-color-surface, #ffffff);
+}
+
+/* Editor container */
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 400px;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px 8px;
+  background: var(--dwc-color-surface-secondary, #f5f5f5);
+  border-bottom: 1px solid var(--dwc-color-border, #e0e0e0);
+  min-height: 36px;
+}
+
+/* Editor body */
+.editor-body {
+  display: flex;
+  flex: 1;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+/* Source mode textarea */
+.source-editor {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  padding: 12px 16px;
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-family: var(--dwc-font-family-mono, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace);
+  font-size: var(--dwc-font-size-base, 1rem);
+  line-height: var(--dwc-line-height-relaxed, 1.75);
+  color: var(--dwc-color-text, #1a1a1a);
+  background: var(--dwc-color-surface, #ffffff);
+  tab-size: 2;
+}
+
+.source-editor::placeholder {
+  color: var(--dwc-color-text-secondary, #666666);
+  opacity: 0.6;
+}
+
+/* WYSIWYG mode (placeholder for Plan 03) */
+.wysiwyg-editor {
+  width: 100%;
+  height: 100%;
+  padding: 12px 16px;
+  overflow-y: auto;
+}
+
+/* Split mode (placeholder for Plan 03) */
+.split-editor {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Editor footer */
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 12px;
+  background: var(--dwc-color-surface-secondary, #f5f5f5);
+  border-top: 1px solid var(--dwc-color-border, #e0e0e0);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
+  color: var(--dwc-color-text-secondary, #666666);
+}
+
+.stats {
+  display: flex;
+  gap: 12px;
+}
+
+.stat-item {
+  margin-right: 12px;
+}
+
+.save-indicator {
+  margin-left: auto;
+  font-weight: var(--dwc-font-weight-medium, 500);
+}
+
+.save-indicator.saving {
+  color: var(--dwc-color-warning, #ffc107);
+}
+
+.save-indicator.dirty {
+  color: var(--dwc-color-warning, #ffc107);
+}
+
+.save-indicator.saved {
+  color: var(--dwc-color-success, #28a745);
+}
+
+/* Dark theme support */
+:host(.theme-dark) {
+  background: #1e1e1e;
+  border-color: #444;
+}
+
+:host(.theme-dark) .toolbar {
+  background: #2d2d2d;
+  border-bottom-color: #444;
+}
+
+:host(.theme-dark) .source-editor {
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+:host(.theme-dark) .editor-footer {
+  background: #2d2d2d;
+  border-top-color: #444;
+  color: #999;
+}
+
+/* Print styles */
+@media print {
+  .toolbar,
+  .editor-footer {
+    display: none;
+  }
+
+  .editor-body {
+    border: none;
+  }
+
+  .source-editor {
+    padding: 0;
+  }
+}
+
+/* CSS Parts for external styling */
+::part(toolbar) {
+  /* Exposed for external customization */
+}
+
+::part(source-editor) {
+  /* Exposed for external customization */
+}
+
+::part(wysiwyg-editor) {
+  /* Exposed for external customization */
+}
+
+::part(footer) {
+  /* Exposed for external customization */
+}
