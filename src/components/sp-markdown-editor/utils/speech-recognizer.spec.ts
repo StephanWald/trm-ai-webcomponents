@@ -94,12 +94,12 @@ describe('SpeechRecognizer', () => {
       // Simulate recognition result
       const mockEvent = {
         results: [
-          [
-            { transcript: 'Hello world', confidence: 0.9 }
-          ]
+          Object.assign(
+            [{ transcript: 'Hello world', confidence: 0.9 }],
+            { isFinal: true }
+          )
         ],
       };
-      mockEvent.results[0].isFinal = true;
 
       mockRecognition.onresult(mockEvent);
 

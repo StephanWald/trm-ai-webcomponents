@@ -27,7 +27,7 @@ describe('MarkdownRenderer', () => {
         setOptions: jest.fn(),
         use: jest.fn(),
         Renderer: jest.fn().mockImplementation(() => ({
-          code: jest.fn((code: string, lang?: string) => `<pre><code>${code}</code></pre>`),
+          code: jest.fn((code: string, _lang?: string) => `<pre><code>${code}</code></pre>`),
         })),
       };
 
@@ -74,7 +74,7 @@ describe('MarkdownRenderer', () => {
 
     it('handles special characters', () => {
       const renderer = new MarkdownRenderer();
-      const result = renderer.render('<script>alert("xss")</script>');
+      renderer.render('<script>alert("xss")</script>');
 
       expect((window as any).marked.parse).toHaveBeenCalled();
       expect((window as any).DOMPurify.sanitize).toHaveBeenCalled();
@@ -122,7 +122,7 @@ describe('MarkdownRenderer', () => {
         setOptions: jest.fn(),
         use: jest.fn(),
         Renderer: jest.fn().mockImplementation(() => ({
-          code: jest.fn((code: string, lang?: string) => `<pre><code>${code}</code></pre>`),
+          code: jest.fn((code: string, _lang?: string) => `<pre><code>${code}</code></pre>`),
         })),
       };
       (window as any).DOMPurify = undefined;
@@ -182,7 +182,7 @@ describe('MarkdownRenderer', () => {
         setOptions: jest.fn(),
         use: jest.fn(),
         Renderer: jest.fn().mockImplementation(function() {
-          this.code = jest.fn((code: string, lang?: string) => `<pre><code>${code}</code></pre>`);
+          this.code = jest.fn((code: string, _lang?: string) => `<pre><code>${code}</code></pre>`);
           return this;
         }),
       };

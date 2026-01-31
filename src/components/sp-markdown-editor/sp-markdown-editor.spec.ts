@@ -54,8 +54,8 @@ describe('sp-markdown-editor', () => {
         html: '<sp-markdown-editor placeholder="Custom placeholder"></sp-markdown-editor>',
       });
 
-      const textarea = page.root?.shadowRoot?.querySelector('.source-editor') as HTMLTextAreaElement;
-      expect(textarea?.placeholder).toBe('Custom placeholder');
+      const textarea = page.root?.shadowRoot?.querySelector('.source-editor');
+      expect(textarea?.getAttribute('placeholder')).toBe('Custom placeholder');
     });
 
     it('renders toolbar with button groups', async () => {
@@ -67,7 +67,7 @@ describe('sp-markdown-editor', () => {
       const toolbar = page.root?.shadowRoot?.querySelector('.toolbar');
       expect(toolbar).toBeTruthy();
 
-      const buttonGroups = page.root?.shadowRoot?.querySelectorAll('.button-group');
+      const buttonGroups = page.root?.shadowRoot?.querySelectorAll('.toolbar-group');
       expect(buttonGroups?.length).toBeGreaterThan(0);
     });
 
@@ -80,7 +80,7 @@ describe('sp-markdown-editor', () => {
       const footer = page.root?.shadowRoot?.querySelector('.editor-footer');
       expect(footer).toBeTruthy();
 
-      const stats = page.root?.shadowRoot?.querySelector('.editor-stats');
+      const stats = page.root?.shadowRoot?.querySelector('.stats');
       expect(stats).toBeTruthy();
     });
 
@@ -195,7 +195,7 @@ describe('sp-markdown-editor', () => {
       await page.rootInstance.setContent('Hello world');
       await page.waitForChanges();
 
-      const statsText = page.root?.shadowRoot?.querySelector('.editor-stats')?.textContent;
+      const statsText = page.root?.shadowRoot?.querySelector('.stats')?.textContent;
       expect(statsText).toContain('11'); // 11 chars
       expect(statsText).toContain('2'); // 2 words
     });
@@ -232,12 +232,12 @@ describe('sp-markdown-editor', () => {
     });
 
     it('emits save on auto-save', async () => {
-      jest.useFakeTimers();
-
       const page = await newSpecPage({
         components: [SpMarkdownEditor],
         html: '<sp-markdown-editor auto-save="true" auto-save-delay="100"></sp-markdown-editor>',
       });
+
+      jest.useFakeTimers();
 
       const eventSpy = jest.fn();
       page.root?.addEventListener('save', eventSpy);
@@ -245,7 +245,6 @@ describe('sp-markdown-editor', () => {
       const textarea = page.root?.shadowRoot?.querySelector('.source-editor') as HTMLTextAreaElement;
       textarea.value = 'Modified';
       textarea.dispatchEvent(new Event('input', { bubbles: true }));
-      await page.waitForChanges();
 
       // Fast-forward past auto-save delay
       jest.advanceTimersByTime(150);
@@ -460,8 +459,8 @@ describe('sp-markdown-editor', () => {
         html: '<sp-markdown-editor></sp-markdown-editor>',
       });
 
-      const textarea = page.root?.shadowRoot?.querySelector('.source-editor') as HTMLTextAreaElement;
-      expect(textarea?.placeholder).toBeTruthy();
+      const textarea = page.root?.shadowRoot?.querySelector('.source-editor');
+      expect(textarea?.getAttribute('placeholder')).toBeTruthy();
     });
   });
 
@@ -475,7 +474,7 @@ describe('sp-markdown-editor', () => {
       await page.rootInstance.setContent('Hello world');
       await page.waitForChanges();
 
-      const statsText = page.root?.shadowRoot?.querySelector('.editor-stats')?.textContent;
+      const statsText = page.root?.shadowRoot?.querySelector('.stats')?.textContent;
       expect(statsText).toContain('2'); // 2 words
     });
 
@@ -488,7 +487,7 @@ describe('sp-markdown-editor', () => {
       await page.rootInstance.setContent('');
       await page.waitForChanges();
 
-      const statsText = page.root?.shadowRoot?.querySelector('.editor-stats')?.textContent;
+      const statsText = page.root?.shadowRoot?.querySelector('.stats')?.textContent;
       expect(statsText).toContain('0 words');
     });
 
@@ -501,7 +500,7 @@ describe('sp-markdown-editor', () => {
       await page.rootInstance.setContent('   \n\n   ');
       await page.waitForChanges();
 
-      const statsText = page.root?.shadowRoot?.querySelector('.editor-stats')?.textContent;
+      const statsText = page.root?.shadowRoot?.querySelector('.stats')?.textContent;
       expect(statsText).toContain('0 words');
     });
   });
