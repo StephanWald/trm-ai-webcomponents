@@ -131,80 +131,80 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | | Pending |
-| INFRA-02 | | Pending |
-| INFRA-03 | | Pending |
-| INFRA-04 | | Pending |
-| INFRA-05 | | Pending |
-| INFRA-06 | | Pending |
-| INFRA-07 | | Pending |
-| INFRA-08 | | Pending |
-| THEME-01 | | Pending |
-| THEME-02 | | Pending |
-| THEME-03 | | Pending |
-| THEME-04 | | Pending |
-| MDED-01 | | Pending |
-| MDED-02 | | Pending |
-| MDED-03 | | Pending |
-| MDED-04 | | Pending |
-| MDED-05 | | Pending |
-| MDED-06 | | Pending |
-| MDED-07 | | Pending |
-| MDED-08 | | Pending |
-| MDED-09 | | Pending |
-| MDED-10 | | Pending |
-| MDED-11 | | Pending |
-| MDED-12 | | Pending |
-| MDED-13 | | Pending |
-| MDED-14 | | Pending |
-| MDED-15 | | Pending |
-| MDED-16 | | Pending |
-| MDED-17 | | Pending |
-| MDED-18 | | Pending |
-| WALK-01 | | Pending |
-| WALK-02 | | Pending |
-| WALK-03 | | Pending |
-| WALK-04 | | Pending |
-| WALK-05 | | Pending |
-| WALK-06 | | Pending |
-| WALK-07 | | Pending |
-| WALK-08 | | Pending |
-| WALK-09 | | Pending |
-| WALK-10 | | Pending |
-| WALK-11 | | Pending |
-| WALK-12 | | Pending |
-| WALK-13 | | Pending |
-| WALK-14 | | Pending |
-| WALK-15 | | Pending |
-| ORGC-01 | | Pending |
-| ORGC-02 | | Pending |
-| ORGC-03 | | Pending |
-| ORGC-04 | | Pending |
-| ORGC-05 | | Pending |
-| ORGC-06 | | Pending |
-| ORGC-07 | | Pending |
-| ORGC-08 | | Pending |
-| ORGC-09 | | Pending |
-| ORGC-10 | | Pending |
-| ORGC-11 | | Pending |
-| ORGC-12 | | Pending |
-| ORGC-13 | | Pending |
-| TEST-01 | | Pending |
-| TEST-02 | | Pending |
-| TEST-03 | | Pending |
-| TEST-04 | | Pending |
-| DOCS-01 | | Pending |
-| DOCS-02 | | Pending |
-| DOCS-03 | | Pending |
-| DOCS-04 | | Pending |
-| DOCS-05 | | Pending |
-| DOCS-06 | | Pending |
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Pending |
+| INFRA-04 | Phase 1 | Pending |
+| INFRA-05 | Phase 1 | Pending |
+| INFRA-06 | Phase 1 | Pending |
+| INFRA-07 | Phase 6 | Pending |
+| INFRA-08 | Phase 1 | Pending |
+| THEME-01 | Phase 1 | Pending |
+| THEME-02 | Phase 1 | Pending |
+| THEME-03 | Phase 1 | Pending |
+| THEME-04 | Phase 1 | Pending |
+| MDED-01 | Phase 4 | Pending |
+| MDED-02 | Phase 4 | Pending |
+| MDED-03 | Phase 4 | Pending |
+| MDED-04 | Phase 4 | Pending |
+| MDED-05 | Phase 4 | Pending |
+| MDED-06 | Phase 4 | Pending |
+| MDED-07 | Phase 4 | Pending |
+| MDED-08 | Phase 4 | Pending |
+| MDED-09 | Phase 4 | Pending |
+| MDED-10 | Phase 4 | Pending |
+| MDED-11 | Phase 4 | Pending |
+| MDED-12 | Phase 4 | Pending |
+| MDED-13 | Phase 4 | Pending |
+| MDED-14 | Phase 4 | Pending |
+| MDED-15 | Phase 4 | Pending |
+| MDED-16 | Phase 4 | Pending |
+| MDED-17 | Phase 4 | Pending |
+| MDED-18 | Phase 4 | Pending |
+| WALK-01 | Phase 3 | Pending |
+| WALK-02 | Phase 3 | Pending |
+| WALK-03 | Phase 3 | Pending |
+| WALK-04 | Phase 3 | Pending |
+| WALK-05 | Phase 3 | Pending |
+| WALK-06 | Phase 3 | Pending |
+| WALK-07 | Phase 3 | Pending |
+| WALK-08 | Phase 3 | Pending |
+| WALK-09 | Phase 3 | Pending |
+| WALK-10 | Phase 3 | Pending |
+| WALK-11 | Phase 3 | Pending |
+| WALK-12 | Phase 3 | Pending |
+| WALK-13 | Phase 3 | Pending |
+| WALK-14 | Phase 3 | Pending |
+| WALK-15 | Phase 3 | Pending |
+| ORGC-01 | Phase 2 | Pending |
+| ORGC-02 | Phase 2 | Pending |
+| ORGC-03 | Phase 2 | Pending |
+| ORGC-04 | Phase 2 | Pending |
+| ORGC-05 | Phase 2 | Pending |
+| ORGC-06 | Phase 2 | Pending |
+| ORGC-07 | Phase 2 | Pending |
+| ORGC-08 | Phase 2 | Pending |
+| ORGC-09 | Phase 2 | Pending |
+| ORGC-10 | Phase 2 | Pending |
+| ORGC-11 | Phase 2 | Pending |
+| ORGC-12 | Phase 2 | Pending |
+| ORGC-13 | Phase 2 | Pending |
+| TEST-01 | Phase 2, 3, 4 | Pending |
+| TEST-02 | Phase 2, 3, 4 | Pending |
+| TEST-03 | Phase 5 | Pending |
+| TEST-04 | Phase 5 | Pending |
+| DOCS-01 | Phase 6 | Pending |
+| DOCS-02 | Phase 6 | Pending |
+| DOCS-03 | Phase 6 | Pending |
+| DOCS-04 | Phase 6 | Pending |
+| DOCS-05 | Phase 6 | Pending |
+| DOCS-06 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 60 total
-- Mapped to phases: 0
-- Unmapped: 60
+- v1 requirements: 68 total
+- Mapped to phases: 68
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-30 after initial definition*
+*Last updated: 2026-01-31 after roadmap creation*
