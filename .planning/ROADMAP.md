@@ -31,12 +31,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Package.json correctly declares peer dependencies for heavy libraries (marked, DOMPurify, Prism.js, Turndown) without bundling them
   4. GitHub Actions CI workflow runs build, lint, and tests automatically on every push/PR
   5. Test component (sp-example) consumes DWC CSS custom properties and renders with sensible defaults when no theme is loaded
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md -- Stencil project scaffolding with dual output targets, package.json, peer dependencies
+- [ ] 01-02-PLAN.md -- DWC theming system, sp-example component, spec + E2E tests
+- [ ] 01-03-PLAN.md -- GitHub Actions CI/CD workflows, Changesets, ESLint
 
 ### Phase 2: OrgChart Component
 **Goal**: Fully functional sp-org-chart component with hierarchical rendering, drag-and-drop reorganization, filtering, and comprehensive tests proving component patterns work
@@ -121,11 +121,11 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Infrastructure | 0/3 | Not started | - |
+| 1. Foundation & Infrastructure | 0/3 | Planned | - |
 | 2. OrgChart Component | 0/2 | Not started | - |
 | 3. Walkthrough Component | 0/3 | Not started | - |
 | 4. Markdown Editor Component | 0/4 | Not started | - |
