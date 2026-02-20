@@ -176,13 +176,24 @@ describe('MarkdownRenderer', () => {
   });
 
   describe('Prism integration', () => {
+    let capturedCodeRenderer: ((code: string, language: string | undefined) => string) | null = null;
+    let mockOriginalCode: jest.Mock;
+
     beforeEach(() => {
+      capturedCodeRenderer = null;
+      mockOriginalCode = jest.fn((code: string, _lang?: string) => `<pre><code>${code}</code></pre>`);
+
       (window as any).marked = {
         parse: jest.fn((md: string) => `<p>${md}</p>`),
         setOptions: jest.fn(),
-        use: jest.fn(),
+        use: jest.fn((opts: any) => {
+          // Capture the renderer that gets configured
+          if (opts && opts.renderer && opts.renderer.code) {
+            capturedCodeRenderer = opts.renderer.code;
+          }
+        }),
         Renderer: jest.fn().mockImplementation(function() {
-          this.code = jest.fn((code: string, _lang?: string) => `<pre><code>${code}</code></pre>`);
+          this.code = mockOriginalCode;
           return this;
         }),
       };
@@ -212,6 +223,81 @@ describe('MarkdownRenderer', () => {
 
       // Should still render without syntax highlighting
       expect(result).toBeTruthy();
+    });
+
+    it('uses Prism syntax highlighting when available with a known language', () => {
+      const mockHighlight = jest.fn((code: string) => `<span class="token">${code}</span>`);
+      (window as any).Prism = {
+        languages: {
+          javascript: { js: true },
+        },
+        highlight: mockHighlight,
+      };
+
+      new MarkdownRenderer();
+
+      // Directly invoke the captured code renderer (lines 54-67)
+      expect(capturedCodeRenderer).not.toBeNull();
+      const result = capturedCodeRenderer!('const x = 1;', 'javascript');
+
+      expect(result).toContain('language-javascript');
+      expect(result).toContain('<pre class="language-javascript">');
+      expect(mockHighlight).toHaveBeenCalledWith('const x = 1;', { js: true }, 'javascript');
+    });
+
+    it('falls through to default rendering when language has no Prism grammar', () => {
+      (window as any).Prism = {
+        languages: {
+          // 'unknownlang' not present
+        },
+        highlight: jest.fn(),
+      };
+
+      new MarkdownRenderer();
+
+      expect(capturedCodeRenderer).not.toBeNull();
+      const result = capturedCodeRenderer!('some code', 'unknownlang');
+
+      // Should fall back to original code renderer
+      expect(mockOriginalCode).toHaveBeenCalledWith('some code', 'unknownlang');
+      expect(result).toContain('<pre><code>some code</code></pre>');
+    });
+
+    it('falls through to default rendering when no language is provided', () => {
+      (window as any).Prism = {
+        languages: { javascript: {} },
+        highlight: jest.fn(),
+      };
+
+      new MarkdownRenderer();
+
+      expect(capturedCodeRenderer).not.toBeNull();
+      // language is undefined - hasPrism is true but language is falsy
+      const result = capturedCodeRenderer!('some code', undefined);
+
+      // Should fall back to original code renderer
+      expect(mockOriginalCode).toHaveBeenCalledWith('some code', undefined);
+      expect(result).toContain('<pre><code>some code</code></pre>');
+    });
+
+    it('handles Prism.highlight throwing an error gracefully', () => {
+      (window as any).Prism = {
+        languages: {
+          javascript: { js: true },
+        },
+        highlight: jest.fn(() => {
+          throw new Error('Prism error');
+        }),
+      };
+
+      new MarkdownRenderer();
+
+      expect(capturedCodeRenderer).not.toBeNull();
+      // Should not throw - falls back to original renderer
+      const result = capturedCodeRenderer!('const x = 1;', 'javascript');
+
+      expect(mockOriginalCode).toHaveBeenCalled();
+      expect(result).toContain('<pre><code>const x = 1;</code></pre>');
     });
   });
 });
