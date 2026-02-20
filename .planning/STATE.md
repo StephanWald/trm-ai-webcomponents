@@ -38,6 +38,7 @@ Progress: [████████░░] 83%
 - Trend: Foundation tasks fast (3-4min), feature tasks moderate (4-5min), testing tasks significantly longer (19min for comprehensive suite)
 
 *Updated after each plan completion*
+| Phase 05-testing-quality P01 | 87 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,9 @@ Recent decisions affecting current work:
 - 05-02: Object.defineProperty for requestAnimationFrame mocking (jest.spyOn cannot intercept unbound global RAF)
 - 05-02: Call rootInstance.handlerMethod() directly instead of button.click() to avoid Node.js worker crashes
 - 05-02: Use getAttribute('disabled') not .disabled property - Stencil mock-doc uses attribute not property
+- [Phase 05-01]: Coverage thresholds in stencil.config.ts testing property (not jest.config.js) — Stencil ignores jest.config.js during stencil test
+- [Phase 05-01]: jest.useFakeTimers() must be called after newSpecPage() — calling it in beforeEach before page setup causes 5000ms timeouts on all tests in the block
+- [Phase 05-01]: window.setInterval in Stencil mock-doc is not intercepted by jest.useFakeTimers — test interval callback behavior via direct state manipulation instead of jest.advanceTimersByTime
 
 ### Pending Todos
 
