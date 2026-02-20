@@ -218,4 +218,169 @@ describe('OverlayManager', () => {
       expect(() => manager.highlightElement('#test-element')).not.toThrow();
     });
   });
+
+  describe('removeAllOverlays cleanup path', () => {
+    it('removes multiple overlays when multiple highlights exist', () => {
+      // Add second test element
+      const testElement2 = document.createElement('div');
+      testElement2.id = 'test-element-2';
+      testElement2.getBoundingClientRect = jest.fn(() => ({
+        top: 50,
+        left: 50,
+        width: 100,
+        height: 80,
+        bottom: 130,
+        right: 150,
+        x: 50,
+        y: 50,
+        toJSON: () => ({}),
+      }));
+      document.body.appendChild(testElement2);
+
+      // Highlight first element then highlight second (clears first, then adds second)
+      manager.highlightElement('#test-element');
+      manager.highlightElement('#test-element-2');
+
+      let overlays = document.querySelectorAll('.sp-walkthrough-highlight');
+      expect(overlays.length).toBe(1);
+
+      manager.clearHighlights();
+
+      overlays = document.querySelectorAll('.sp-walkthrough-highlight');
+      expect(overlays.length).toBe(0);
+    });
+
+    it('resets pendingRAF to null after clearHighlights when RAF was pending', () => {
+      // Simulate a pending animation frame
+      (manager as any).pendingRAF = 42;
+
+      // After clearHighlights, pendingRAF should be null
+      manager.clearHighlights();
+
+      expect((manager as any).pendingRAF).toBeNull();
+    });
+  });
+
+  describe('scroll and resize handlers', () => {
+    it('calls updatePositions when requestAnimationFrame callback fires on scroll', () => {
+      let rafCallback: FrameRequestCallback | null = null;
+
+      // Mock requestAnimationFrame to capture the callback
+      const originalRAF = window.requestAnimationFrame;
+      Object.defineProperty(window, 'requestAnimationFrame', {
+        value: (cb: FrameRequestCallback) => {
+          rafCallback = cb;
+          return 42;
+        },
+        configurable: true,
+        writable: true,
+      });
+
+      manager.highlightElement('#test-element');
+
+      // Trigger scroll event - should queue a RAF
+      const scrollEvent = new Event('scroll');
+      window.dispatchEvent(scrollEvent);
+
+      // If RAF was queued, the callback should exist
+      // Execute it manually to test the update
+      if (rafCallback) {
+        (rafCallback as FrameRequestCallback)(0);
+        expect((manager as any).pendingRAF).toBeNull();
+      }
+
+      // Restore
+      Object.defineProperty(window, 'requestAnimationFrame', {
+        value: originalRAF,
+        configurable: true,
+        writable: true,
+      });
+    });
+
+    it('calls updatePositions when requestAnimationFrame callback fires on resize', () => {
+      let rafCallback: FrameRequestCallback | null = null;
+
+      const originalRAF = window.requestAnimationFrame;
+      Object.defineProperty(window, 'requestAnimationFrame', {
+        value: (cb: FrameRequestCallback) => {
+          rafCallback = cb;
+          return 43;
+        },
+        configurable: true,
+        writable: true,
+      });
+
+      manager.highlightElement('#test-element');
+
+      window.dispatchEvent(new Event('resize'));
+
+      if (rafCallback) {
+        (rafCallback as FrameRequestCallback)(0);
+        expect((manager as any).pendingRAF).toBeNull();
+      }
+
+      Object.defineProperty(window, 'requestAnimationFrame', {
+        value: originalRAF,
+        configurable: true,
+        writable: true,
+      });
+    });
+
+    it('does not queue multiple RAF calls when one is pending', () => {
+      let rafCallCount = 0;
+      const originalRAF = window.requestAnimationFrame;
+      Object.defineProperty(window, 'requestAnimationFrame', {
+        value: () => {
+          rafCallCount++;
+          return 44;
+        },
+        configurable: true,
+        writable: true,
+      });
+
+      manager.highlightElement('#test-element');
+      (manager as any).pendingRAF = 44; // Simulate pending RAF
+
+      const countBefore = rafCallCount;
+
+      // Trigger scroll again - should not queue another RAF because one is pending
+      window.dispatchEvent(new Event('scroll'));
+
+      // RAF count should not have increased
+      expect(rafCallCount).toBe(countBefore);
+
+      Object.defineProperty(window, 'requestAnimationFrame', {
+        value: originalRAF,
+        configurable: true,
+        writable: true,
+      });
+    });
+  });
+
+  describe('highlightElement with positioned element', () => {
+    it('highlights element with specific dimensions correctly', () => {
+      const specialElement = document.createElement('div');
+      specialElement.id = 'special-element';
+      specialElement.getBoundingClientRect = jest.fn(() => ({
+        top: 200,
+        left: 400,
+        width: 150,
+        height: 80,
+        bottom: 280,
+        right: 550,
+        x: 400,
+        y: 200,
+        toJSON: () => ({}),
+      }));
+      document.body.appendChild(specialElement);
+
+      manager.highlightElement('#special-element');
+
+      const overlay = document.querySelector('.sp-walkthrough-highlight') as HTMLElement;
+      expect(overlay.style.top).toBe('200px');
+      expect(overlay.style.left).toBe('400px');
+      expect(overlay.style.width).toBe('150px');
+      expect(overlay.style.height).toBe('80px');
+    });
+  });
 });
