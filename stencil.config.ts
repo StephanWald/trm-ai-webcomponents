@@ -20,4 +20,29 @@ export const config: Config = {
       serviceWorker: null,
     },
   ],
+  testing: {
+    collectCoverageFrom: [
+      'src/**/*.{ts,tsx}',
+      '!src/**/*.d.ts',
+      '!src/**/*.e2e.ts',
+      '!src/components.d.ts',
+    ],
+    coverageDirectory: 'coverage',
+    coverageReporters: ['text', 'lcov', 'json-summary'],
+    coveragePathIgnorePatterns: [
+      '/node_modules/',
+      '\\.e2e\\.ts$',
+      '/dist/',
+      '/www/',
+      'components\\.d\\.ts$',
+    ],
+    coverageThreshold: {
+      global: {
+        branches: 70,
+        functions: 70,
+        lines: 70,
+        statements: 70,
+      },
+    },
+  },
 };
