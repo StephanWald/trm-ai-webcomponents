@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 5 of 6 (Testing & Quality)
-Plan: 0 of 1 in current phase
-Status: Ready for planning
-Last activity: 2026-01-31 — Phase 4 complete, all 335 tests passing, build clean
+Plan: 2 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-20 — Plan 05-02 complete, sp-walkthrough and utilities coverage tests added
 
-Progress: [████████░░] 80%
+Progress: [████████░░] 83%
 
 ## Performance Metrics
 
@@ -31,6 +31,7 @@ Progress: [████████░░] 80%
 | 02-orgchart-component | 2/2 | 10.0min | 5.0min |
 | 03-walkthrough-component | 3/3 | 15.5min | 5.2min |
 | 04-markdown-editor-component | 4/4 | 31.3min | 7.8min |
+| 05-testing-quality | 2/3 | ~70min (running) | ~35min |
 
 **Recent Trend:**
 - Last 5 plans: 04-01 (4.1min), 04-02 (3.0min), 04-03 (5.2min), 04-04 (19.0min)
@@ -86,6 +87,11 @@ Recent decisions affecting current work:
 - 04-03: Split mode with independent scrolling for source and preview panes
 - 04-03: Voice dictation appends to end of content (predictable continuous dictation behavior)
 - 04-03: Print uses temporary window with inline styles for consistent formatting
+- 05-02: PointerEvent polyfill (class extends MouseEvent) needed in spec files because JSDOM lacks PointerEvent
+- 05-02: Mock window.setInterval directly (not jest.useFakeTimers) for Stencil test env setInterval isolation
+- 05-02: Object.defineProperty for requestAnimationFrame mocking (jest.spyOn cannot intercept unbound global RAF)
+- 05-02: Call rootInstance.handlerMethod() directly instead of button.click() to avoid Node.js worker crashes
+- 05-02: Use getAttribute('disabled') not .disabled property - Stencil mock-doc uses attribute not property
 
 ### Pending Todos
 
@@ -97,21 +103,26 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31 (phase execution)
-Stopped at: Phase 4 complete — all plans executed, tests fixed, verification done
+Last session: 2026-02-20 (phase execution)
+Stopped at: Completed 05-02-PLAN.md — sp-walkthrough and utilities coverage tests added
 Resume file: None
 
 ## Next Steps
 
-**Phase 4 Complete - Markdown Editor Component** (all 4 plans executed):
-- 909-line component with source/WYSIWYG/split modes, 8 toolbar groups, 15+ formatting actions
-- 5 utility classes: HistoryManager, ToolbarActions, MarkdownRenderer, FileHandler, SpeechRecognizer
-- 335 tests passing (190 for markdown editor, 145 existing), zero regressions
-- Build clean, all TypeScript errors resolved
-- Design decisions documented: WYSIWYG is preview-only, focusEditor() naming
+**Phase 5 In Progress - Testing & Quality** (2 of 3 plans executed):
 
-**Ready for Phase 5 - Testing & Quality**:
-- CI coverage enforcement (70% minimum)
-- Fallback validation (components work without DWC theme)
+Plan 05-01 complete:
+- Jest coverage thresholds (70% min) and CI workflow updated
+
+Plan 05-02 complete:
+- draggable-mixin.spec.ts created (100% statement coverage)
+- youtube-wrapper.spec.ts expanded (98.95% statement coverage)
+- overlay-manager.spec.ts expanded (91.07% statement coverage)
+- sp-walkthrough.spec.ts expanded with 80+ new tests, fallback rendering describe block
+- Key test patterns established: PointerEvent polyfill, window.setInterval mocking, Object.defineProperty for RAF, handler method invocation over button.click()
+
+**Ready for Plan 05-03**:
+- sp-org-chart and sp-markdown-editor component coverage gap tests
+- sp-org-chart long-press/timeout tests may need similar handler-invocation approach
 
 **No blockers or concerns**
