@@ -68,28 +68,28 @@ export class ToolbarActions {
    * Apply bold formatting (**text**)
    */
   static bold(content: string, start: number, end: number): ActionResult {
-    return this.wrapSelection(content, start, end, '**');
+    return ToolbarActions.wrapSelection(content, start, end, '**');
   }
 
   /**
    * Apply italic formatting (_text_)
    */
   static italic(content: string, start: number, end: number): ActionResult {
-    return this.wrapSelection(content, start, end, '_');
+    return ToolbarActions.wrapSelection(content, start, end, '_');
   }
 
   /**
    * Apply strikethrough formatting (~~text~~)
    */
   static strikethrough(content: string, start: number, end: number): ActionResult {
-    return this.wrapSelection(content, start, end, '~~');
+    return ToolbarActions.wrapSelection(content, start, end, '~~');
   }
 
   /**
    * Apply inline code formatting (`text`)
    */
   static inlineCode(content: string, start: number, end: number): ActionResult {
-    return this.wrapSelection(content, start, end, '`');
+    return ToolbarActions.wrapSelection(content, start, end, '`');
   }
 
   /**
@@ -140,7 +140,7 @@ export class ToolbarActions {
    * Toggles heading level on current line
    */
   static heading(content: string, start: number, _end: number, level: 1 | 2 | 3): ActionResult {
-    const { start: lineStart, end: lineEnd } = this.getLineBoundaries(content, start);
+    const { start: lineStart, end: lineEnd } = ToolbarActions.getLineBoundaries(content, start);
     const before = content.substring(0, lineStart);
     const line = content.substring(lineStart, lineEnd);
     const after = content.substring(lineEnd);
@@ -181,7 +181,7 @@ export class ToolbarActions {
    * Toggles > prefix on selected lines
    */
   static blockquote(content: string, start: number, end: number): ActionResult {
-    return this.toggleLinePrefix(content, start, end, '> ');
+    return ToolbarActions.toggleLinePrefix(content, start, end, '> ');
   }
 
   /**
@@ -301,7 +301,7 @@ export class ToolbarActions {
    * Apply bullet list formatting (- item)
    */
   static bulletList(content: string, start: number, end: number): ActionResult {
-    return this.toggleLinePrefix(content, start, end, '- ');
+    return ToolbarActions.toggleLinePrefix(content, start, end, '- ');
   }
 
   /**
@@ -366,7 +366,7 @@ export class ToolbarActions {
    * Apply task list formatting (- [ ] item)
    */
   static taskList(content: string, start: number, end: number): ActionResult {
-    return this.toggleLinePrefix(content, start, end, '- [ ] ');
+    return ToolbarActions.toggleLinePrefix(content, start, end, '- [ ] ');
   }
 
   /**
