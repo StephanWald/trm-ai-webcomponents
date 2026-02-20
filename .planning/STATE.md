@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 5 of 6 (Testing & Quality)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-20 — Plan 05-02 complete, sp-walkthrough and utilities coverage tests added
+Plan: 3 of 3 in current phase
+Status: Complete
+Last activity: 2026-02-20 — Plan 05-03 complete, sp-markdown-editor coverage gap tests added (83.75% coverage)
 
-Progress: [████████░░] 83%
+Progress: [█████████░] 92%
 
 ## Performance Metrics
 
@@ -96,6 +96,11 @@ Recent decisions affecting current work:
 - [Phase 05-01]: Coverage thresholds in stencil.config.ts testing property (not jest.config.js) — Stencil ignores jest.config.js during stencil test
 - [Phase 05-01]: jest.useFakeTimers() must be called after newSpecPage() — calling it in beforeEach before page setup causes 5000ms timeouts on all tests in the block
 - [Phase 05-01]: window.setInterval in Stencil mock-doc is not intercepted by jest.useFakeTimers — test interval callback behavior via direct state manipulation instead of jest.advanceTimersByTime
+- [Phase 05-03]: jest.useFakeTimers() banned entirely in sp-markdown-editor specs — even after useRealTimers() the next createPage() hangs; test auto-save by calling performAutoSave() directly
+- [Phase 05-03]: newSpecPage creates MockWindow (isolated from JSDOM window) — set browser APIs (SpeechRecognition, window.open) on page.win or rootInstance, NOT on (window as any)
+- [Phase 05-03]: jest.spyOn(document.createElement) MUST be set AFTER createPage() — spying before page creation intercepts Stencil render causing massive spy accumulation and OOM
+- [Phase 05-03]: newSpecPage JSDOM OOM limit: ~4-5 complex pages per worker process (not 8); complex tests with mocks use more memory than simple render tests
+- [Phase 05-03]: ToolbarActions static methods: use ClassName.method() not this.method() to preserve context when passed as function references
 
 ### Pending Todos
 
@@ -108,12 +113,12 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20 (phase execution)
-Stopped at: Completed 05-02-PLAN.md — sp-walkthrough and utilities coverage tests added
+Stopped at: Completed 05-03-PLAN.md — sp-markdown-editor coverage gap tests added (83.75% coverage)
 Resume file: None
 
 ## Next Steps
 
-**Phase 5 In Progress - Testing & Quality** (2 of 3 plans executed):
+**Phase 5 Complete - All 3 plans executed**:
 
 Plan 05-01 complete:
 - Jest coverage thresholds (70% min) and CI workflow updated
@@ -123,10 +128,12 @@ Plan 05-02 complete:
 - youtube-wrapper.spec.ts expanded (98.95% statement coverage)
 - overlay-manager.spec.ts expanded (91.07% statement coverage)
 - sp-walkthrough.spec.ts expanded with 80+ new tests, fallback rendering describe block
-- Key test patterns established: PointerEvent polyfill, window.setInterval mocking, Object.defineProperty for RAF, handler method invocation over button.click()
 
-**Ready for Plan 05-03**:
-- sp-org-chart and sp-markdown-editor component coverage gap tests
-- sp-org-chart long-press/timeout tests may need similar handler-invocation approach
+Plan 05-03 complete:
+- sp-markdown-editor.tsx coverage: 40.43% → 83.75% (29 new tests in 5 parallel spec files)
+- Fixed ToolbarActions class context bug (this → ToolbarActions.xxx)
+- Key patterns: MockWindow isolation, createElement spy ordering, OOM avoidance
+
+**Ready for Phase 6** (final phase)
 
 **No blockers or concerns**
