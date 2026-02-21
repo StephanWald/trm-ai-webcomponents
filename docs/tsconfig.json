@@ -1,14 +1,29 @@
 {
-  // This file is not used in compilation. It is here just for a nice editor experience.
-  "extends": "@docusaurus/module-type-aliases/tsconfig.json",
   "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
     "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "noEmit": true,
     "baseUrl": ".",
     "paths": {
       "@site/*": ["./*"],
       "@generated/*": ["./.docusaurus/*"]
-    },
-    "noEmit": true
+    }
   },
-  "include": ["**/*.ts", "**/*.tsx", ".docusaurus/**/*.ts", ".docusaurus/**/*.tsx"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".docusaurus/**/*.ts",
+    ".docusaurus/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
