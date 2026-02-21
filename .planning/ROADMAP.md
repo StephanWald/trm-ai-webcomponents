@@ -60,7 +60,10 @@ Plans:
   3. The scene list opens as a custom popup (not a native select) showing title and timestamp per scene
   4. The volume control opens as a vertical popup slider; captions render as a styled overlay (dark background, white text) not native browser captions
   5. Highlighted elements animate with a reddish-brown border and dual glow; active highlights use the green state with a 1.5s breathing animation; scene descriptions support markdown (headings, lists, code) in the text bubble
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 08-01-PLAN.md — Controls rewrite: Tabler SVG icons, single-row layout, progress bar, skip/restart, DWC theming
+- [ ] 08-02-PLAN.md — Popups, captions, markdown, highlights: scene list popup, volume popup, custom captions, markdown text bubble, highlight animations
 
 ### Phase 9: Popover Utility
 **Goal**: sp-popover is a reusable viewport-aware positioning component with 6 placement options, boundary detection, configurable dismiss behaviors, a named slot for content, enter animation, and open/close events
@@ -117,7 +120,7 @@ Plans:
 | 5. Testing & Quality | v1.0 | 3/3 | Complete | 2026-02-20 |
 | 6. Documentation & Publishing | v1.0 | 5/5 | Complete | 2026-02-21 |
 | 7. Org Chart Parity | 3/3 | Complete   | 2026-02-21 | - |
-| 8. Walkthrough Parity | v1.1 | 0/TBD | Not started | - |
+| 8. Walkthrough Parity | v1.1 | 0/2 | Not started | - |
 | 9. Popover Utility | v1.1 | 0/TBD | Not started | - |
 | 10. Language & Voice | v1.1 | 0/TBD | Not started | - |
 | 11. Communication & Splash | v1.1 | 0/TBD | Not started | - |
