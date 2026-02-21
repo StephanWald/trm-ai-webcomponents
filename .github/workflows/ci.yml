@@ -27,7 +27,9 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build
-      - run: npm test -- --coverage
+      - run: npm test -- --coverage --max-workers=2
+        env:
+          NODE_OPTIONS: '--max-old-space-size=8192'
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
