@@ -1,4 +1,4 @@
-import { User, TreeNode } from '../types/org-chart.types';
+import { User, TreeNode, getDisplayName } from '../types/org-chart.types';
 
 /**
  * Build hierarchical tree structure from flat user array
@@ -36,14 +36,14 @@ export function buildTree(users: User[]): TreeNode[] {
 
       while (current) {
         if (current === user.id) {
-          console.warn(`Circular reporting relationship detected for user ${user.id} (${user.name}). Treating as root.`);
+          console.warn(`Circular reporting relationship detected for user ${user.id} (${getDisplayName(user)}). Treating as root.`);
           roots.push(node);
           return;
         }
 
         if (ancestors.has(current)) {
           // Cycle in ancestor chain (not involving current user directly)
-          console.warn(`Cycle detected in ancestor chain for user ${user.id} (${user.name}). Treating as root.`);
+          console.warn(`Cycle detected in ancestor chain for user ${user.id} (${getDisplayName(user)}). Treating as root.`);
           roots.push(node);
           return;
         }

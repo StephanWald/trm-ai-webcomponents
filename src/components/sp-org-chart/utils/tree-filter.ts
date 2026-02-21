@@ -1,4 +1,5 @@
 import { TreeNode, FilterResult } from '../types/org-chart.types';
+import { isBranch } from '../types/org-chart.types';
 
 /**
  * Filter tree to show matching nodes plus all descendants and ancestors
@@ -64,4 +65,34 @@ export function filterTree(
   roots.forEach(root => markAncestors(root));
 
   return results;
+}
+
+/**
+ * Filter tree by branch ID. Returns a Map of FilterResult entries.
+ * - mode 'highlight': dims non-matching users, keeps all branches visible
+ * - mode 'isolate': hides unrelated branches entirely, dims non-matching users
+ *
+ * @param roots - Array of root TreeNode(s)
+ * @param branchId - The branch ID to filter by
+ * @param mode - Filter mode: 'highlight' or 'isolate'
+ * @returns Map of user ID to FilterResult
+ */
+export function filterByBranch(
+  roots: TreeNode[],
+  branchId: string,
+  mode: 'highlight' | 'isolate'
+): Map<string, FilterResult> {
+  // Use existing filterTree with a predicate that checks user.branchId === branchId
+  // For 'highlight' mode: predicate matches users with matching branchId
+  // For 'isolate' mode: same predicate, but the component will use the results
+  //   to hide (display:none) branches that have zero matching users
+  void mode; // mode consumed by the component layer, not the filter logic
+  return filterTree(roots, (node) => {
+    // Branch entities match if their branchId or id matches
+    if (isBranch(node)) {
+      return node.id === branchId || node.branchId === branchId;
+    }
+    // Regular users match if their branchId matches
+    return node.branchId === branchId;
+  });
 }
