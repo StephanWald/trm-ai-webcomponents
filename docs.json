@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-21T06:37:59",
+  "timestamp": "2026-02-21T06:38:49",
   "compiler": {
     "name": "@stencil/core",
     "version": "4.41.3",
@@ -149,8 +149,29 @@
       "filePath": "src/components/sp-markdown-editor/sp-markdown-editor.tsx",
       "encapsulation": "shadow",
       "tag": "sp-markdown-editor",
-      "docs": "",
-      "docsTags": [],
+      "docs": "Rich markdown editor component with source, WYSIWYG, and split editing modes.\nSupports voice dictation, undo/redo history, auto-save, file import/export, and print.",
+      "docsTags": [
+        {
+          "name": "part",
+          "text": "toolbar - The formatting toolbar containing bold, italic, heading, list, and utility buttons"
+        },
+        {
+          "name": "part",
+          "text": "mode-switcher - The mode switching tabs (Source / WYSIWYG / Split) at the right end of the toolbar"
+        },
+        {
+          "name": "part",
+          "text": "source-editor - The raw markdown source textarea used in source and split modes"
+        },
+        {
+          "name": "part",
+          "text": "wysiwyg-editor - The rendered HTML preview container used in WYSIWYG mode"
+        },
+        {
+          "name": "part",
+          "text": "footer - The status footer showing character count, word count, and auto-save indicator"
+        }
+      ],
       "usage": {},
       "props": [
         {
@@ -767,23 +788,23 @@
       "parts": [
         {
           "name": "footer",
-          "docs": ""
+          "docs": "The status footer showing character count, word count, and auto-save indicator"
         },
         {
           "name": "mode-switcher",
-          "docs": ""
+          "docs": "The mode switching tabs (Source / WYSIWYG / Split) at the right end of the toolbar"
         },
         {
           "name": "source-editor",
-          "docs": ""
+          "docs": "The raw markdown source textarea used in source and split modes"
         },
         {
           "name": "toolbar",
-          "docs": ""
+          "docs": "The formatting toolbar containing bold, italic, heading, list, and utility buttons"
         },
         {
           "name": "wysiwyg-editor",
-          "docs": ""
+          "docs": "The rendered HTML preview container used in WYSIWYG mode"
         }
       ],
       "dependents": [],
@@ -1336,7 +1357,7 @@
       "filePath": "src/components/sp-walkthrough/sp-walkthrough.tsx",
       "encapsulation": "shadow",
       "tag": "sp-walkthrough",
-      "docs": "Interactive walkthrough component with video playback and DOM element highlighting",
+      "docs": "Interactive walkthrough component with video playback and DOM element highlighting.\nRenders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.\n\nNote: sp-walkthrough does not expose CSS parts. The panel is a self-contained overlay UI and\nis not designed for external structural customization via ::part() selectors. Use CSS custom\nproperties (--dwc-*) to theme colors, spacing, and typography.",
       "docsTags": [],
       "usage": {},
       "props": [

@@ -16,6 +16,16 @@ import { MarkdownRenderer } from './utils/markdown-renderer';
 import { FileHandler } from './utils/file-handler';
 import { SpeechRecognizer } from './utils/speech-recognizer';
 
+/**
+ * Rich markdown editor component with source, WYSIWYG, and split editing modes.
+ * Supports voice dictation, undo/redo history, auto-save, file import/export, and print.
+ *
+ * @part toolbar - The formatting toolbar containing bold, italic, heading, list, and utility buttons
+ * @part mode-switcher - The mode switching tabs (Source / WYSIWYG / Split) at the right end of the toolbar
+ * @part source-editor - The raw markdown source textarea used in source and split modes
+ * @part wysiwyg-editor - The rendered HTML preview container used in WYSIWYG mode
+ * @part footer - The status footer showing character count, word count, and auto-save indicator
+ */
 @Component({
   tag: 'sp-markdown-editor',
   styleUrl: 'sp-markdown-editor.css',

@@ -7,7 +7,12 @@ import { makeDraggable } from './utils/draggable-mixin';
 import { generateSelector, validateSelector } from './utils/selector-generator';
 
 /**
- * Interactive walkthrough component with video playback and DOM element highlighting
+ * Interactive walkthrough component with video playback and DOM element highlighting.
+ * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.
+ *
+ * Note: sp-walkthrough does not expose CSS parts. The panel is a self-contained overlay UI and
+ * is not designed for external structural customization via ::part() selectors. Use CSS custom
+ * properties (--dwc-*) to theme colors, spacing, and typography.
  */
 @Component({
   tag: 'sp-walkthrough',
