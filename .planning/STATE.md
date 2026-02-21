@@ -117,6 +117,7 @@ Recent decisions affecting current work:
 - [Phase 06-documentation-publishing]: Use @site/../docs.json import path in MDX — @site alias maps to docs/, so this resolves to repo-root docs.json
 - [Phase 06-documentation-publishing]: Escape closing script tags as <\/script> in JSX template literals — prevents MDX acorn parser failures
 - [Phase 06-documentation-publishing]: Avoid backtick chars in LiveExample template literal content — MDX acorn cannot parse nested backticks reliably
+- [Phase 06]: All 68 v1 requirements now marked Complete in REQUIREMENTS.md traceability table including TEST-03, TEST-04 (Phase 5 testing requirements)
 
 ### Pending Todos
 
