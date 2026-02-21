@@ -73,12 +73,12 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 
 ### Popover (POPV)
 
-- [ ] **POPV-01**: sp-popover positions content relative to anchor element with 6 placement options (bottom-start, bottom-end, top-start, top-end, right-start, left-start)
-- [ ] **POPV-02**: Popover respects viewport boundaries with 10px margin and auto-repositions
-- [ ] **POPV-03**: Close-on-outside-click and close-on-escape behaviors are configurable
-- [ ] **POPV-04**: showPopover, hidePopover, togglePopover, and updatePosition public methods work correctly
-- [ ] **POPV-05**: Content is inserted via named slot with enter animation (fade + slide)
-- [ ] **POPV-06**: Component emits popover-open and popover-close events
+- [x] **POPV-01**: sp-popover positions content relative to anchor element with 6 placement options (bottom-start, bottom-end, top-start, top-end, right-start, left-start)
+- [x] **POPV-02**: Popover respects viewport boundaries with 10px margin and auto-repositions
+- [x] **POPV-03**: Close-on-outside-click and close-on-escape behaviors are configurable
+- [x] **POPV-04**: showPopover, hidePopover, togglePopover, and updatePosition public methods work correctly
+- [x] **POPV-05**: Content is inserted via named slot with enter animation (fade + slide)
+- [x] **POPV-06**: Component emits popover-open and popover-close events
 
 ### Documentation & Testing (DOCS)
 
@@ -173,12 +173,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SPLS-04 | Phase 11 | Pending |
 | SPLS-05 | Phase 11 | Pending |
 | SPLS-06 | Phase 11 | Pending |
-| POPV-01 | Phase 9 | Pending |
-| POPV-02 | Phase 9 | Pending |
-| POPV-03 | Phase 9 | Pending |
-| POPV-04 | Phase 9 | Pending |
-| POPV-05 | Phase 9 | Pending |
-| POPV-06 | Phase 9 | Pending |
+| POPV-01 | Phase 9 | Complete |
+| POPV-02 | Phase 9 | Complete |
+| POPV-03 | Phase 9 | Complete |
+| POPV-04 | Phase 9 | Complete |
+| POPV-05 | Phase 9 | Complete |
+| POPV-06 | Phase 9 | Complete |
 | DOCS-01 | Phase 12 | Pending |
 | DOCS-02 | Phase 12 | Pending |
 | DOCS-03 | Phase 12 | Pending |

@@ -124,7 +124,7 @@ Plans:
 | 6. Documentation & Publishing | v1.0 | 5/5 | Complete | 2026-02-21 |
 | 7. Org Chart Parity | 3/3 | Complete   | 2026-02-21 | - |
 | 8. Walkthrough Parity | 2/2 | Complete   | 2026-02-21 | - |
-| 9. Popover Utility | v1.1 | 0/2 | Not started | - |
+| 9. Popover Utility | 1/2 | In Progress|  | - |
 | 10. Language & Voice | v1.1 | 0/TBD | Not started | - |
 | 11. Communication & Splash | v1.1 | 0/TBD | Not started | - |
 | 12. Docs & Tests | v1.1 | 0/TBD | Not started | - |

@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 9 of 12 (sp-popover)
-Plan: 0 of N in current phase (08 complete)
-Status: Phase 8 complete, ready for Phase 9
-Last activity: 2026-02-21 — Completed 08-02-PLAN.md: Scene list popup, volume popup, caption overlay, markdown, highlight animations
+Plan: 1 of 1 in current phase (09-01 complete)
+Status: Phase 9 plan 1 complete — sp-popover built
+Last activity: 2026-02-21 — Completed 09-01-PLAN.md: sp-popover component with 6 placements, viewport boundary detection, dismiss behaviors, public methods, events, and animation
 
-Progress: [█████░░░░░] 22% (v1.1)
+Progress: [█████░░░░░] 25% (v1.1)
 
 ## Performance Metrics
 
 **Velocity (v1.1):**
-- Total plans completed: 5
-- Average duration: 13.6m
-- Total execution time: 68m
+- Total plans completed: 6
+- Average duration: 11.8m
+- Total execution time: 71m
 
 **By Phase:**
 
@@ -29,6 +29,7 @@ Progress: [█████░░░░░] 22% (v1.1)
 |-------|-------|-------|----------|
 | 07-org-chart-parity | 3 | 52m | 17.3m |
 | 08-walkthrough-parity | 2 | 16m | 8m |
+| 09-popover-utility | 1 | 3m | 3m |
 
 *Updated after each plan completion*
 
@@ -58,6 +59,10 @@ v1.1 key decisions:
 - [Phase 08-02]: MarkdownRenderer copied into sp-walkthrough/utils/ rather than imported cross-component to avoid Stencil bundling issues
 - [Phase 08-02]: TextTrack mode kept 'hidden' always; cuechange listener reads cues programmatically for custom caption overlay
 - [Phase 08-02]: injectHighlightStyles() uses document.getElementById guard for idempotent @keyframes injection; clearHighlights() leaves styles in document.head
+- [Phase 09-01]: anchor prop accepts string (CSS selector), HTMLElement, or null (falls back to previousElementSibling)
+- [Phase 09-01]: position: fixed (not absolute) so positions match getBoundingClientRect() viewport coordinates
+- [Phase 09-01]: rAF defers position compute in openInternal() so shadow DOM container has rendered dimensions before measurement
+- [Phase 09-01]: Placement flip logic only flips when new position is actually better — then clamps to 10px margin
 
 ### Pending Todos
 
@@ -76,5 +81,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 08-02-PLAN.md (Scene list popup, volume popup, caption overlay, markdown, highlight animations — Phase 8 complete)
+Stopped at: Completed 09-01-PLAN.md (sp-popover component — Phase 9 complete)
 Resume file: None
