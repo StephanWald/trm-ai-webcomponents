@@ -44,7 +44,11 @@
   3. Dragging a user node shows a floating avatar+name preview following the cursor; drop zones with SVG icons appear for Unlink and Delete; holding the Delete zone for 4 seconds with a countdown overlay completes the delete
   4. Branch filtering dims non-matching users and hides unrelated branches when filterMode and filterBranchId props are set
   5. Component emits user-click, user-dblclick, hierarchy-change, and user-delete events with correct detail shapes; highlightUser, scrollToUser, clearHighlight, and getSelected methods work as documented
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 07-01-PLAN.md — Data model and tree utilities rewrite (types, tree-builder, tree-filter, tree-sorter)
+- [ ] 07-02-PLAN.md — Component rendering rewrite (vertical list layout, expanded tiles, CSS, events, methods)
+- [ ] 07-03-PLAN.md — Drag-drop interactions and branch filtering (custom preview, SVG drop zones, timed delete, filtering)
 
 ### Phase 8: Walkthrough Parity
 **Goal**: sp-walkthrough controls, animations, and rendering match the original prototype — Tabler icons throughout, progress bar, skip/restart, scene list popup, vertical volume slider, custom captions, markdown text bubble, and highlight glow animations
@@ -112,7 +116,7 @@
 | 4. Markdown Editor Component | v1.0 | 4/4 | Complete | 2026-01-31 |
 | 5. Testing & Quality | v1.0 | 3/3 | Complete | 2026-02-20 |
 | 6. Documentation & Publishing | v1.0 | 5/5 | Complete | 2026-02-21 |
-| 7. Org Chart Parity | v1.1 | 0/TBD | Not started | - |
+| 7. Org Chart Parity | v1.1 | 0/3 | Planned | - |
 | 8. Walkthrough Parity | v1.1 | 0/TBD | Not started | - |
 | 9. Popover Utility | v1.1 | 0/TBD | Not started | - |
 | 10. Language & Voice | v1.1 | 0/TBD | Not started | - |
