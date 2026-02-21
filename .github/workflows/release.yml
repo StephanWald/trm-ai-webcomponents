@@ -28,7 +28,9 @@ jobs:
 
       - run: npm ci
       - run: npm run build
-      - run: npm test
+      - run: npm test -- --max-workers=2
+        env:
+          NODE_OPTIONS: '--max-old-space-size=8192'
 
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
