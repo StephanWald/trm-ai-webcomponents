@@ -6,7 +6,7 @@ if (!(globalThis as any).CSS || typeof (globalThis as any).CSS.escape !== 'funct
     value: {
       escape: (str: string) => {
         // Simple polyfill - escape special CSS characters for valid CSS selectors
-        return str.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, '\\$&');
+        return str.replace(/[!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g, '\\$&');
       },
     },
     writable: false,

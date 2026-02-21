@@ -107,10 +107,10 @@ export interface VideoPlayer {
   setMuted(muted: boolean): void;
 
   /** Register event listener */
-  on(event: string, callback: Function): void;
+  on(event: string, callback: (...args: unknown[]) => void): void;
 
   /** Remove event listener */
-  off(event: string, callback: Function): void;
+  off(event: string, callback: (...args: unknown[]) => void): void;
 
   /** Clean up and destroy player */
   destroy(): void;

@@ -16,6 +16,7 @@ export class MarkdownRenderer {
       if (!this.marked) {
         // Try dynamic import if available
         if (typeof require !== 'undefined') {
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
           this.marked = require('marked');
         }
       }
@@ -28,6 +29,7 @@ export class MarkdownRenderer {
       this.DOMPurify = (window as any).DOMPurify;
       if (!this.DOMPurify) {
         if (typeof require !== 'undefined') {
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
           this.DOMPurify = require('dompurify');
         }
       }

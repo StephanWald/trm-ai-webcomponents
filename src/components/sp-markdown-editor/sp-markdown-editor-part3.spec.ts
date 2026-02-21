@@ -97,6 +97,7 @@ it('voice dictation: start, receive final result, stop; webkit SpeechRecognizer 
   // Verify webkit SpeechRecognizer isSupported logic directly via JSDOM window
   delete (window as any).SpeechRecognition;
   delete (window as any).webkitSpeechRecognition;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { SpeechRecognizer: SR } = require('./utils/speech-recognizer');
   // No recognition available -> not supported
   const unsupported = new SR();
