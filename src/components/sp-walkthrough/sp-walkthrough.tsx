@@ -126,10 +126,10 @@ export class SpWalkthrough {
   }
 
   componentDidLoad() {
-    // Attach draggable behavior to panel
+    // Attach draggable behavior to panel using the controls row as drag handle
     const panel = this.el.shadowRoot?.querySelector('.walkthrough-panel') as HTMLElement;
     if (panel) {
-      this.cleanupDraggable = makeDraggable(panel, '.panel-header');
+      this.cleanupDraggable = makeDraggable(panel, '.controls-row');
     }
   }
 
@@ -436,6 +436,65 @@ export class SpWalkthrough {
   };
 
   /**
+   * Skip backward 10 seconds
+   */
+  private handleSkipBack = () => {
+    const targetTime = Math.max(0, this.currentTime - 10);
+    if (this.isYouTube && this.youtubeWrapper) {
+      this.youtubeWrapper.seekTo(targetTime);
+    } else if (this.videoElement) {
+      this.videoElement.currentTime = targetTime;
+    }
+    this.currentTime = targetTime;
+  };
+
+  /**
+   * Skip forward 10 seconds
+   */
+  private handleSkipForward = () => {
+    const targetTime = this.duration > 0 ? Math.min(this.duration, this.currentTime + 10) : this.currentTime + 10;
+    if (this.isYouTube && this.youtubeWrapper) {
+      this.youtubeWrapper.seekTo(targetTime);
+    } else if (this.videoElement) {
+      this.videoElement.currentTime = targetTime;
+    }
+    this.currentTime = targetTime;
+  };
+
+  /**
+   * Handle click on progress bar to seek
+   */
+  private handleProgressClick = (ev: MouseEvent) => {
+    if (!this.duration) return;
+
+    const bar = ev.currentTarget as HTMLElement;
+    const rect = bar.getBoundingClientRect();
+    const fraction = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
+    const targetTime = fraction * this.duration;
+
+    if (this.isYouTube && this.youtubeWrapper) {
+      this.youtubeWrapper.seekTo(targetTime);
+    } else if (this.videoElement) {
+      this.videoElement.currentTime = targetTime;
+    }
+    this.currentTime = targetTime;
+  };
+
+  /**
+   * Format seconds as mm:ss or h:mm:ss
+   */
+  private formatTime(seconds: number): string {
+    if (!seconds || isNaN(seconds)) return '0:00';
+    const s = Math.floor(seconds) % 60;
+    const m = Math.floor(seconds / 60) % 60;
+    const h = Math.floor(seconds / 3600);
+    const ss = s < 10 ? `0${s}` : `${s}`;
+    const mm = h > 0 && m < 10 ? `0${m}` : `${m}`;
+    if (h > 0) return `${h}:${mm}:${ss}`;
+    return `${mm}:${ss}`;
+  }
+
+  /**
    * Setup standard HTML video element
    */
   private setupStandardVideo(el: HTMLVideoElement) {
@@ -646,6 +705,121 @@ export class SpWalkthrough {
     };
   };
 
+  // ─── SVG Icon helpers ────────────────────────────────────────────────────────
+
+  private iconPlay() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none" />
+      </svg>
+    );
+  }
+
+  private iconPause() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <rect x="6" y="4" width="4" height="16" fill="currentColor" stroke="none" />
+        <rect x="14" y="4" width="4" height="16" fill="currentColor" stroke="none" />
+      </svg>
+    );
+  }
+
+  private iconSkipBack10() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <path d="M4 12a8 8 0 1 0 8-8" stroke-linecap="round" stroke-linejoin="round" />
+        <polyline points="4 4 4 12 12 12" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="8" y="16" font-size="5" fill="currentColor" stroke="none" font-family="sans-serif" font-weight="bold" text-anchor="middle">10</text>
+      </svg>
+    );
+  }
+
+  private iconSkipForward10() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <path d="M20 12a8 8 0 1 0-8-8" stroke-linecap="round" stroke-linejoin="round" />
+        <polyline points="20 4 20 12 12 12" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="16" y="16" font-size="5" fill="currentColor" stroke="none" font-family="sans-serif" font-weight="bold" text-anchor="middle">10</text>
+      </svg>
+    );
+  }
+
+  private iconRestart() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <polyline points="1 4 1 10 7 10" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M3.51 15a9 9 0 1 0 .49-5.51" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    );
+  }
+
+  private iconVolumeOn() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none" />
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke-linecap="round" />
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke-linecap="round" />
+      </svg>
+    );
+  }
+
+  private iconVolumeOff() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none" />
+        <line x1="23" y1="9" x2="17" y2="15" stroke-linecap="round" />
+        <line x1="17" y1="9" x2="23" y2="15" stroke-linecap="round" />
+      </svg>
+    );
+  }
+
+  private iconCaptions() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <rect x="2" y="5" width="20" height="14" rx="2" ry="2" />
+        <path d="M8 13h2m4 0h2M8 17h8" stroke-linecap="round" />
+      </svg>
+    );
+  }
+
+  private iconSceneList() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <line x1="8" y1="6" x2="21" y2="6" stroke-linecap="round" />
+        <line x1="8" y1="12" x2="21" y2="12" stroke-linecap="round" />
+        <line x1="8" y1="18" x2="21" y2="18" stroke-linecap="round" />
+        <line x1="3" y1="6" x2="3.01" y2="6" stroke-linecap="round" stroke-width="3" />
+        <line x1="3" y1="12" x2="3.01" y2="12" stroke-linecap="round" stroke-width="3" />
+        <line x1="3" y1="18" x2="3.01" y2="18" stroke-linecap="round" stroke-width="3" />
+      </svg>
+    );
+  }
+
+  private iconClose() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    );
+  }
+
+  private iconPrevScene() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    );
+  }
+
+  private iconNextScene() {
+    return (
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+        <polyline points="9 18 15 12 9 6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    );
+  }
+
+  // ─── Render helpers ──────────────────────────────────────────────────────────
 
   /**
    * Render video player
@@ -690,69 +864,147 @@ export class SpWalkthrough {
   }
 
   /**
-   * Render controls bar
+   * Render progress bar (visible only when video is present)
+   */
+  private renderProgressBar() {
+    if (!this.videoSrc) return null;
+
+    const fillPercent = this.duration > 0 ? (this.currentTime / this.duration) * 100 : 0;
+
+    return (
+      <div
+        class="progress-bar"
+        onClick={this.handleProgressClick}
+        aria-label="Seek"
+        role="slider"
+        aria-valuenow={Math.round(fillPercent)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <div class="progress-bar__fill" style={{ width: `${fillPercent}%` }} />
+      </div>
+    );
+  }
+
+  /**
+   * Render single-row controls bar
    */
   private renderControls() {
     const hasPrevious = this.currentSceneIndex > 0;
     const hasNext = this.currentSceneIndex < this.timelineEngine.getSceneCount() - 1;
 
     return (
-      <div class="controls-bar">
-        <div class="controls-left">
-          {this.videoSrc && (
-            <button class="control-btn" onClick={this.handlePlayPause} aria-label={this.isPlaying ? 'Pause' : 'Play'}>
-              {this.isPlaying ? '⏸' : '▶'}
-            </button>
-          )}
-
-          <button class="control-btn" onClick={this.handlePrevious} disabled={!hasPrevious} aria-label="Previous scene">
-            ⏮
+      <div class="controls-row" role="toolbar" aria-label="Playback controls">
+        {/* Play/pause — video only */}
+        {this.videoSrc && (
+          <button class="control-btn" onClick={this.handlePlayPause} aria-label={this.isPlaying ? 'Pause' : 'Play'}>
+            {this.isPlaying ? this.iconPause() : this.iconPlay()}
           </button>
+        )}
 
-          <button class="control-btn" onClick={this.handleNext} disabled={!hasNext} aria-label="Next scene">
-            ⏭
+        {/* Skip back 10s — video only */}
+        {this.videoSrc && (
+          <button class="control-btn" onClick={this.handleSkipBack} aria-label="Skip back 10 seconds">
+            {this.iconSkipBack10()}
           </button>
+        )}
 
-          <span class="scene-counter">
-            {this.currentSceneIndex + 1} / {this.timelineEngine.getSceneCount()}
+        {/* Skip forward 10s — video only */}
+        {this.videoSrc && (
+          <button class="control-btn" onClick={this.handleSkipForward} aria-label="Skip forward 10 seconds">
+            {this.iconSkipForward10()}
+          </button>
+        )}
+
+        {/* Restart */}
+        <button class="control-btn" onClick={() => this.restart()} aria-label="Restart">
+          {this.iconRestart()}
+        </button>
+
+        {/* Previous scene */}
+        <button class="control-btn" onClick={this.handlePrevious} disabled={!hasPrevious} aria-label="Previous scene">
+          {this.iconPrevScene()}
+        </button>
+
+        {/* Scene counter */}
+        <span class="scene-counter">
+          {this.currentSceneIndex + 1} / {this.timelineEngine.getSceneCount()}
+        </span>
+
+        {/* Next scene */}
+        <button class="control-btn" onClick={this.handleNext} disabled={!hasNext} aria-label="Next scene">
+          {this.iconNextScene()}
+        </button>
+
+        {/* Progress bar — takes remaining space, video only */}
+        {this.renderProgressBar()}
+
+        {/* Time display — video only */}
+        {this.videoSrc && (
+          <span class="time-display" aria-label="Current time">
+            {this.formatTime(this.currentTime)}{this.duration > 0 ? ` / ${this.formatTime(this.duration)}` : ''}
           </span>
-        </div>
+        )}
 
-        <div class="controls-right">
-          {this.videoSrc && (
-            <div class="volume-controls">
-              <button class="control-btn" onClick={this.handleMuteToggle} aria-label={this.isMuted ? 'Unmute' : 'Mute'}>
-                {this.isMuted ? '🔇' : '🔊'}
-              </button>
-              <input
-                type="range"
-                class="volume-slider"
-                min="0"
-                max="1"
-                step="0.1"
-                value={this.volume}
-                onInput={this.handleVolumeChange}
-                aria-label="Volume"
-              />
-            </div>
-          )}
-
-          {this.videoElement?.textTracks?.length > 0 && (
-            <button class="control-btn" onClick={this.handleCaptionsToggle} aria-label="Toggle captions">
-              CC
+        {/* Volume button — video only */}
+        {this.videoSrc && (
+          <div class="volume-controls">
+            <button class="control-btn" onClick={this.handleMuteToggle} aria-label={this.isMuted ? 'Unmute' : 'Mute'}>
+              {this.isMuted ? this.iconVolumeOff() : this.iconVolumeOn()}
             </button>
-          )}
+            <input
+              type="range"
+              class="volume-slider"
+              min="0"
+              max="1"
+              step="0.1"
+              value={this.volume}
+              onInput={this.handleVolumeChange}
+              aria-label="Volume"
+            />
+          </div>
+        )}
 
-          {this.timelineEngine.getSceneCount() > 0 && (
-            <select class="scene-selector" onChange={this.handleSceneSelect}>
+        {/* Captions toggle — video only, when tracks available */}
+        {this.videoElement?.textTracks?.length > 0 && (
+          <button
+            class={`control-btn ${this.captionsEnabled ? 'active' : ''}`}
+            onClick={this.handleCaptionsToggle}
+            aria-label="Toggle captions"
+            aria-pressed={this.captionsEnabled}
+          >
+            {this.iconCaptions()}
+          </button>
+        )}
+
+        {/* Scene list button — opens dropdown select */}
+        {this.timelineEngine.getSceneCount() > 0 && (
+          <div class="scene-list-control">
+            <button class="control-btn" aria-label="Scene list" onClick={() => {
+              const sel = this.el.shadowRoot?.querySelector('.scene-selector') as HTMLSelectElement;
+              sel?.focus();
+            }}>
+              {this.iconSceneList()}
+            </button>
+            <select class="scene-selector" onChange={this.handleSceneSelect} aria-label="Jump to scene">
               {this.timelineEngine.getAllScenes().map((scene, index) => (
                 <option key={scene.id} value={index} selected={index === this.currentSceneIndex}>
                   {scene.title}
                 </option>
               ))}
             </select>
-          )}
-        </div>
+          </div>
+        )}
+
+        {/* Panel title — in controls row */}
+        <span class="panel-title">
+          {this.authorMode ? 'Author Mode' : 'Walkthrough'}
+        </span>
+
+        {/* Close button */}
+        <button class="close-btn" onClick={() => this.abort()} aria-label="Close walkthrough">
+          {this.iconClose()}
+        </button>
       </div>
     );
   }
@@ -924,20 +1176,11 @@ export class SpWalkthrough {
     return (
       <Host class={hostClass}>
         <div class="walkthrough-panel">
-          <div class="panel-header">
-            <span class="panel-title">
-              {this.authorMode ? 'Walkthrough - Author Mode' : 'Walkthrough'}
-            </span>
-            <button class="close-btn" onClick={() => this.abort()} aria-label="Close walkthrough">
-              ✕
-            </button>
-          </div>
-
+          {this.renderControls()}
           <div class="panel-content">
             {this.authorMode && this.renderAuthorToolbar()}
             {this.renderVideo()}
             {this.renderSceneInfo()}
-            {this.renderControls()}
             {this.authorMode && this.renderAuthorSceneList()}
             {this.authorMode && this.renderAuthorSceneEditor()}
           </div>

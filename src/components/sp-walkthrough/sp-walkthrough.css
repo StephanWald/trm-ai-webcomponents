@@ -1,47 +1,45 @@
 /**
  * sp-walkthrough component styles
- * DWC-themed walkthrough panel with video playback and controls
+ * DWC-themed walkthrough panel with video playback and single-row controls bar
  */
 
 :host {
   /**
    * @prop --dwc-font-family: Base font family for all panel text
-   * @prop --dwc-font-size-base: Base font size for scene titles, panel title, and controls
+   * @prop --dwc-font-size-base: Base font size for scene titles and controls
    * @prop --dwc-font-size-sm: Small font size for scene descriptions, counter, and author UI
    * @prop --dwc-font-size-xs: Extra-small font size for metadata labels and form help text
-   * @prop --dwc-font-size-lg: Large font size for close button icon
    * @prop --dwc-font-weight-semibold: Semibold weight for panel title, scene titles, and form labels
    * @prop --dwc-line-height-normal: Normal line height for scene description text
    * @prop --dwc-color-surface: Background color for the walkthrough panel and form inputs
-   * @prop --dwc-color-surface-secondary: Secondary surface color for control buttons, manual mode placeholder, and scene list items
-   * @prop --dwc-color-border: Border color for the panel, control buttons, scene selector, and author UI dividers
+   * @prop --dwc-color-surface-secondary: Secondary surface color for control buttons and scene list items
+   * @prop --dwc-color-border: Border color for the panel, control buttons, and scene selector
    * @prop --dwc-color-border-hover: Border hover color for control buttons
    * @prop --dwc-color-text: Primary text color for scene titles, control buttons, and form labels
-   * @prop --dwc-color-text-secondary: Secondary text color for scene descriptions, scene counter, and placeholder text
-   * @prop --dwc-color-primary: Primary brand color for panel header background, author buttons, scene selector focus ring, and form focus borders
-   * @prop --dwc-color-primary-text: Text color on primary-colored surfaces (panel header, close button, author buttons)
-   * @prop --dwc-color-primary-dark: Darker primary shade for author button hover state
+   * @prop --dwc-color-text-secondary: Secondary text color for scene descriptions and counter
+   * @prop --dwc-color-primary: Primary brand color for controls row background, focus rings
+   * @prop --dwc-color-primary-text: Text color on primary-colored surfaces (controls row)
+   * @prop --dwc-color-primary-dark: Darker primary shade for author button hover
    * @prop --dwc-color-warning: Warning color for selector instability indicators
-   * @prop --dwc-color-warning-bg: Warning background for author toolbar (distinguishes edit mode)
+   * @prop --dwc-color-warning-bg: Warning background for author toolbar
    * @prop --dwc-color-warning-border: Warning border for author toolbar
    * @prop --dwc-color-success: Success color for the active pointer-tool button indicator
    * @prop --dwc-color-danger: Danger color for scene delete button text
    * @prop --dwc-color-danger-bg: Danger background on scene delete button hover
-   * @prop --dwc-color-info-bg: Info background for scene editor panel (distinguishes edit form)
+   * @prop --dwc-color-info-bg: Info background for scene editor panel
    * @prop --dwc-color-info-border: Info border for scene editor panel
    * @prop --dwc-border-radius: Default border radius for buttons, inputs, and control elements
    * @prop --dwc-border-radius-lg: Large border radius for the walkthrough panel corners
    * @prop --dwc-shadow-xl: Extra-large shadow for the floating walkthrough panel
    * @prop --dwc-transition-base: Base transition duration for panel show/hide animation
    * @prop --dwc-transition-fast: Fast transition duration for button hover states
-   * @prop --dwc-spacing-xs: Extra-small spacing for tight gaps in controls and volume area
-   * @prop --dwc-spacing-sm: Small spacing for control bar gaps and author toolbar padding
+   * @prop --dwc-spacing-xs: Extra-small spacing for tight gaps in controls
+   * @prop --dwc-spacing-sm: Small spacing for control bar gaps
    * @prop --dwc-spacing-md: Medium spacing for panel content padding and section margins
-   * @prop --dwc-spacing-lg: Large spacing for author scene list gap
    * @prop --dwc-z-modal: Z-index for the walkthrough panel to float above page content
    */
   display: block;
-  font-family: var(--dwc-font-family);
+  font-family: var(--dwc-font-family, system-ui, sans-serif);
 }
 
 /* Walkthrough panel - fixed position, draggable */
@@ -49,61 +47,176 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 400px;
+  width: 480px;
   max-width: calc(100vw - 40px);
   background: var(--dwc-color-surface, #ffffff);
   border: 1px solid var(--dwc-color-border, #e0e0e0);
   border-radius: var(--dwc-border-radius-lg, 8px);
-  box-shadow: var(--dwc-shadow-xl);
+  box-shadow: var(--dwc-shadow-xl, 0 8px 32px rgba(0, 0, 0, 0.18));
   z-index: var(--dwc-z-modal, 1050);
   overflow: hidden;
-  transition: all var(--dwc-transition-base);
+  transition: all var(--dwc-transition-base, 0.2s ease);
 }
 
-/* Panel header - drag handle */
-.panel-header {
+/* Single-row controls bar — also serves as drag handle */
+.controls-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: var(--dwc-spacing-md);
+  gap: var(--dwc-spacing-xs, 4px);
+  padding: var(--dwc-spacing-xs, 4px) var(--dwc-spacing-sm, 8px);
   background: var(--dwc-color-primary, #0066cc);
   color: var(--dwc-color-primary-text, #ffffff);
   cursor: grab;
   user-select: none;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
-.panel-header:active {
+.controls-row:active {
   cursor: grabbing;
 }
 
-.panel-title {
-  font-weight: var(--dwc-font-weight-semibold);
-  font-size: var(--dwc-font-size-base);
+/* SVG icon base class */
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: block;
 }
 
+/* Panel title — lives inside controls row */
+.panel-title {
+  font-weight: var(--dwc-font-weight-semibold, 600);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
+  color: var(--dwc-color-primary-text, #ffffff);
+  white-space: nowrap;
+  margin-left: auto;
+  padding: 0 var(--dwc-spacing-xs, 4px);
+}
+
+/* Control buttons inside the controls row */
+.control-btn {
+  background: transparent;
+  border: none;
+  border-radius: var(--dwc-border-radius, 4px);
+  padding: var(--dwc-spacing-xs, 4px);
+  cursor: pointer;
+  color: var(--dwc-color-primary-text, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--dwc-transition-fast, 0.1s ease);
+  line-height: 1;
+}
+
+.control-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.control-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.control-btn.active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Close button */
 .close-btn {
   background: transparent;
   border: none;
   color: var(--dwc-color-primary-text, #ffffff);
-  font-size: var(--dwc-font-size-lg);
   cursor: pointer;
-  padding: 0;
-  width: 24px;
-  height: 24px;
+  padding: var(--dwc-spacing-xs, 4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--dwc-border-radius);
-  transition: background var(--dwc-transition-fast);
+  border-radius: var(--dwc-border-radius, 4px);
+  flex-shrink: 0;
+  transition: background var(--dwc-transition-fast, 0.1s ease);
 }
 
 .close-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Scene counter */
+.scene-counter {
+  font-size: var(--dwc-font-size-xs, 0.75rem);
+  color: var(--dwc-color-primary-text, #ffffff);
+  white-space: nowrap;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+/* Volume controls inline */
+.volume-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--dwc-spacing-xs, 4px);
+  flex-shrink: 0;
+}
+
+.volume-slider {
+  width: 52px;
+  cursor: pointer;
+  accent-color: var(--dwc-color-primary-text, #ffffff);
+}
+
+/* Scene list control — button + hidden select combo */
+.scene-list-control {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.scene-selector {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+/* Progress bar */
+.progress-bar {
+  flex: 1 1 0%;
+  min-width: 40px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: var(--dwc-border-radius, 4px);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: var(--dwc-color-primary-text, #ffffff);
+  border-radius: var(--dwc-border-radius, 4px);
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+/* Time display */
+.time-display {
+  font-size: var(--dwc-font-size-xs, 0.75rem);
+  color: var(--dwc-color-primary-text, #ffffff);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+  flex-shrink: 0;
 }
 
 /* Panel content */
 .panel-content {
-  padding: var(--dwc-spacing-md);
+  padding: var(--dwc-spacing-md, 16px);
 }
 
 /* Video container */
@@ -112,111 +225,41 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   background: #000;
-  border-radius: var(--dwc-border-radius);
-  margin-bottom: var(--dwc-spacing-md);
+  border-radius: var(--dwc-border-radius, 4px);
+  margin-bottom: var(--dwc-spacing-md, 16px);
 }
 
 .manual-mode-placeholder {
   width: 100%;
   aspect-ratio: 16 / 9;
   background: var(--dwc-color-surface-secondary, #f5f5f5);
-  border-radius: var(--dwc-border-radius);
-  margin-bottom: var(--dwc-spacing-md);
+  border-radius: var(--dwc-border-radius, 4px);
+  margin-bottom: var(--dwc-spacing-md, 16px);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: var(--dwc-spacing-md);
+  padding: var(--dwc-spacing-md, 16px);
   color: var(--dwc-color-text-secondary, #666666);
-  font-size: var(--dwc-font-size-sm);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
 }
 
 /* Scene info */
 .scene-info {
-  margin-bottom: var(--dwc-spacing-md);
+  margin-bottom: var(--dwc-spacing-md, 16px);
 }
 
 .scene-title {
-  font-size: var(--dwc-font-size-base);
-  font-weight: var(--dwc-font-weight-semibold);
+  font-size: var(--dwc-font-size-base, 1rem);
+  font-weight: var(--dwc-font-weight-semibold, 600);
   color: var(--dwc-color-text, #1a1a1a);
-  margin-bottom: var(--dwc-spacing-xs);
+  margin-bottom: var(--dwc-spacing-xs, 4px);
 }
 
 .scene-description {
-  font-size: var(--dwc-font-size-sm);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
   color: var(--dwc-color-text-secondary, #666666);
-  line-height: var(--dwc-line-height-normal);
-}
-
-/* Controls bar */
-.controls-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--dwc-spacing-sm);
-}
-
-.controls-left,
-.controls-right {
-  display: flex;
-  align-items: center;
-  gap: var(--dwc-spacing-sm);
-}
-
-.control-btn {
-  background: var(--dwc-color-surface-secondary, #f5f5f5);
-  border: 1px solid var(--dwc-color-border, #e0e0e0);
-  border-radius: var(--dwc-border-radius);
-  padding: var(--dwc-spacing-xs) var(--dwc-spacing-sm);
-  cursor: pointer;
-  font-size: var(--dwc-font-size-base);
-  transition: all var(--dwc-transition-fast);
-  color: var(--dwc-color-text, #1a1a1a);
-}
-
-.control-btn:hover:not(:disabled) {
-  background: var(--dwc-color-border-hover, #cccccc);
-}
-
-.control-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.scene-counter {
-  font-size: var(--dwc-font-size-sm);
-  color: var(--dwc-color-text-secondary, #666666);
-  white-space: nowrap;
-}
-
-/* Volume controls */
-.volume-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--dwc-spacing-xs);
-}
-
-.volume-slider {
-  width: 60px;
-  cursor: pointer;
-}
-
-/* Scene selector dropdown */
-.scene-selector {
-  background: var(--dwc-color-surface, #ffffff);
-  border: 1px solid var(--dwc-color-border, #e0e0e0);
-  border-radius: var(--dwc-border-radius);
-  padding: var(--dwc-spacing-xs) var(--dwc-spacing-sm);
-  font-size: var(--dwc-font-size-sm);
-  color: var(--dwc-color-text, #1a1a1a);
-  cursor: pointer;
-  max-width: 150px;
-}
-
-.scene-selector:focus {
-  outline: 2px solid var(--dwc-color-primary, #0066cc);
-  outline-offset: 2px;
+  line-height: var(--dwc-line-height-normal, 1.5);
 }
 
 /* Light theme overrides */
@@ -225,7 +268,7 @@
   border-color: #e0e0e0;
 }
 
-:host(.theme-light) .panel-header {
+:host(.theme-light) .controls-row {
   background: #0066cc;
   color: #ffffff;
 }
@@ -239,29 +282,13 @@
   color: #666666;
 }
 
-:host(.theme-light) .control-btn {
-  background: #f5f5f5;
-  border-color: #e0e0e0;
-  color: #1a1a1a;
-}
-
-:host(.theme-light) .control-btn:hover:not(:disabled) {
-  background: #cccccc;
-}
-
-:host(.theme-light) .scene-selector {
-  background: #ffffff;
-  border-color: #e0e0e0;
-  color: #1a1a1a;
-}
-
 /* Dark theme overrides */
 :host(.theme-dark) .walkthrough-panel {
   background: #2d2d2d;
   border-color: #444444;
 }
 
-:host(.theme-dark) .panel-header {
+:host(.theme-dark) .controls-row {
   background: #1a5490;
   color: #ffffff;
 }
@@ -273,22 +300,6 @@
 :host(.theme-dark) .scene-description,
 :host(.theme-dark) .scene-counter {
   color: #b0b0b0;
-}
-
-:host(.theme-dark) .control-btn {
-  background: #3d3d3d;
-  border-color: #555555;
-  color: #e0e0e0;
-}
-
-:host(.theme-dark) .control-btn:hover:not(:disabled) {
-  background: #4d4d4d;
-}
-
-:host(.theme-dark) .scene-selector {
-  background: #3d3d3d;
-  border-color: #555555;
-  color: #e0e0e0;
 }
 
 :host(.theme-dark) .manual-mode-placeholder {
@@ -307,23 +318,23 @@
 .author-toolbar {
   display: flex;
   align-items: center;
-  gap: var(--dwc-spacing-sm);
-  padding: var(--dwc-spacing-sm);
+  gap: var(--dwc-spacing-sm, 8px);
+  padding: var(--dwc-spacing-sm, 8px);
   background: var(--dwc-color-warning-bg, #fff3cd);
   border: 1px solid var(--dwc-color-warning-border, #ffc107);
-  border-radius: var(--dwc-border-radius);
-  margin-bottom: var(--dwc-spacing-md);
+  border-radius: var(--dwc-border-radius, 4px);
+  margin-bottom: var(--dwc-spacing-md, 16px);
 }
 
 .author-btn {
   background: var(--dwc-color-primary, #0066cc);
   color: var(--dwc-color-primary-text, #ffffff);
   border: none;
-  border-radius: var(--dwc-border-radius);
-  padding: var(--dwc-spacing-xs) var(--dwc-spacing-sm);
-  font-size: var(--dwc-font-size-sm);
+  border-radius: var(--dwc-border-radius, 4px);
+  padding: var(--dwc-spacing-xs, 4px) var(--dwc-spacing-sm, 8px);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
   cursor: pointer;
-  transition: background var(--dwc-transition-fast);
+  transition: background var(--dwc-transition-fast, 0.1s ease);
   white-space: nowrap;
 }
 
@@ -336,40 +347,40 @@
 }
 
 .pointer-tool-indicator {
-  font-size: var(--dwc-font-size-sm);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
   color: var(--dwc-color-text-secondary, #666666);
   font-style: italic;
 }
 
 /* Author scene list */
 .author-scene-list {
-  margin-top: var(--dwc-spacing-md);
-  padding-top: var(--dwc-spacing-md);
+  margin-top: var(--dwc-spacing-md, 16px);
+  padding-top: var(--dwc-spacing-md, 16px);
   border-top: 1px solid var(--dwc-color-border, #e0e0e0);
 }
 
 .scene-list-header {
-  font-weight: var(--dwc-font-weight-semibold);
-  font-size: var(--dwc-font-size-base);
+  font-weight: var(--dwc-font-weight-semibold, 600);
+  font-size: var(--dwc-font-size-base, 1rem);
   color: var(--dwc-color-text, #1a1a1a);
-  margin-bottom: var(--dwc-spacing-sm);
+  margin-bottom: var(--dwc-spacing-sm, 8px);
 }
 
 .scene-list {
   display: flex;
   flex-direction: column;
-  gap: var(--dwc-spacing-xs);
+  gap: var(--dwc-spacing-xs, 4px);
 }
 
 .scene-list-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--dwc-spacing-sm);
+  padding: var(--dwc-spacing-sm, 8px);
   background: var(--dwc-color-surface-secondary, #f5f5f5);
   border: 1px solid var(--dwc-color-border, #e0e0e0);
-  border-radius: var(--dwc-border-radius);
-  gap: var(--dwc-spacing-sm);
+  border-radius: var(--dwc-border-radius, 4px);
+  gap: var(--dwc-spacing-sm, 8px);
 }
 
 .scene-list-info {
@@ -378,8 +389,8 @@
 }
 
 .scene-list-title {
-  font-weight: var(--dwc-font-weight-semibold);
-  font-size: var(--dwc-font-size-sm);
+  font-weight: var(--dwc-font-weight-semibold, 600);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
   color: var(--dwc-color-text, #1a1a1a);
   white-space: nowrap;
   overflow: hidden;
@@ -387,7 +398,7 @@
 }
 
 .scene-list-meta {
-  font-size: var(--dwc-font-size-xs, 12px);
+  font-size: var(--dwc-font-size-xs, 0.75rem);
   color: var(--dwc-color-text-secondary, #666666);
   white-space: nowrap;
   overflow: hidden;
@@ -396,18 +407,18 @@
 
 .scene-list-actions {
   display: flex;
-  gap: var(--dwc-spacing-xs);
+  gap: var(--dwc-spacing-xs, 4px);
 }
 
 .scene-action-btn {
   background: var(--dwc-color-surface, #ffffff);
   color: var(--dwc-color-text, #1a1a1a);
   border: 1px solid var(--dwc-color-border, #e0e0e0);
-  border-radius: var(--dwc-border-radius);
-  padding: var(--dwc-spacing-xs);
-  font-size: var(--dwc-font-size-xs, 12px);
+  border-radius: var(--dwc-border-radius, 4px);
+  padding: var(--dwc-spacing-xs, 4px);
+  font-size: var(--dwc-font-size-xs, 0.75rem);
   cursor: pointer;
-  transition: all var(--dwc-transition-fast);
+  transition: all var(--dwc-transition-fast, 0.1s ease);
   white-space: nowrap;
 }
 
@@ -426,49 +437,49 @@
 
 /* Scene editor */
 .scene-editor {
-  margin-top: var(--dwc-spacing-md);
-  padding: var(--dwc-spacing-md);
+  margin-top: var(--dwc-spacing-md, 16px);
+  padding: var(--dwc-spacing-md, 16px);
   background: var(--dwc-color-info-bg, #d1ecf1);
   border: 1px solid var(--dwc-color-info-border, #17a2b8);
-  border-radius: var(--dwc-border-radius);
+  border-radius: var(--dwc-border-radius, 4px);
 }
 
 .scene-editor-header {
-  font-weight: var(--dwc-font-weight-semibold);
-  font-size: var(--dwc-font-size-base);
+  font-weight: var(--dwc-font-weight-semibold, 600);
+  font-size: var(--dwc-font-size-base, 1rem);
   color: var(--dwc-color-text, #1a1a1a);
-  margin-bottom: var(--dwc-spacing-md);
+  margin-bottom: var(--dwc-spacing-md, 16px);
 }
 
 .form-group {
-  margin-bottom: var(--dwc-spacing-md);
+  margin-bottom: var(--dwc-spacing-md, 16px);
 }
 
 .form-label {
   display: block;
-  font-weight: var(--dwc-font-weight-semibold);
-  font-size: var(--dwc-font-size-sm);
+  font-weight: var(--dwc-font-weight-semibold, 600);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
   color: var(--dwc-color-text, #1a1a1a);
-  margin-bottom: var(--dwc-spacing-xs);
+  margin-bottom: var(--dwc-spacing-xs, 4px);
 }
 
 .selector-warning {
   color: var(--dwc-color-warning, #ffc107);
   font-weight: normal;
-  font-size: var(--dwc-font-size-xs, 12px);
+  font-size: var(--dwc-font-size-xs, 0.75rem);
 }
 
 .form-input,
 .form-textarea {
   width: 100%;
-  padding: var(--dwc-spacing-xs) var(--dwc-spacing-sm);
-  font-family: var(--dwc-font-family);
-  font-size: var(--dwc-font-size-sm);
+  padding: var(--dwc-spacing-xs, 4px) var(--dwc-spacing-sm, 8px);
+  font-family: var(--dwc-font-family, system-ui, sans-serif);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
   color: var(--dwc-color-text, #1a1a1a);
   background: var(--dwc-color-surface, #ffffff);
   border: 1px solid var(--dwc-color-border, #e0e0e0);
-  border-radius: var(--dwc-border-radius);
-  transition: border-color var(--dwc-transition-fast);
+  border-radius: var(--dwc-border-radius, 4px);
+  transition: border-color var(--dwc-transition-fast, 0.1s ease);
   box-sizing: border-box;
 }
 
@@ -483,15 +494,15 @@
 }
 
 .form-help-btn {
-  margin-top: var(--dwc-spacing-xs);
+  margin-top: var(--dwc-spacing-xs, 4px);
   background: transparent;
   color: var(--dwc-color-primary, #0066cc);
   border: 1px solid var(--dwc-color-primary, #0066cc);
-  border-radius: var(--dwc-border-radius);
-  padding: var(--dwc-spacing-xs) var(--dwc-spacing-sm);
-  font-size: var(--dwc-font-size-xs, 12px);
+  border-radius: var(--dwc-border-radius, 4px);
+  padding: var(--dwc-spacing-xs, 4px) var(--dwc-spacing-sm, 8px);
+  font-size: var(--dwc-font-size-xs, 0.75rem);
   cursor: pointer;
-  transition: all var(--dwc-transition-fast);
+  transition: all var(--dwc-transition-fast, 0.1s ease);
 }
 
 .form-help-btn:hover {
@@ -501,18 +512,18 @@
 
 .form-actions {
   display: flex;
-  gap: var(--dwc-spacing-sm);
-  margin-top: var(--dwc-spacing-md);
+  gap: var(--dwc-spacing-sm, 8px);
+  margin-top: var(--dwc-spacing-md, 16px);
 }
 
 .form-btn {
-  padding: var(--dwc-spacing-sm) var(--dwc-spacing-md);
-  font-size: var(--dwc-font-size-sm);
-  font-weight: var(--dwc-font-weight-semibold);
+  padding: var(--dwc-spacing-sm, 8px) var(--dwc-spacing-md, 16px);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
+  font-weight: var(--dwc-font-weight-semibold, 600);
   border: 1px solid var(--dwc-color-border, #e0e0e0);
-  border-radius: var(--dwc-border-radius);
+  border-radius: var(--dwc-border-radius, 4px);
   cursor: pointer;
-  transition: all var(--dwc-transition-fast);
+  transition: all var(--dwc-transition-fast, 0.1s ease);
   background: var(--dwc-color-surface, #ffffff);
   color: var(--dwc-color-text, #1a1a1a);
 }
