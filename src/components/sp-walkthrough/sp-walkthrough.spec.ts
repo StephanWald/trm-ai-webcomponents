@@ -664,8 +664,6 @@ describe('sp-walkthrough', () => {
       await page.rootInstance.show();
       await page.waitForChanges();
 
-      const select = page.root?.shadowRoot?.querySelector('.scene-selector') as HTMLSelectElement;
-
       // Simulate selecting scene at index 2
       const changeEvent = new Event('change');
       Object.defineProperty(changeEvent, 'target', {

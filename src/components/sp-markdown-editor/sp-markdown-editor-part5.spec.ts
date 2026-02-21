@@ -35,10 +35,11 @@ function getBtn(page: any, title: string): HTMLButtonElement | undefined {
     .find((btn: any) => btn.getAttribute('title') === title) as HTMLButtonElement | undefined;
 }
 
-function getBtnByText(page: any, text: string): HTMLButtonElement | undefined {
-  return Array.from(page.root?.shadowRoot?.querySelectorAll('.toolbar-btn') ?? [])
-    .find((btn: any) => btn.textContent?.trim() === text) as HTMLButtonElement | undefined;
-}
+// getBtnByText: unused in current tests but available for future toolbar text-match tests
+// function getBtnByText(page: any, text: string): HTMLButtonElement | undefined {
+//   return Array.from(page.root?.shadowRoot?.querySelectorAll('.toolbar-btn') ?? [])
+//     .find((btn: any) => btn.textContent?.trim() === text) as HTMLButtonElement | undefined;
+// }
 
 // Page 1: inline formatting buttons (Bold, Italic, Strikethrough, Inline Code, Clear)
 it('inline formatting buttons modify content correctly', async () => {

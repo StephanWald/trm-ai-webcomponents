@@ -4,6 +4,37 @@
  */
 
 :host {
+  /**
+   * @prop --dwc-font-family: Base font family for all text in the org chart
+   * @prop --dwc-font-size-base: Base font size for names and body text
+   * @prop --dwc-font-size-sm: Small font size for role labels and secondary text
+   * @prop --dwc-font-size-lg: Large font size for avatar initials and empty-state message
+   * @prop --dwc-font-size-xl: Extra-large font size for drop zone icons
+   * @prop --dwc-font-weight-semibold: Semibold weight for user names and drop zone labels
+   * @prop --dwc-font-weight-medium: Medium weight for labels
+   * @prop --dwc-line-height-normal: Normal line height for body text
+   * @prop --dwc-color-surface: Background color for user tiles, toolbar, and drop zones
+   * @prop --dwc-color-border: Border color for user tiles, toolbar, drop zones, and tree connectors
+   * @prop --dwc-color-text: Primary text color for user names and drop zone labels
+   * @prop --dwc-color-text-secondary: Secondary text color for role labels and empty-state message
+   * @prop --dwc-color-primary: Accent color for selected tile border, avatar initials background, and drag-over state
+   * @prop --dwc-color-primary-text: Text color on primary-colored surfaces (avatar initials)
+   * @prop --dwc-color-warning: Warning color for highlighted tile border (search match)
+   * @prop --dwc-color-danger: Danger color for the delete drop zone border on hover
+   * @prop --dwc-border-radius: Border radius for user tiles, filter input, and drop zones
+   * @prop --dwc-border-radius-full: Full (circular) border radius for user avatars
+   * @prop --dwc-border-radius-lg: Large border radius for the floating drop zones container
+   * @prop --dwc-shadow-sm: Small box shadow on resting user tiles
+   * @prop --dwc-shadow-md: Medium box shadow on hovered user tiles
+   * @prop --dwc-shadow-xl: Extra-large box shadow on the floating drop zones container
+   * @prop --dwc-transition-fast: Fast transition duration for hover and drag states
+   * @prop --dwc-spacing-xs: Extra-small spacing for minor gaps (avatar margin, name margin)
+   * @prop --dwc-spacing-sm: Small spacing for filter input padding and tree children gap
+   * @prop --dwc-spacing-md: Medium spacing for toolbar padding and tile internal padding
+   * @prop --dwc-spacing-lg: Large spacing for horizontal gap between tree siblings
+   * @prop --dwc-spacing-xl: Extra-large spacing for vertical connector height and tree padding
+   * @prop --dwc-spacing-2xl: Double extra-large spacing for the empty-state message padding
+   */
   display: block;
   font-family: var(--dwc-font-family);
   font-size: var(--dwc-font-size-base);

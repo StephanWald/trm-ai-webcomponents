@@ -19,6 +19,10 @@ export const config: Config = {
       copy: [{ src: '**/*.html' }, { src: '**/*.css' }],
       serviceWorker: null,
     },
+    {
+      type: 'docs-json',
+      file: 'docs.json',
+    },
   ],
   testing: {
     collectCoverageFrom: [

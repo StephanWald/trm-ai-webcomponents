@@ -4,6 +4,42 @@
  */
 
 :host {
+  /**
+   * @prop --dwc-font-family: Base font family for all panel text
+   * @prop --dwc-font-size-base: Base font size for scene titles, panel title, and controls
+   * @prop --dwc-font-size-sm: Small font size for scene descriptions, counter, and author UI
+   * @prop --dwc-font-size-xs: Extra-small font size for metadata labels and form help text
+   * @prop --dwc-font-size-lg: Large font size for close button icon
+   * @prop --dwc-font-weight-semibold: Semibold weight for panel title, scene titles, and form labels
+   * @prop --dwc-line-height-normal: Normal line height for scene description text
+   * @prop --dwc-color-surface: Background color for the walkthrough panel and form inputs
+   * @prop --dwc-color-surface-secondary: Secondary surface color for control buttons, manual mode placeholder, and scene list items
+   * @prop --dwc-color-border: Border color for the panel, control buttons, scene selector, and author UI dividers
+   * @prop --dwc-color-border-hover: Border hover color for control buttons
+   * @prop --dwc-color-text: Primary text color for scene titles, control buttons, and form labels
+   * @prop --dwc-color-text-secondary: Secondary text color for scene descriptions, scene counter, and placeholder text
+   * @prop --dwc-color-primary: Primary brand color for panel header background, author buttons, scene selector focus ring, and form focus borders
+   * @prop --dwc-color-primary-text: Text color on primary-colored surfaces (panel header, close button, author buttons)
+   * @prop --dwc-color-primary-dark: Darker primary shade for author button hover state
+   * @prop --dwc-color-warning: Warning color for selector instability indicators
+   * @prop --dwc-color-warning-bg: Warning background for author toolbar (distinguishes edit mode)
+   * @prop --dwc-color-warning-border: Warning border for author toolbar
+   * @prop --dwc-color-success: Success color for the active pointer-tool button indicator
+   * @prop --dwc-color-danger: Danger color for scene delete button text
+   * @prop --dwc-color-danger-bg: Danger background on scene delete button hover
+   * @prop --dwc-color-info-bg: Info background for scene editor panel (distinguishes edit form)
+   * @prop --dwc-color-info-border: Info border for scene editor panel
+   * @prop --dwc-border-radius: Default border radius for buttons, inputs, and control elements
+   * @prop --dwc-border-radius-lg: Large border radius for the walkthrough panel corners
+   * @prop --dwc-shadow-xl: Extra-large shadow for the floating walkthrough panel
+   * @prop --dwc-transition-base: Base transition duration for panel show/hide animation
+   * @prop --dwc-transition-fast: Fast transition duration for button hover states
+   * @prop --dwc-spacing-xs: Extra-small spacing for tight gaps in controls and volume area
+   * @prop --dwc-spacing-sm: Small spacing for control bar gaps and author toolbar padding
+   * @prop --dwc-spacing-md: Medium spacing for panel content padding and section margins
+   * @prop --dwc-spacing-lg: Large spacing for author scene list gap
+   * @prop --dwc-z-modal: Z-index for the walkthrough panel to float above page content
+   */
   display: block;
   font-family: var(--dwc-font-family);
 }

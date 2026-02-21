@@ -4,6 +4,26 @@
  */
 
 :host {
+  /**
+   * @prop --dwc-font-family: Base proportional font family for editor UI and preview prose
+   * @prop --dwc-font-family-mono: Monospace font family for the source textarea and code blocks in preview
+   * @prop --dwc-font-size-base: Base font size for toolbar buttons, mode tabs, and source editor text
+   * @prop --dwc-font-size-sm: Small font size for the footer stats and word/character counts
+   * @prop --dwc-font-weight-medium: Medium font weight for mode tabs and footer save indicator
+   * @prop --dwc-line-height-relaxed: Relaxed line height for the source editor textarea (improves readability)
+   * @prop --dwc-color-surface: Background color for the overall editor border, mode switcher, split preview pane, and WYSIWYG pane
+   * @prop --dwc-color-surface-secondary: Secondary surface color for the toolbar container background, footer background, inline code chips, and table header cells
+   * @prop --dwc-color-border: Border color for the host element, toolbar bottom border, footer top border, mode switcher, split source pane divider, and WYSIWYG heading underlines
+   * @prop --dwc-border-color: Alias border color used for toolbar separators and toolbar button hover borders
+   * @prop --dwc-color-text: Primary text color for toolbar buttons, mode tabs, source editor content, and WYSIWYG preview prose
+   * @prop --dwc-color-text-secondary: Secondary text color for source editor placeholder and WYSIWYG blockquote and footer labels
+   * @prop --dwc-color-primary: Primary accent color for active toolbar button borders, active mode tab background, blockquote left-border accent, link color, and active-mode tab background
+   * @prop --dwc-color-primary-lightest: Very light primary tint for hovered and active toolbar buttons
+   * @prop --dwc-color-primary-lighter: Light primary tint for pressed toolbar button state and listening-pulse animation peak
+   * @prop --dwc-color-warning: Warning color for the "saving" and "dirty" save indicator states in the footer
+   * @prop --dwc-color-success: Success color for the "saved" save indicator state in the footer
+   * @prop --dwc-border-radius: Border radius for toolbar buttons, mode switcher container, inline code chips, and the host element outline
+   */
   display: block;
   font-family: var(--dwc-font-family, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
   border: 1px solid var(--dwc-color-border, #e0e0e0);

@@ -1,0 +1,1988 @@
+{
+  "timestamp": "2026-02-21T06:37:59",
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "4.41.3",
+    "typescriptVersion": "5.8.3"
+  },
+  "components": [
+    {
+      "filePath": "src/components/sp-example/sp-example.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-example",
+      "docs": "",
+      "docsTags": [
+        {
+          "name": "part",
+          "text": "container - Main container wrapper"
+        },
+        {
+          "name": "part",
+          "text": "heading - Heading element"
+        },
+        {
+          "name": "part",
+          "text": "content - Content paragraph"
+        },
+        {
+          "name": "part",
+          "text": "button - Action button"
+        }
+      ],
+      "usage": {},
+      "props": [
+        {
+          "name": "heading",
+          "type": "string",
+          "complexType": {
+            "original": "string",
+            "resolved": "string",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "heading",
+          "reflectToAttr": false,
+          "docs": "Heading text to display",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'Example Component'"
+            }
+          ],
+          "default": "'Example Component'",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"auto\" | \"dark\" | \"light\"",
+          "complexType": {
+            "original": "'light' | 'dark' | 'auto'",
+            "resolved": "\"auto\" | \"dark\" | \"light\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Theme override for standalone usage",
+          "docsTags": [
+            {
+              "name": "type",
+              "text": "{'light' | 'dark' | 'auto'}"
+            },
+            {
+              "name": "default",
+              "text": "'auto'"
+            }
+          ],
+          "default": "'auto'",
+          "values": [
+            {
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "spExampleClick",
+          "detail": "void",
+          "bubbles": true,
+          "complexType": {
+            "original": "void",
+            "resolved": "void",
+            "references": {}
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the button is clicked",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [
+        {
+          "name": "button",
+          "docs": "Action button"
+        },
+        {
+          "name": "container",
+          "docs": "Main container wrapper"
+        },
+        {
+          "name": "content",
+          "docs": "Content paragraph"
+        },
+        {
+          "name": "heading",
+          "docs": "Heading element"
+        }
+      ],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    },
+    {
+      "filePath": "src/components/sp-markdown-editor/sp-markdown-editor.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-markdown-editor",
+      "docs": "",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "autoSave",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "auto-save",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "true"
+            }
+          ],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "autoSaveDelay",
+          "type": "number",
+          "complexType": {
+            "original": "number",
+            "resolved": "number",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "auto-save-delay",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "2000"
+            }
+          ],
+          "default": "2000",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "maxHistory",
+          "type": "number",
+          "complexType": {
+            "original": "number",
+            "resolved": "number",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "max-history",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "50"
+            }
+          ],
+          "default": "50",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "mode",
+          "type": "\"source\" | \"split\" | \"wysiwyg\"",
+          "complexType": {
+            "original": "EditorMode",
+            "resolved": "\"source\" | \"split\" | \"wysiwyg\"",
+            "references": {
+              "EditorMode": {
+                "location": "import",
+                "path": "./types/editor.types",
+                "id": "src/components/sp-markdown-editor/types/editor.types.ts::EditorMode",
+                "referenceLocation": "EditorMode"
+              }
+            }
+          },
+          "mutable": false,
+          "attr": "mode",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'source'"
+            }
+          ],
+          "default": "'source'",
+          "values": [
+            {
+              "value": "source",
+              "type": "string"
+            },
+            {
+              "value": "split",
+              "type": "string"
+            },
+            {
+              "value": "wysiwyg",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "complexType": {
+            "original": "string",
+            "resolved": "string",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "placeholder",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'Start typing markdown...'"
+            }
+          ],
+          "default": "'Start typing markdown...'",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "complexType": {
+            "original": "string",
+            "resolved": "string",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "value",
+          "reflectToAttr": false,
+          "docs": "",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "''"
+            }
+          ],
+          "default": "''",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "clear",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "clear() => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "focusEditor",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "focusEditor() => Promise<void>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "getContent",
+          "returns": {
+            "type": "Promise<string>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<string>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<string>"
+          },
+          "signature": "getContent() => Promise<string>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "getMode",
+          "returns": {
+            "type": "Promise<EditorMode>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<EditorMode>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              },
+              "EditorMode": {
+                "location": "import",
+                "path": "./types/editor.types",
+                "id": "src/components/sp-markdown-editor/types/editor.types.ts::EditorMode",
+                "referenceLocation": "EditorMode"
+              }
+            },
+            "return": "Promise<EditorMode>"
+          },
+          "signature": "getMode() => Promise<EditorMode>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "isDirty",
+          "returns": {
+            "type": "Promise<boolean>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<boolean>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<boolean>"
+          },
+          "signature": "isDirty() => Promise<boolean>",
+          "parameters": [],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "setContent",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "(value: string) => Promise<void>",
+            "parameters": [
+              {
+                "name": "value",
+                "type": "string",
+                "docs": ""
+              }
+            ],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "setContent(value: string) => Promise<void>",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "string",
+              "docs": ""
+            }
+          ],
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "name": "setMode",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "(mode: EditorMode) => Promise<void>",
+            "parameters": [
+              {
+                "name": "mode",
+                "type": "\"source\" | \"wysiwyg\" | \"split\"",
+                "docs": ""
+              }
+            ],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              },
+              "EditorMode": {
+                "location": "import",
+                "path": "./types/editor.types",
+                "id": "src/components/sp-markdown-editor/types/editor.types.ts::EditorMode",
+                "referenceLocation": "EditorMode"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "setMode(mode: EditorMode) => Promise<void>",
+          "parameters": [
+            {
+              "name": "mode",
+              "type": "\"source\" | \"wysiwyg\" | \"split\"",
+              "docs": ""
+            }
+          ],
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "events": [
+        {
+          "event": "contentChange",
+          "detail": "ContentChangeEvent",
+          "bubbles": true,
+          "complexType": {
+            "original": "ContentChangeEvent",
+            "resolved": "ContentChangeEvent",
+            "references": {
+              "ContentChangeEvent": {
+                "location": "import",
+                "path": "./types/editor.types",
+                "id": "src/components/sp-markdown-editor/types/editor.types.ts::ContentChangeEvent",
+                "referenceLocation": "ContentChangeEvent"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "event": "exportFile",
+          "detail": "ExportEvent",
+          "bubbles": true,
+          "complexType": {
+            "original": "ExportEvent",
+            "resolved": "ExportEvent",
+            "references": {
+              "ExportEvent": {
+                "location": "import",
+                "path": "./types/editor.types",
+                "id": "src/components/sp-markdown-editor/types/editor.types.ts::ExportEvent",
+                "referenceLocation": "ExportEvent"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "event": "imagePaste",
+          "detail": "ImagePasteEvent",
+          "bubbles": true,
+          "complexType": {
+            "original": "ImagePasteEvent",
+            "resolved": "ImagePasteEvent",
+            "references": {
+              "ImagePasteEvent": {
+                "location": "import",
+                "path": "./types/editor.types",
+                "id": "src/components/sp-markdown-editor/types/editor.types.ts::ImagePasteEvent",
+                "referenceLocation": "ImagePasteEvent"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "event": "importFile",
+          "detail": "ImportEvent",
+          "bubbles": true,
+          "complexType": {
+            "original": "ImportEvent",
+            "resolved": "ImportEvent",
+            "references": {
+              "ImportEvent": {
+                "location": "import",
+                "path": "./types/editor.types",
+                "id": "src/components/sp-markdown-editor/types/editor.types.ts::ImportEvent",
+                "referenceLocation": "ImportEvent"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "event": "modeChange",
+          "detail": "ModeChangeEvent",
+          "bubbles": true,
+          "complexType": {
+            "original": "ModeChangeEvent",
+            "resolved": "ModeChangeEvent",
+            "references": {
+              "ModeChangeEvent": {
+                "location": "import",
+                "path": "./types/editor.types",
+                "id": "src/components/sp-markdown-editor/types/editor.types.ts::ModeChangeEvent",
+                "referenceLocation": "ModeChangeEvent"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        },
+        {
+          "event": "save",
+          "detail": "SaveEvent",
+          "bubbles": true,
+          "complexType": {
+            "original": "SaveEvent",
+            "resolved": "SaveEvent",
+            "references": {
+              "SaveEvent": {
+                "location": "import",
+                "path": "./types/editor.types",
+                "id": "src/components/sp-markdown-editor/types/editor.types.ts::SaveEvent",
+                "referenceLocation": "SaveEvent"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "",
+          "docsTags": []
+        }
+      ],
+      "listeners": [
+        {
+          "event": "keydown",
+          "capture": false,
+          "passive": false
+        }
+      ],
+      "styles": [
+        {
+          "name": "--dwc-border-color",
+          "annotation": "prop",
+          "docs": "Alias border color used for toolbar separators and toolbar button hover borders"
+        },
+        {
+          "name": "--dwc-border-radius",
+          "annotation": "prop",
+          "docs": "Border radius for toolbar buttons, mode switcher container, inline code chips, and the host element outline"
+        },
+        {
+          "name": "--dwc-color-border",
+          "annotation": "prop",
+          "docs": "Border color for the host element, toolbar bottom border, footer top border, mode switcher, split source pane divider, and WYSIWYG heading underlines"
+        },
+        {
+          "name": "--dwc-color-primary",
+          "annotation": "prop",
+          "docs": "Primary accent color for active toolbar button borders, active mode tab background, blockquote left-border accent, link color, and active-mode tab background"
+        },
+        {
+          "name": "--dwc-color-primary-lighter",
+          "annotation": "prop",
+          "docs": "Light primary tint for pressed toolbar button state and listening-pulse animation peak"
+        },
+        {
+          "name": "--dwc-color-primary-lightest",
+          "annotation": "prop",
+          "docs": "Very light primary tint for hovered and active toolbar buttons"
+        },
+        {
+          "name": "--dwc-color-success",
+          "annotation": "prop",
+          "docs": "Success color for the \"saved\" save indicator state in the footer"
+        },
+        {
+          "name": "--dwc-color-surface",
+          "annotation": "prop",
+          "docs": "Background color for the overall editor border, mode switcher, split preview pane, and WYSIWYG pane"
+        },
+        {
+          "name": "--dwc-color-surface-secondary",
+          "annotation": "prop",
+          "docs": "Secondary surface color for the toolbar container background, footer background, inline code chips, and table header cells"
+        },
+        {
+          "name": "--dwc-color-text",
+          "annotation": "prop",
+          "docs": "Primary text color for toolbar buttons, mode tabs, source editor content, and WYSIWYG preview prose"
+        },
+        {
+          "name": "--dwc-color-text-secondary",
+          "annotation": "prop",
+          "docs": "Secondary text color for source editor placeholder and WYSIWYG blockquote and footer labels"
+        },
+        {
+          "name": "--dwc-color-warning",
+          "annotation": "prop",
+          "docs": "Warning color for the \"saving\" and \"dirty\" save indicator states in the footer"
+        },
+        {
+          "name": "--dwc-font-family",
+          "annotation": "prop",
+          "docs": "Base proportional font family for editor UI and preview prose"
+        },
+        {
+          "name": "--dwc-font-family-mono",
+          "annotation": "prop",
+          "docs": "Monospace font family for the source textarea and code blocks in preview"
+        },
+        {
+          "name": "--dwc-font-size-base",
+          "annotation": "prop",
+          "docs": "Base font size for toolbar buttons, mode tabs, and source editor text"
+        },
+        {
+          "name": "--dwc-font-size-sm",
+          "annotation": "prop",
+          "docs": "Small font size for the footer stats and word/character counts"
+        },
+        {
+          "name": "--dwc-font-weight-medium",
+          "annotation": "prop",
+          "docs": "Medium font weight for mode tabs and footer save indicator"
+        },
+        {
+          "name": "--dwc-line-height-relaxed",
+          "annotation": "prop",
+          "docs": "Relaxed line height for the source editor textarea (improves readability)"
+        }
+      ],
+      "slots": [],
+      "parts": [
+        {
+          "name": "footer",
+          "docs": ""
+        },
+        {
+          "name": "mode-switcher",
+          "docs": ""
+        },
+        {
+          "name": "source-editor",
+          "docs": ""
+        },
+        {
+          "name": "toolbar",
+          "docs": ""
+        },
+        {
+          "name": "wysiwyg-editor",
+          "docs": ""
+        }
+      ],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    },
+    {
+      "filePath": "src/components/sp-org-chart/sp-org-chart.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-org-chart",
+      "docs": "",
+      "docsTags": [
+        {
+          "name": "part",
+          "text": "filter-input - Filter input field"
+        },
+        {
+          "name": "part",
+          "text": "no-data - No data message container"
+        },
+        {
+          "name": "part",
+          "text": "tree-container - Main tree container"
+        },
+        {
+          "name": "part",
+          "text": "user-tile - Individual user tile"
+        },
+        {
+          "name": "part",
+          "text": "drop-zone - Drop zone for drag-and-drop"
+        }
+      ],
+      "usage": {},
+      "props": [
+        {
+          "name": "editable",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "editable",
+          "reflectToAttr": false,
+          "docs": "Enable/disable edit mode for drag-and-drop and deletion",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "noDataMessage",
+          "type": "string",
+          "complexType": {
+            "original": "string",
+            "resolved": "string",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "no-data-message",
+          "reflectToAttr": false,
+          "docs": "Custom message when users array is empty",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'No data available'"
+            }
+          ],
+          "default": "'No data available'",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"auto\" | \"dark\" | \"light\"",
+          "complexType": {
+            "original": "'light' | 'dark' | 'auto'",
+            "resolved": "\"auto\" | \"dark\" | \"light\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Theme override for standalone usage",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'auto'"
+            }
+          ],
+          "default": "'auto'",
+          "values": [
+            {
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "users",
+          "type": "User[]",
+          "complexType": {
+            "original": "User[]",
+            "resolved": "User[]",
+            "references": {
+              "User": {
+                "location": "import",
+                "path": "./types/org-chart.types",
+                "id": "src/components/sp-org-chart/types/org-chart.types.ts::User",
+                "referenceLocation": "User"
+              }
+            }
+          },
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "Flat array of users with reporting relationships",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "[]"
+            }
+          ],
+          "default": "[]",
+          "values": [
+            {
+              "type": "User[]"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "clearHighlight",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "clearHighlight() => Promise<void>",
+          "parameters": [],
+          "docs": "Clear all highlights",
+          "docsTags": []
+        },
+        {
+          "name": "getSelected",
+          "returns": {
+            "type": "Promise<User>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<User | null>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              },
+              "User": {
+                "location": "import",
+                "path": "./types/org-chart.types",
+                "id": "src/components/sp-org-chart/types/org-chart.types.ts::User",
+                "referenceLocation": "User"
+              }
+            },
+            "return": "Promise<User>"
+          },
+          "signature": "getSelected() => Promise<User | null>",
+          "parameters": [],
+          "docs": "Get the currently selected user",
+          "docsTags": []
+        },
+        {
+          "name": "highlightUser",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "(userId: string) => Promise<void>",
+            "parameters": [
+              {
+                "name": "userId",
+                "type": "string",
+                "docs": ""
+              }
+            ],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "highlightUser(userId: string) => Promise<void>",
+          "parameters": [
+            {
+              "name": "userId",
+              "type": "string",
+              "docs": ""
+            }
+          ],
+          "docs": "Highlight a specific user by ID",
+          "docsTags": []
+        },
+        {
+          "name": "scrollToUser",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "(userId: string) => Promise<void>",
+            "parameters": [
+              {
+                "name": "userId",
+                "type": "string",
+                "docs": ""
+              }
+            ],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "scrollToUser(userId: string) => Promise<void>",
+          "parameters": [
+            {
+              "name": "userId",
+              "type": "string",
+              "docs": ""
+            }
+          ],
+          "docs": "Scroll a user tile into view with smooth animation",
+          "docsTags": []
+        }
+      ],
+      "events": [
+        {
+          "event": "hierarchyChange",
+          "detail": "HierarchyChangeDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "HierarchyChangeDetail",
+            "resolved": "HierarchyChangeDetail",
+            "references": {
+              "HierarchyChangeDetail": {
+                "location": "import",
+                "path": "./types/org-chart.types",
+                "id": "src/components/sp-org-chart/types/org-chart.types.ts::HierarchyChangeDetail",
+                "referenceLocation": "HierarchyChangeDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when hierarchy changes via drag-and-drop",
+          "docsTags": []
+        },
+        {
+          "event": "userClick",
+          "detail": "UserEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "UserEventDetail",
+            "resolved": "UserEventDetail",
+            "references": {
+              "UserEventDetail": {
+                "location": "import",
+                "path": "./types/org-chart.types",
+                "id": "src/components/sp-org-chart/types/org-chart.types.ts::UserEventDetail",
+                "referenceLocation": "UserEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when a user tile is clicked",
+          "docsTags": []
+        },
+        {
+          "event": "userDblclick",
+          "detail": "UserEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "UserEventDetail",
+            "resolved": "UserEventDetail",
+            "references": {
+              "UserEventDetail": {
+                "location": "import",
+                "path": "./types/org-chart.types",
+                "id": "src/components/sp-org-chart/types/org-chart.types.ts::UserEventDetail",
+                "referenceLocation": "UserEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when a user tile is double-clicked",
+          "docsTags": []
+        },
+        {
+          "event": "userDelete",
+          "detail": "UserEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "UserEventDetail",
+            "resolved": "UserEventDetail",
+            "references": {
+              "UserEventDetail": {
+                "location": "import",
+                "path": "./types/org-chart.types",
+                "id": "src/components/sp-org-chart/types/org-chart.types.ts::UserEventDetail",
+                "referenceLocation": "UserEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when a user is deleted",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--dwc-border-radius",
+          "annotation": "prop",
+          "docs": "Border radius for user tiles, filter input, and drop zones"
+        },
+        {
+          "name": "--dwc-border-radius-full",
+          "annotation": "prop",
+          "docs": "Full (circular) border radius for user avatars"
+        },
+        {
+          "name": "--dwc-border-radius-lg",
+          "annotation": "prop",
+          "docs": "Large border radius for the floating drop zones container"
+        },
+        {
+          "name": "--dwc-color-border",
+          "annotation": "prop",
+          "docs": "Border color for user tiles, toolbar, drop zones, and tree connectors"
+        },
+        {
+          "name": "--dwc-color-danger",
+          "annotation": "prop",
+          "docs": "Danger color for the delete drop zone border on hover"
+        },
+        {
+          "name": "--dwc-color-primary",
+          "annotation": "prop",
+          "docs": "Accent color for selected tile border, avatar initials background, and drag-over state"
+        },
+        {
+          "name": "--dwc-color-primary-text",
+          "annotation": "prop",
+          "docs": "Text color on primary-colored surfaces (avatar initials)"
+        },
+        {
+          "name": "--dwc-color-surface",
+          "annotation": "prop",
+          "docs": "Background color for user tiles, toolbar, and drop zones"
+        },
+        {
+          "name": "--dwc-color-text",
+          "annotation": "prop",
+          "docs": "Primary text color for user names and drop zone labels"
+        },
+        {
+          "name": "--dwc-color-text-secondary",
+          "annotation": "prop",
+          "docs": "Secondary text color for role labels and empty-state message"
+        },
+        {
+          "name": "--dwc-color-warning",
+          "annotation": "prop",
+          "docs": "Warning color for highlighted tile border (search match)"
+        },
+        {
+          "name": "--dwc-font-family",
+          "annotation": "prop",
+          "docs": "Base font family for all text in the org chart"
+        },
+        {
+          "name": "--dwc-font-size-base",
+          "annotation": "prop",
+          "docs": "Base font size for names and body text"
+        },
+        {
+          "name": "--dwc-font-size-lg",
+          "annotation": "prop",
+          "docs": "Large font size for avatar initials and empty-state message"
+        },
+        {
+          "name": "--dwc-font-size-sm",
+          "annotation": "prop",
+          "docs": "Small font size for role labels and secondary text"
+        },
+        {
+          "name": "--dwc-font-size-xl",
+          "annotation": "prop",
+          "docs": "Extra-large font size for drop zone icons"
+        },
+        {
+          "name": "--dwc-font-weight-medium",
+          "annotation": "prop",
+          "docs": "Medium weight for labels"
+        },
+        {
+          "name": "--dwc-font-weight-semibold",
+          "annotation": "prop",
+          "docs": "Semibold weight for user names and drop zone labels"
+        },
+        {
+          "name": "--dwc-line-height-normal",
+          "annotation": "prop",
+          "docs": "Normal line height for body text"
+        },
+        {
+          "name": "--dwc-shadow-md",
+          "annotation": "prop",
+          "docs": "Medium box shadow on hovered user tiles"
+        },
+        {
+          "name": "--dwc-shadow-sm",
+          "annotation": "prop",
+          "docs": "Small box shadow on resting user tiles"
+        },
+        {
+          "name": "--dwc-shadow-xl",
+          "annotation": "prop",
+          "docs": "Extra-large box shadow on the floating drop zones container"
+        },
+        {
+          "name": "--dwc-spacing-2xl",
+          "annotation": "prop",
+          "docs": "Double extra-large spacing for the empty-state message padding"
+        },
+        {
+          "name": "--dwc-spacing-lg",
+          "annotation": "prop",
+          "docs": "Large spacing for horizontal gap between tree siblings"
+        },
+        {
+          "name": "--dwc-spacing-md",
+          "annotation": "prop",
+          "docs": "Medium spacing for toolbar padding and tile internal padding"
+        },
+        {
+          "name": "--dwc-spacing-sm",
+          "annotation": "prop",
+          "docs": "Small spacing for filter input padding and tree children gap"
+        },
+        {
+          "name": "--dwc-spacing-xl",
+          "annotation": "prop",
+          "docs": "Extra-large spacing for vertical connector height and tree padding"
+        },
+        {
+          "name": "--dwc-spacing-xs",
+          "annotation": "prop",
+          "docs": "Extra-small spacing for minor gaps (avatar margin, name margin)"
+        },
+        {
+          "name": "--dwc-transition-fast",
+          "annotation": "prop",
+          "docs": "Fast transition duration for hover and drag states"
+        }
+      ],
+      "slots": [],
+      "parts": [
+        {
+          "name": "drop-zone",
+          "docs": "Drop zone for drag-and-drop"
+        },
+        {
+          "name": "filter-input",
+          "docs": "Filter input field"
+        },
+        {
+          "name": "no-data",
+          "docs": "No data message container"
+        },
+        {
+          "name": "tree-container",
+          "docs": "Main tree container"
+        },
+        {
+          "name": "user-tile",
+          "docs": "Individual user tile"
+        }
+      ],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    },
+    {
+      "filePath": "src/components/sp-walkthrough/sp-walkthrough.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-walkthrough",
+      "docs": "Interactive walkthrough component with video playback and DOM element highlighting",
+      "docsTags": [],
+      "usage": {},
+      "props": [
+        {
+          "name": "authorMode",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "author-mode",
+          "reflectToAttr": false,
+          "docs": "Author mode - enables scene editing and pointer tool",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "autoPlay",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "auto-play",
+          "reflectToAttr": false,
+          "docs": "Auto-play video on show",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "captionsSrc",
+          "type": "string",
+          "complexType": {
+            "original": "string",
+            "resolved": "string",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "captions-src",
+          "reflectToAttr": false,
+          "docs": "WebVTT captions file URL",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "scenes",
+          "type": "Scene[]",
+          "complexType": {
+            "original": "Scene[]",
+            "resolved": "Scene[]",
+            "references": {
+              "Scene": {
+                "location": "import",
+                "path": "./types/walkthrough.types",
+                "id": "src/components/sp-walkthrough/types/walkthrough.types.ts::Scene",
+                "referenceLocation": "Scene"
+              }
+            }
+          },
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "Array of walkthrough scenes",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "[]"
+            }
+          ],
+          "default": "[]",
+          "values": [
+            {
+              "type": "Scene[]"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"auto\" | \"dark\" | \"light\"",
+          "complexType": {
+            "original": "'light' | 'dark' | 'auto'",
+            "resolved": "\"auto\" | \"dark\" | \"light\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Theme override",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'auto'"
+            }
+          ],
+          "default": "'auto'",
+          "values": [
+            {
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "videoSrc",
+          "type": "string",
+          "complexType": {
+            "original": "string",
+            "resolved": "string",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "video-src",
+          "reflectToAttr": false,
+          "docs": "Video source URL (MP4/WebM/YouTube) - optional for manual-only mode",
+          "docsTags": [],
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": true,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "abort",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "abort() => Promise<void>",
+          "parameters": [],
+          "docs": "Abort walkthrough (cleans up and hides)",
+          "docsTags": []
+        },
+        {
+          "name": "hide",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "hide() => Promise<void>",
+          "parameters": [],
+          "docs": "Hide the walkthrough",
+          "docsTags": []
+        },
+        {
+          "name": "pause",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "pause() => Promise<void>",
+          "parameters": [],
+          "docs": "Pause video",
+          "docsTags": []
+        },
+        {
+          "name": "play",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "play() => Promise<void>",
+          "parameters": [],
+          "docs": "Play video",
+          "docsTags": []
+        },
+        {
+          "name": "restart",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "restart() => Promise<void>",
+          "parameters": [],
+          "docs": "Restart walkthrough from beginning",
+          "docsTags": []
+        },
+        {
+          "name": "show",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "show() => Promise<void>",
+          "parameters": [],
+          "docs": "Show the walkthrough",
+          "docsTags": []
+        }
+      ],
+      "events": [
+        {
+          "event": "sceneChanged",
+          "detail": "SceneChangeDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "SceneChangeDetail",
+            "resolved": "SceneChangeDetail",
+            "references": {
+              "SceneChangeDetail": {
+                "location": "import",
+                "path": "./types/walkthrough.types",
+                "id": "src/components/sp-walkthrough/types/walkthrough.types.ts::SceneChangeDetail",
+                "referenceLocation": "SceneChangeDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when scene changes",
+          "docsTags": []
+        },
+        {
+          "event": "timelineUpdated",
+          "detail": "TimelineUpdateDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "TimelineUpdateDetail",
+            "resolved": "TimelineUpdateDetail",
+            "references": {
+              "TimelineUpdateDetail": {
+                "location": "import",
+                "path": "./types/walkthrough.types",
+                "id": "src/components/sp-walkthrough/types/walkthrough.types.ts::TimelineUpdateDetail",
+                "referenceLocation": "TimelineUpdateDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when timeline is updated (author mode)",
+          "docsTags": []
+        },
+        {
+          "event": "walkthroughAborted",
+          "detail": "void",
+          "bubbles": true,
+          "complexType": {
+            "original": "void",
+            "resolved": "void",
+            "references": {}
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when walkthrough is aborted (ESC key or abort method)",
+          "docsTags": []
+        },
+        {
+          "event": "walkthroughHidden",
+          "detail": "void",
+          "bubbles": true,
+          "complexType": {
+            "original": "void",
+            "resolved": "void",
+            "references": {}
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when walkthrough is hidden",
+          "docsTags": []
+        },
+        {
+          "event": "walkthroughShown",
+          "detail": "void",
+          "bubbles": true,
+          "complexType": {
+            "original": "void",
+            "resolved": "void",
+            "references": {}
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when walkthrough is shown",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [
+        {
+          "name": "--dwc-border-radius",
+          "annotation": "prop",
+          "docs": "Default border radius for buttons, inputs, and control elements"
+        },
+        {
+          "name": "--dwc-border-radius-lg",
+          "annotation": "prop",
+          "docs": "Large border radius for the walkthrough panel corners"
+        },
+        {
+          "name": "--dwc-color-border",
+          "annotation": "prop",
+          "docs": "Border color for the panel, control buttons, scene selector, and author UI dividers"
+        },
+        {
+          "name": "--dwc-color-border-hover",
+          "annotation": "prop",
+          "docs": "Border hover color for control buttons"
+        },
+        {
+          "name": "--dwc-color-danger",
+          "annotation": "prop",
+          "docs": "Danger color for scene delete button text"
+        },
+        {
+          "name": "--dwc-color-danger-bg",
+          "annotation": "prop",
+          "docs": "Danger background on scene delete button hover"
+        },
+        {
+          "name": "--dwc-color-info-bg",
+          "annotation": "prop",
+          "docs": "Info background for scene editor panel (distinguishes edit form)"
+        },
+        {
+          "name": "--dwc-color-info-border",
+          "annotation": "prop",
+          "docs": "Info border for scene editor panel"
+        },
+        {
+          "name": "--dwc-color-primary",
+          "annotation": "prop",
+          "docs": "Primary brand color for panel header background, author buttons, scene selector focus ring, and form focus borders"
+        },
+        {
+          "name": "--dwc-color-primary-dark",
+          "annotation": "prop",
+          "docs": "Darker primary shade for author button hover state"
+        },
+        {
+          "name": "--dwc-color-primary-text",
+          "annotation": "prop",
+          "docs": "Text color on primary-colored surfaces (panel header, close button, author buttons)"
+        },
+        {
+          "name": "--dwc-color-success",
+          "annotation": "prop",
+          "docs": "Success color for the active pointer-tool button indicator"
+        },
+        {
+          "name": "--dwc-color-surface",
+          "annotation": "prop",
+          "docs": "Background color for the walkthrough panel and form inputs"
+        },
+        {
+          "name": "--dwc-color-surface-secondary",
+          "annotation": "prop",
+          "docs": "Secondary surface color for control buttons, manual mode placeholder, and scene list items"
+        },
+        {
+          "name": "--dwc-color-text",
+          "annotation": "prop",
+          "docs": "Primary text color for scene titles, control buttons, and form labels"
+        },
+        {
+          "name": "--dwc-color-text-secondary",
+          "annotation": "prop",
+          "docs": "Secondary text color for scene descriptions, scene counter, and placeholder text"
+        },
+        {
+          "name": "--dwc-color-warning",
+          "annotation": "prop",
+          "docs": "Warning color for selector instability indicators"
+        },
+        {
+          "name": "--dwc-color-warning-bg",
+          "annotation": "prop",
+          "docs": "Warning background for author toolbar (distinguishes edit mode)"
+        },
+        {
+          "name": "--dwc-color-warning-border",
+          "annotation": "prop",
+          "docs": "Warning border for author toolbar"
+        },
+        {
+          "name": "--dwc-font-family",
+          "annotation": "prop",
+          "docs": "Base font family for all panel text"
+        },
+        {
+          "name": "--dwc-font-size-base",
+          "annotation": "prop",
+          "docs": "Base font size for scene titles, panel title, and controls"
+        },
+        {
+          "name": "--dwc-font-size-lg",
+          "annotation": "prop",
+          "docs": "Large font size for close button icon"
+        },
+        {
+          "name": "--dwc-font-size-sm",
+          "annotation": "prop",
+          "docs": "Small font size for scene descriptions, counter, and author UI"
+        },
+        {
+          "name": "--dwc-font-size-xs",
+          "annotation": "prop",
+          "docs": "Extra-small font size for metadata labels and form help text"
+        },
+        {
+          "name": "--dwc-font-weight-semibold",
+          "annotation": "prop",
+          "docs": "Semibold weight for panel title, scene titles, and form labels"
+        },
+        {
+          "name": "--dwc-line-height-normal",
+          "annotation": "prop",
+          "docs": "Normal line height for scene description text"
+        },
+        {
+          "name": "--dwc-shadow-xl",
+          "annotation": "prop",
+          "docs": "Extra-large shadow for the floating walkthrough panel"
+        },
+        {
+          "name": "--dwc-spacing-lg",
+          "annotation": "prop",
+          "docs": "Large spacing for author scene list gap"
+        },
+        {
+          "name": "--dwc-spacing-md",
+          "annotation": "prop",
+          "docs": "Medium spacing for panel content padding and section margins"
+        },
+        {
+          "name": "--dwc-spacing-sm",
+          "annotation": "prop",
+          "docs": "Small spacing for control bar gaps and author toolbar padding"
+        },
+        {
+          "name": "--dwc-spacing-xs",
+          "annotation": "prop",
+          "docs": "Extra-small spacing for tight gaps in controls and volume area"
+        },
+        {
+          "name": "--dwc-transition-base",
+          "annotation": "prop",
+          "docs": "Base transition duration for panel show/hide animation"
+        },
+        {
+          "name": "--dwc-transition-fast",
+          "annotation": "prop",
+          "docs": "Fast transition duration for button hover states"
+        },
+        {
+          "name": "--dwc-z-modal",
+          "annotation": "prop",
+          "docs": "Z-index for the walkthrough panel to float above page content"
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    }
+  ],
+  "typeLibrary": {
+    "src/components/sp-markdown-editor/types/editor.types.ts::EditorMode": {
+      "declaration": "export type EditorMode = 'source' | 'wysiwyg' | 'split';",
+      "docstring": "",
+      "path": "src/components/sp-markdown-editor/types/editor.types.ts"
+    },
+    "src/components/sp-markdown-editor/types/editor.types.ts::ContentChangeEvent": {
+      "declaration": "export interface ContentChangeEvent {\n  /** Updated content */\n  content: string;\n  /** Current editor mode */\n  mode: EditorMode;\n  /** Timestamp of change */\n  timestamp: number;\n}",
+      "docstring": "Content change event detail",
+      "path": "src/components/sp-markdown-editor/types/editor.types.ts"
+    },
+    "src/components/sp-markdown-editor/types/editor.types.ts::SaveEvent": {
+      "declaration": "export interface SaveEvent {\n  /** Content being saved */\n  content: string;\n  /** Timestamp of save */\n  timestamp: number;\n}",
+      "docstring": "Save event detail",
+      "path": "src/components/sp-markdown-editor/types/editor.types.ts"
+    },
+    "src/components/sp-markdown-editor/types/editor.types.ts::ModeChangeEvent": {
+      "declaration": "export interface ModeChangeEvent {\n  /** Previous mode */\n  oldMode: EditorMode;\n  /** New mode */\n  newMode: EditorMode;\n}",
+      "docstring": "Mode change event detail",
+      "path": "src/components/sp-markdown-editor/types/editor.types.ts"
+    },
+    "src/components/sp-markdown-editor/types/editor.types.ts::ImportEvent": {
+      "declaration": "export interface ImportEvent {\n  /** Imported filename */\n  filename: string;\n  /** File size in bytes */\n  size: number;\n  /** File content */\n  content: string;\n}",
+      "docstring": "Import event detail",
+      "path": "src/components/sp-markdown-editor/types/editor.types.ts"
+    },
+    "src/components/sp-markdown-editor/types/editor.types.ts::ExportEvent": {
+      "declaration": "export interface ExportEvent {\n  /** Exported filename */\n  filename: string;\n  /** File size in bytes */\n  size: number;\n}",
+      "docstring": "Export event detail",
+      "path": "src/components/sp-markdown-editor/types/editor.types.ts"
+    },
+    "src/components/sp-markdown-editor/types/editor.types.ts::ImagePasteEvent": {
+      "declaration": "export interface ImagePasteEvent {\n  /** File object from paste */\n  file: File;\n  /** Data URL for preview */\n  dataUrl: string;\n}",
+      "docstring": "Image paste event detail",
+      "path": "src/components/sp-markdown-editor/types/editor.types.ts"
+    },
+    "src/components/sp-org-chart/types/org-chart.types.ts::User": {
+      "declaration": "export interface User {\n  id: string;\n  name: string;\n  role: string;\n  reportsTo?: string;\n  avatar?: string;\n}",
+      "docstring": "User data structure with reporting relationships",
+      "path": "src/components/sp-org-chart/types/org-chart.types.ts"
+    },
+    "src/components/sp-org-chart/types/org-chart.types.ts::UserEventDetail": {
+      "declaration": "export interface UserEventDetail {\n  userId: string;\n  user: User;\n}",
+      "docstring": "Event detail for user click/delete events",
+      "path": "src/components/sp-org-chart/types/org-chart.types.ts"
+    },
+    "src/components/sp-org-chart/types/org-chart.types.ts::HierarchyChangeDetail": {
+      "declaration": "export interface HierarchyChangeDetail {\n  userId: string;\n  oldManagerId: string | null;\n  newManagerId: string | null;\n}",
+      "docstring": "Event detail for hierarchy change events (drag-and-drop)",
+      "path": "src/components/sp-org-chart/types/org-chart.types.ts"
+    },
+    "src/components/sp-walkthrough/types/walkthrough.types.ts::Scene": {
+      "declaration": "export interface Scene {\n  /** Unique identifier for this scene */\n  id: string;\n\n  /** Display title for the scene */\n  title: string;\n\n  /** Optional description/instructions for the scene */\n  description?: string;\n\n  /** Timestamp in seconds when this scene should activate (for video-synced walkthroughs) */\n  timestamp: number;\n\n  /** CSS selector for the DOM element to highlight during this scene */\n  highlightSelector?: string;\n\n  /** Duration in seconds for manual mode auto-advance (optional) */\n  duration?: number;\n}",
+      "docstring": "Scene configuration for a single step in the walkthrough",
+      "path": "src/components/sp-walkthrough/types/walkthrough.types.ts"
+    },
+    "src/components/sp-walkthrough/types/walkthrough.types.ts::SceneChangeDetail": {
+      "declaration": "export interface SceneChangeDetail {\n  /** ID of the new scene */\n  sceneId: string;\n\n  /** Index of the new scene in the scenes array */\n  sceneIndex: number;\n\n  /** Current video timestamp in seconds */\n  timestamp: number;\n}",
+      "docstring": "Detail for scene change events",
+      "path": "src/components/sp-walkthrough/types/walkthrough.types.ts"
+    },
+    "src/components/sp-walkthrough/types/walkthrough.types.ts::TimelineUpdateDetail": {
+      "declaration": "export interface TimelineUpdateDetail {\n  /** Updated scenes array */\n  scenes: Scene[];\n\n  /** Type of change that occurred */\n  changeType: 'create' | 'update' | 'delete';\n\n  /** ID of the affected scene */\n  affectedSceneId: string;\n}",
+      "docstring": "Detail for timeline update events (author mode)",
+      "path": "src/components/sp-walkthrough/types/walkthrough.types.ts"
+    }
+  }
+}

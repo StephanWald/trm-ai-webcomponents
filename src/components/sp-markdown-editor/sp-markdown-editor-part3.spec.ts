@@ -113,7 +113,7 @@ it('voice dictation: start, receive final result, stop; webkit SpeechRecognizer 
 it('voice dictation: interim not appended, error resets isListening', async () => {
   const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
   const page = await createPage('<sp-markdown-editor value="Hello"></sp-markdown-editor>');
-  const { mockSpeechRecognizer, getOnResult, getOnError } = setupMockSpeechRecognizer(page);
+  const { getOnResult, getOnError } = setupMockSpeechRecognizer(page);
 
   // Start listening
   page.rootInstance.isListening = false;
