@@ -6,10 +6,10 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ContentChangeEvent, EditorMode, ExportEvent, ImagePasteEvent, ImportEvent, ModeChangeEvent, SaveEvent } from "./components/sp-markdown-editor/types/editor.types";
-import { HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
+import { BranchFilterMode, HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
 import { Scene, SceneChangeDetail, TimelineUpdateDetail } from "./components/sp-walkthrough/types/walkthrough.types";
 export { ContentChangeEvent, EditorMode, ExportEvent, ImagePasteEvent, ImportEvent, ModeChangeEvent, SaveEvent } from "./components/sp-markdown-editor/types/editor.types";
-export { HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
+export { BranchFilterMode, HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
 export { Scene, SceneChangeDetail, TimelineUpdateDetail } from "./components/sp-walkthrough/types/walkthrough.types";
 export namespace Components {
     interface SpExample {
@@ -69,9 +69,19 @@ export namespace Components {
         "clearHighlight": () => Promise<void>;
         /**
           * Enable/disable edit mode for drag-and-drop and deletion
-          * @default false
+          * @default true
          */
         "editable": boolean;
+        /**
+          * Branch ID to filter by when filterMode is not 'none'
+          * @default ''
+         */
+        "filterBranchId": string;
+        /**
+          * Branch filter mode — 'none' shows all, 'highlight' dims non-matching, 'isolate' hides unrelated branches
+          * @default 'none'
+         */
+        "filterMode": BranchFilterMode;
         /**
           * Get the currently selected user
          */
@@ -334,9 +344,19 @@ declare namespace LocalJSX {
     interface SpOrgChart {
         /**
           * Enable/disable edit mode for drag-and-drop and deletion
-          * @default false
+          * @default true
          */
         "editable"?: boolean;
+        /**
+          * Branch ID to filter by when filterMode is not 'none'
+          * @default ''
+         */
+        "filterBranchId"?: string;
+        /**
+          * Branch filter mode — 'none' shows all, 'highlight' dims non-matching, 'isolate' hides unrelated branches
+          * @default 'none'
+         */
+        "filterMode"?: BranchFilterMode;
         /**
           * Custom message when users array is empty
           * @default 'No data available'
