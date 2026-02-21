@@ -113,12 +113,13 @@ Plans:
   3. Developer can run `npm install @skillspilot/webcomponents` or add CDN script tag from jsdelivr/unpkg and immediately use components
   4. Maintainer can create GitHub release and see automated CI/CD publish to npm with provenance, generate changelog via Changesets, and deploy updated docs to GitHub Pages
   5. Documentation versioning keeps docs in sync with component releases, showing version picker with historical API references
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
-- [ ] 06-03: TBD
+- [ ] 06-01-PLAN.md — Stencil docs-json output target, CSS @prop annotations, @part JSDoc tags
+- [ ] 06-02-PLAN.md — CI/CD: release.yml npm provenance, docs-deploy.yml GitHub Pages workflow
+- [ ] 06-03-PLAN.md — Docusaurus site scaffolding, config, LiveExample/ApiReference components, getting-started + theming guides
+- [ ] 06-04-PLAN.md — Component MDX pages with API reference + live examples, changelog
 
 ## Progress
 
@@ -132,8 +133,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 3. Walkthrough Component | 3/3 | ✓ Complete | 2026-01-31 |
 | 4. Markdown Editor Component | 4/4 | ✓ Complete | 2026-01-31 |
 | 5. Testing & Quality | 3/3 | Complete   | 2026-02-20 |
-| 6. Documentation & Publishing | 0/3 | Not started | - |
+| 6. Documentation & Publishing | 0/4 | Not started | - |
 
 ---
 *Roadmap created: 2026-01-31*
-*Last updated: 2026-02-20 — Phase 5 plan 02 complete, sp-walkthrough coverage tests added*
+*Last updated: 2026-02-21 — Phase 6 plans created (4 plans in 3 waves)*
