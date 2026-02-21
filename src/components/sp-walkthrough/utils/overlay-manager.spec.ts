@@ -1,5 +1,7 @@
 import { OverlayManager } from './overlay-manager';
 
+const STYLES_ID = 'sp-walkthrough-highlight-styles';
+
 describe('OverlayManager', () => {
   let manager: OverlayManager;
   let testElement: HTMLElement;
@@ -34,6 +36,9 @@ describe('OverlayManager', () => {
   afterEach(() => {
     manager.cleanup();
     document.body.innerHTML = '';
+    // Remove injected styles between tests to ensure idempotency tests work correctly
+    const existingStyles = document.getElementById(STYLES_ID);
+    if (existingStyles) existingStyles.remove();
   });
 
   describe('highlightElement', () => {
@@ -109,6 +114,86 @@ describe('OverlayManager', () => {
 
       const overlays = document.querySelectorAll('.sp-walkthrough-highlight');
       expect(overlays.length).toBe(1);
+    });
+
+    it('applies reddish-brown border (#8B4513) by default', () => {
+      manager.highlightElement('#test-element');
+
+      const overlay = document.querySelector('.sp-walkthrough-highlight') as HTMLElement;
+      expect(overlay.style.border).toContain('#8B4513');
+    });
+
+    it('default overlay has dual glow box-shadow with spotlight', () => {
+      manager.highlightElement('#test-element');
+
+      const overlay = document.querySelector('.sp-walkthrough-highlight') as HTMLElement;
+      // Must contain spotlight (9999px) and reddish-brown glow (rgba(139, 69, 19, ...))
+      expect(overlay.style.boxShadow).toContain('9999px');
+      expect(overlay.style.boxShadow).toContain('139, 69, 19');
+    });
+
+    it('default overlay has no animation property set', () => {
+      manager.highlightElement('#test-element');
+
+      const overlay = document.querySelector('.sp-walkthrough-highlight') as HTMLElement;
+      expect(overlay.style.animation).toBeFalsy();
+    });
+
+    it('active highlight uses green border (#28a745)', () => {
+      manager.highlightElement('#test-element', { active: true });
+
+      const overlay = document.querySelector('.sp-walkthrough-highlight') as HTMLElement;
+      expect(overlay.style.border).toContain('#28a745');
+    });
+
+    it('active highlight has breathing animation set', () => {
+      manager.highlightElement('#test-element', { active: true });
+
+      const overlay = document.querySelector('.sp-walkthrough-highlight') as HTMLElement;
+      expect(overlay.style.animation).toContain('sp-walkthrough-breathe');
+      expect(overlay.style.animation).toContain('1.5s');
+    });
+
+    it('active highlight animation includes infinite repeat', () => {
+      manager.highlightElement('#test-element', { active: true });
+
+      const overlay = document.querySelector('.sp-walkthrough-highlight') as HTMLElement;
+      expect(overlay.style.animation).toContain('infinite');
+    });
+
+    it('injects @keyframes sp-walkthrough-breathe into document.head', () => {
+      manager.highlightElement('#test-element', { active: true });
+
+      const styleEl = document.getElementById(STYLES_ID);
+      expect(styleEl).toBeTruthy();
+      expect(styleEl?.textContent).toContain('sp-walkthrough-breathe');
+    });
+
+    it('style injection is idempotent (second call does not add duplicate)', () => {
+      manager.highlightElement('#test-element', { active: true });
+      manager.highlightElement('#test-element', { active: true });
+
+      const styleEls = document.querySelectorAll(`#${STYLES_ID}`);
+      expect(styleEls.length).toBe(1);
+    });
+
+    it('clearHighlights removes overlays but leaves injected styles', () => {
+      manager.highlightElement('#test-element', { active: true });
+      manager.clearHighlights();
+
+      const overlays = document.querySelectorAll('.sp-walkthrough-highlight');
+      expect(overlays.length).toBe(0);
+
+      // Styles remain (lightweight and reusable)
+      const styleEl = document.getElementById(STYLES_ID);
+      expect(styleEl).toBeTruthy();
+    });
+
+    it('default highlight also triggers style injection', () => {
+      manager.highlightElement('#test-element');
+
+      const styleEl = document.getElementById(STYLES_ID);
+      expect(styleEl).toBeTruthy();
     });
   });
 

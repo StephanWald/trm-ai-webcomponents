@@ -1,11 +1,43 @@
 /**
- * Manages DOM element highlighting via fixed-position overlays
- * Overlays are appended to document.body to escape shadow DOM boundaries
+ * Manages DOM element highlighting via fixed-position overlays.
+ * Overlays are appended to document.body to escape shadow DOM boundaries.
+ *
+ * Default highlight: reddish-brown border (#8B4513) with dual glow.
+ * Active highlight: green border (#28a745) with 1.5s breathing animation.
  */
 
 interface OverlayReference {
   overlay: HTMLElement;
   target: Element;
+}
+
+/** Options for highlight appearance */
+export interface HighlightOptions {
+  /** When true, uses green breathing animation instead of static reddish-brown glow */
+  active?: boolean;
+}
+
+/** ID of the injected global styles element */
+const STYLES_ID = 'sp-walkthrough-highlight-styles';
+
+/** Inject @keyframes animation once into document.head */
+function injectHighlightStyles(): void {
+  if (document.getElementById(STYLES_ID)) return;
+
+  const style = document.createElement('style');
+  style.id = STYLES_ID;
+  style.textContent = `
+    @keyframes sp-walkthrough-breathe {
+      0%, 100% {
+        box-shadow: 0 0 10px rgba(40, 167, 69, 0.5), 0 0 20px rgba(40, 167, 69, 0.3), 0 0 0 9999px rgba(0, 0, 0, 0.5);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(40, 167, 69, 0.8), 0 0 40px rgba(40, 167, 69, 0.5), 0 0 0 9999px rgba(0, 0, 0, 0.5);
+      }
+    }
+  `.trim();
+
+  document.head.appendChild(style);
 }
 
 export class OverlayManager {
@@ -18,10 +50,11 @@ export class OverlayManager {
   }
 
   /**
-   * Highlight a DOM element by creating a fixed-position overlay
+   * Highlight a DOM element by creating a fixed-position overlay.
    * @param selector CSS selector for the element to highlight
+   * @param options Optional highlight options (active state for green breathing animation)
    */
-  highlightElement(selector: string): void {
+  highlightElement(selector: string, options?: HighlightOptions): void {
     this.clearHighlights();
 
     // Find target element anywhere in document
@@ -31,8 +64,11 @@ export class OverlayManager {
       return;
     }
 
+    // Inject animation styles if needed (idempotent)
+    injectHighlightStyles();
+
     // Create overlay with spotlight effect
-    const overlay = this.createOverlay(targetElement);
+    const overlay = this.createOverlay(targetElement, options);
 
     // Append to document.body to escape shadow DOM
     document.body.appendChild(overlay);
@@ -52,10 +88,11 @@ export class OverlayManager {
   }
 
   /**
-   * Create overlay element positioned over target
+   * Create overlay element positioned over target with appropriate animation.
    */
-  private createOverlay(target: Element): HTMLElement {
+  private createOverlay(target: Element, options?: HighlightOptions): HTMLElement {
     const rect = target.getBoundingClientRect();
+    const isActive = options?.active === true;
 
     const overlay = document.createElement('div');
     overlay.className = 'sp-walkthrough-highlight';
@@ -68,17 +105,26 @@ export class OverlayManager {
     overlay.style.height = `${rect.height}px`;
     overlay.style.zIndex = '10000';
     overlay.style.pointerEvents = 'none'; // Don't block interactions with highlighted element
-    overlay.style.border = '3px solid var(--dwc-color-primary, #0066cc)';
     overlay.style.borderRadius = '4px';
-    overlay.style.boxShadow = '0 0 0 9999px rgba(0, 0, 0, 0.5)'; // Spotlight effect
     overlay.style.transition = 'all 0.3s ease';
+
+    if (isActive) {
+      // Active state: green border with breathing glow animation
+      overlay.style.border = '3px solid #28a745';
+      overlay.style.animation = 'sp-walkthrough-breathe 1.5s ease-in-out infinite';
+    } else {
+      // Default state: reddish-brown border with dual static glow + spotlight
+      overlay.style.border = '3px solid #8B4513';
+      overlay.style.boxShadow =
+        '0 0 10px rgba(139, 69, 19, 0.5), 0 0 20px rgba(139, 69, 19, 0.3), 0 0 0 9999px rgba(0, 0, 0, 0.5)';
+    }
 
     return overlay;
   }
 
   /**
-   * Update overlay positions based on current target positions
-   * Called on scroll/resize via requestAnimationFrame throttling
+   * Update overlay positions based on current target positions.
+   * Called on scroll/resize via requestAnimationFrame throttling.
    */
   updatePositions(): void {
     this.overlays.forEach(({ overlay, target }) => {
@@ -115,7 +161,8 @@ export class OverlayManager {
   };
 
   /**
-   * Remove all overlays and clean up event listeners
+   * Remove all overlays and clean up event listeners.
+   * Injected styles are left in place (lightweight and reusable).
    */
   clearHighlights(): void {
     // Cancel any pending animation frame
@@ -139,7 +186,7 @@ export class OverlayManager {
   }
 
   /**
-   * Complete cleanup - call when component is destroyed
+   * Complete cleanup - call when component is destroyed.
    */
   cleanup(): void {
     this.clearHighlights();

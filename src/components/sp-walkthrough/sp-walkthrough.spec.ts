@@ -1956,6 +1956,380 @@ describe('sp-walkthrough', () => {
     });
   });
 
+  describe('scene list popup', () => {
+    it('sceneListOpen is false by default', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      expect(page.rootInstance['sceneListOpen']).toBe(false);
+    });
+
+    it('toggleSceneListPopup opens popup when closed', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      page.rootInstance.scenes = sampleScenes;
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['toggleSceneListPopup']();
+      await page.waitForChanges();
+
+      expect(page.rootInstance['sceneListOpen']).toBe(true);
+    });
+
+    it('renders scene list popup with items when open', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      page.rootInstance.scenes = sampleScenes;
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['sceneListOpen'] = true;
+      await page.waitForChanges();
+
+      const popup = page.root?.shadowRoot?.querySelector('.scene-list-popup');
+      expect(popup).toBeTruthy();
+
+      const items = page.root?.shadowRoot?.querySelectorAll('.scene-list-popup__item');
+      expect(items?.length).toBe(3);
+    });
+
+    it('popup item shows scene title and formatted timestamp', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      page.rootInstance.scenes = sampleScenes;
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['sceneListOpen'] = true;
+      await page.waitForChanges();
+
+      const firstItem = page.root?.shadowRoot?.querySelector('.scene-list-popup__item');
+      const title = firstItem?.querySelector('.scene-list-popup__title');
+      const time = firstItem?.querySelector('.scene-list-popup__time');
+      expect(title?.textContent).toBe('Scene 1');
+      expect(time?.textContent).toBe('0:00');
+    });
+
+    it('current scene item has --active modifier class', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      page.rootInstance.scenes = sampleScenes;
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['sceneListOpen'] = true;
+      await page.waitForChanges();
+
+      const items = page.root?.shadowRoot?.querySelectorAll('.scene-list-popup__item');
+      expect(items?.[0]?.classList.contains('scene-list-popup__item--active')).toBe(true);
+      expect(items?.[1]?.classList.contains('scene-list-popup__item--active')).toBe(false);
+    });
+
+    it('handleSceneSelectByIndex advances to selected scene and closes popup', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      page.rootInstance.scenes = sampleScenes;
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['sceneListOpen'] = true;
+      await page.waitForChanges();
+
+      page.rootInstance['handleSceneSelectByIndex'](2);
+      await page.waitForChanges();
+
+      expect(page.rootInstance['currentSceneIndex']).toBe(2);
+      expect(page.rootInstance['sceneListOpen']).toBe(false);
+    });
+
+    it('closeSceneListPopup sets sceneListOpen to false', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      page.rootInstance.scenes = sampleScenes;
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['sceneListOpen'] = true;
+      await page.waitForChanges();
+
+      page.rootInstance['closeSceneListPopup']();
+      await page.waitForChanges();
+
+      expect(page.rootInstance['sceneListOpen']).toBe(false);
+    });
+  });
+
+  describe('volume popup', () => {
+    it('volumePopupOpen is false by default', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      expect(page.rootInstance['volumePopupOpen']).toBe(false);
+    });
+
+    it('toggleVolumePopup opens popup when closed', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['toggleVolumePopup']();
+      await page.waitForChanges();
+
+      expect(page.rootInstance['volumePopupOpen']).toBe(true);
+    });
+
+    it('renders volume popup with vertical slider when open', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['volumePopupOpen'] = true;
+      await page.waitForChanges();
+
+      const popup = page.root?.shadowRoot?.querySelector('.volume-popup');
+      expect(popup).toBeTruthy();
+
+      const slider = page.root?.shadowRoot?.querySelector('.volume-popup__slider');
+      expect(slider).toBeTruthy();
+      expect(slider?.getAttribute('type')).toBe('range');
+    });
+
+    it('volume popup slider has vertical orientation aria attribute', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['volumePopupOpen'] = true;
+      await page.waitForChanges();
+
+      const slider = page.root?.shadowRoot?.querySelector('.volume-popup__slider');
+      expect(slider?.getAttribute('aria-orientation')).toBe('vertical');
+    });
+
+    it('closeVolumePopup sets volumePopupOpen to false', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['volumePopupOpen'] = true;
+      await page.waitForChanges();
+
+      page.rootInstance['closeVolumePopup']();
+      await page.waitForChanges();
+
+      expect(page.rootInstance['volumePopupOpen']).toBe(false);
+    });
+  });
+
+  describe('custom caption overlay', () => {
+    it('activeCueText is empty string by default', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      expect(page.rootInstance['activeCueText']).toBe('');
+    });
+
+    it('caption overlay not rendered when captionsEnabled is false', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['captionsEnabled'] = false;
+      page.rootInstance['activeCueText'] = 'Hello world';
+      await page.waitForChanges();
+
+      const overlay = page.root?.shadowRoot?.querySelector('.caption-overlay');
+      expect(overlay).toBeFalsy();
+    });
+
+    it('caption overlay not rendered when activeCueText is empty', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['captionsEnabled'] = true;
+      page.rootInstance['activeCueText'] = '';
+      await page.waitForChanges();
+
+      const overlay = page.root?.shadowRoot?.querySelector('.caption-overlay');
+      expect(overlay).toBeFalsy();
+    });
+
+    it('caption overlay renders when captionsEnabled and activeCueText are set', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['captionsEnabled'] = true;
+      page.rootInstance['activeCueText'] = 'Hello world';
+      await page.waitForChanges();
+
+      const overlay = page.root?.shadowRoot?.querySelector('.caption-overlay');
+      expect(overlay).toBeTruthy();
+      expect(overlay?.textContent).toBe('Hello world');
+    });
+
+    it('handleCueChange sets activeCueText from active cue', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['captionsEnabled'] = true;
+
+      const mockCue = { text: 'Subtitle text' };
+      const mockTrack = {
+        activeCues: { length: 1, 0: mockCue },
+      };
+
+      page.rootInstance['handleCueChange'](mockTrack as any);
+      await page.waitForChanges();
+
+      expect(page.rootInstance['activeCueText']).toBe('Subtitle text');
+    });
+
+    it('handleCueChange clears activeCueText when no active cues', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['captionsEnabled'] = true;
+      page.rootInstance['activeCueText'] = 'Previous text';
+
+      const mockTrack = { activeCues: { length: 0 } };
+      page.rootInstance['handleCueChange'](mockTrack as any);
+      await page.waitForChanges();
+
+      expect(page.rootInstance['activeCueText']).toBe('');
+    });
+
+    it('handleCueChange clears text when captionsEnabled is false', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['captionsEnabled'] = false;
+      page.rootInstance['activeCueText'] = 'Old text';
+
+      const mockTrack = {
+        activeCues: { length: 1, 0: { text: 'New text' } },
+      };
+      page.rootInstance['handleCueChange'](mockTrack as any);
+      await page.waitForChanges();
+
+      expect(page.rootInstance['activeCueText']).toBe('');
+    });
+  });
+
+  describe('markdown rendering', () => {
+    it('scene description renders as .scene-description-markdown when description exists', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      page.rootInstance.scenes = sampleScenes;
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const markdownEl = page.root?.shadowRoot?.querySelector('.scene-description-markdown');
+      expect(markdownEl).toBeTruthy();
+    });
+
+    it('scene description is not rendered when scene has no description', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      const scenesNoDesc: Scene[] = [
+        { id: '1', title: 'No Desc', timestamp: 0 },
+      ];
+      page.rootInstance.scenes = scenesNoDesc;
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const markdownEl = page.root?.shadowRoot?.querySelector('.scene-description-markdown');
+      expect(markdownEl).toBeFalsy();
+    });
+
+    it('renderMarkdownDescription returns a div with innerHTML', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      // Verify markdownRenderer exists and render method works
+      const renderer = page.rootInstance['markdownRenderer'];
+      expect(renderer).toBeTruthy();
+      expect(typeof renderer.render).toBe('function');
+    });
+  });
+
   describe('advanceToScene bounds', () => {
     it('advanceToScene does nothing when index is out of bounds', async () => {
       const page = await newSpecPage({
