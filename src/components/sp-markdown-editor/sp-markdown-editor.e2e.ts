@@ -52,7 +52,7 @@ test.describe('sp-markdown-editor E2E', () => {
     const footerInfo = await page.evaluate(() => {
       const el = document.querySelector('sp-markdown-editor');
       const footer = el?.shadowRoot?.querySelector('.editor-footer');
-      const stats = el?.shadowRoot?.querySelector('.editor-stats');
+      const stats = el?.shadowRoot?.querySelector('.stats');
       return {
         hasFooter: !!footer,
         hasStats: !!stats,
@@ -327,7 +327,7 @@ test.describe('sp-markdown-editor E2E', () => {
 
     const statsText = await page.evaluate(() => {
       const el = document.querySelector('sp-markdown-editor');
-      return el?.shadowRoot?.querySelector('.editor-stats')?.textContent || '';
+      return el?.shadowRoot?.querySelector('.stats')?.textContent || '';
     });
 
     expect(statsText).toContain('16'); // 16 chars
@@ -335,22 +335,26 @@ test.describe('sp-markdown-editor E2E', () => {
   });
 
   test('bold button wraps selection', async ({ page }) => {
-    // Set content and selection
+    // Set content via input event so component state updates
     await page.evaluate(() => {
       const el = document.querySelector('sp-markdown-editor');
       const textarea = el?.shadowRoot?.querySelector('.source-editor') as HTMLTextAreaElement;
       if (textarea) {
         textarea.value = 'Hello world';
-        textarea.setSelectionRange(0, 5); // Select "Hello"
-        textarea.focus();
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
       }
     });
 
     await page.waitForTimeout(100);
 
-    // Click bold button
+    // Set selection and click bold in same evaluate to preserve selection
     await page.evaluate(() => {
       const el = document.querySelector('sp-markdown-editor');
+      const textarea = el?.shadowRoot?.querySelector('.source-editor') as HTMLTextAreaElement;
+      if (textarea) {
+        textarea.focus();
+        textarea.setSelectionRange(0, 5); // Select "Hello"
+      }
       const buttons = el?.shadowRoot?.querySelectorAll('.toolbar-btn');
       const boldBtn = Array.from(buttons || []).find(btn => btn.textContent?.trim() === 'B') as HTMLElement;
       boldBtn?.click();
