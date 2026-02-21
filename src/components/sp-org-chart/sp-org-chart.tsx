@@ -1,11 +1,10 @@
 import { Component, Prop, State, Event, EventEmitter, Method, Watch, Element, h, Host } from '@stencil/core';
-import { User, TreeNode, FilterResult, HierarchyChangeDetail, UserEventDetail } from './types/org-chart.types';
+import { User, TreeNode, FilterResult, HierarchyChangeDetail, UserEventDetail, BranchFilterMode, getDisplayName, isBranch } from './types/org-chart.types';
 import { buildTree } from './utils/tree-builder';
-import { filterTree } from './utils/tree-filter';
+import { filterByBranch } from './utils/tree-filter';
 import { sortTree } from './utils/tree-sorter';
 
 /**
- * @part filter-input - Filter input field
  * @part no-data - No data message container
  * @part tree-container - Main tree container
  * @part user-tile - Individual user tile
@@ -27,7 +26,7 @@ export class SpOrgChart {
   /**
    * Enable/disable edit mode for drag-and-drop and deletion
    */
-  @Prop() editable: boolean = false;
+  @Prop() editable: boolean = true;
 
   /**
    * Custom message when users array is empty
@@ -39,11 +38,20 @@ export class SpOrgChart {
    */
   @Prop() theme: 'light' | 'dark' | 'auto' = 'auto';
 
+  /**
+   * Branch filter mode — 'none' shows all, 'highlight' dims non-matching, 'isolate' hides unrelated branches
+   */
+  @Prop() filterMode: BranchFilterMode = 'none';
+
+  /**
+   * Branch ID to filter by when filterMode is not 'none'
+   */
+  @Prop() filterBranchId: string = '';
+
   @State() treeData: TreeNode[] = [];
   @State() selectedUserId: string | null = null;
   @State() highlightedUserId: string | null = null;
-  @State() filterText: string = '';
-  @State() filterResults: Map<string, FilterResult> | null = null;
+  @State() branchFilterResults: Map<string, FilterResult> | null = null;
   @State() draggedUserId: string | null = null;
   @State() showDropZones: boolean = false;
   @State() dropTargetId: string | null = null;
@@ -83,6 +91,16 @@ export class SpOrgChart {
     this.rebuildTree();
   }
 
+  @Watch('filterMode')
+  handleFilterModeChange() {
+    this.applyBranchFilter();
+  }
+
+  @Watch('filterBranchId')
+  handleFilterBranchIdChange() {
+    this.applyBranchFilter();
+  }
+
   componentWillLoad() {
     this.rebuildTree();
   }
@@ -105,8 +123,15 @@ export class SpOrgChart {
   private rebuildTree() {
     const tree = buildTree(this.users);
     this.treeData = sortTree(tree);
-    this.filterResults = null;
-    this.filterText = '';
+    this.branchFilterResults = null;
+  }
+
+  private applyBranchFilter() {
+    if (this.filterMode === 'none' || !this.filterBranchId) {
+      this.branchFilterResults = null;
+    } else {
+      this.branchFilterResults = filterByBranch(this.treeData, this.filterBranchId, this.filterMode);
+    }
   }
 
   /**
@@ -151,21 +176,6 @@ export class SpOrgChart {
       });
     }
   }
-
-  // Filter handling
-  private handleFilterInput = (ev: Event) => {
-    const input = ev.target as HTMLInputElement;
-    this.filterText = input.value;
-
-    if (this.filterText.trim()) {
-      const lowerFilter = this.filterText.toLowerCase();
-      this.filterResults = filterTree(this.treeData, node =>
-        node.name.toLowerCase().includes(lowerFilter) || node.role.toLowerCase().includes(lowerFilter)
-      );
-    } else {
-      this.filterResults = null;
-    }
-  };
 
   // Click and double-click handling
   private handleUserClick = (ev: MouseEvent, node: TreeNode) => {
@@ -345,22 +355,28 @@ export class SpOrgChart {
   }
 
   // Rendering helpers
-  private shouldDimNode(node: TreeNode): boolean {
-    if (!this.filterResults) return false;
-
-    const result = this.filterResults.get(node.id);
+  private shouldHideNode(node: TreeNode): boolean {
+    if (!this.branchFilterResults || this.filterMode !== 'isolate') return false;
+    const result = this.branchFilterResults.get(node.id);
     if (!result) return true;
+    // Hide if branch entity and not matching and no matching descendants
+    if (isBranch(node)) {
+      return !(result.matched || result.hasMatchingDescendant);
+    }
+    return false;
+  }
 
+  private shouldDimNode(node: TreeNode): boolean {
+    if (!this.branchFilterResults) return false;
+    const result = this.branchFilterResults.get(node.id);
+    if (!result) return true;
     return !(result.matched || result.hasMatchingDescendant || result.isAncestorOfMatch);
   }
 
-  private getUserInitials(name: string): string {
-    return name
-      .split(' ')
-      .map(part => part.charAt(0))
-      .slice(0, 2)
-      .join('')
-      .toUpperCase();
+  private getUserInitials(node: TreeNode): string {
+    const parts = [node.firstName];
+    if (node.lastName) parts.push(node.lastName);
+    return parts.map(p => p.charAt(0)).join('').toUpperCase();
   }
 
   private renderCountdownRing() {
@@ -390,11 +406,16 @@ export class SpOrgChart {
     const isSelected = this.selectedUserId === node.id;
     const isHighlighted = this.highlightedUserId === node.id;
     const isDimmed = this.shouldDimNode(node);
+    const isHidden = this.shouldHideNode(node);
     const isDragOver = this.dropTargetId === node.id;
     const isLongPressing = this.longPressUserId === node.id;
+    const branchEntity = isBranch(node);
+
+    if (isHidden) return null;
 
     const tileClasses = {
       'user-tile': true,
+      'branch-tile': branchEntity,
       selected: isSelected,
       highlighted: isHighlighted,
       dimmed: isDimmed,
@@ -418,22 +439,34 @@ export class SpOrgChart {
           onPointerMove={this.editable ? ev => this.handlePointerMove(ev) : undefined}
           onPointerUp={this.editable ? ev => this.handlePointerUp(ev) : undefined}
         >
-          <div class="user-avatar">
-            {node.avatar ? (
-              <img src={node.avatar} alt={node.name} class="avatar-img" />
+          {/* Avatar — circular for users, square for branches */}
+          <div class={{ 'user-avatar': true, 'branch-avatar': branchEntity }}>
+            {node.avatar || node.branchLogo ? (
+              <img src={branchEntity ? (node.branchLogo || node.avatar) : node.avatar} alt={getDisplayName(node)} class="avatar-img" />
             ) : (
-              <div class="avatar-initials">{this.getUserInitials(node.name)}</div>
+              <div class="avatar-initials">{this.getUserInitials(node)}</div>
             )}
           </div>
+
+          {/* Info section — horizontal layout to the right of avatar */}
           <div class="user-info">
-            <div class="user-name">{node.name}</div>
+            <div class="user-name">{getDisplayName(node)}</div>
             <div class="user-role">{node.role}</div>
+            {node.email && <div class="user-email">{node.email}</div>}
+            {node.phone && <div class="user-phone">{node.phone}</div>}
+            {node.branchName && !branchEntity && (
+              <div class="user-branch-badge">{node.branchName}</div>
+            )}
           </div>
+
           {isLongPressing && this.renderCountdownRing()}
         </div>
 
+        {/* Children indented below */}
         {node.children.length > 0 && (
-          <div class="tree-children">{node.children.map(child => this.renderTreeNode(child))}</div>
+          <div class="tree-children">
+            {node.children.map(child => this.renderTreeNode(child))}
+          </div>
         )}
       </div>
     );
@@ -451,7 +484,7 @@ export class SpOrgChart {
           onDrop={ev => this.handleDrop(ev, null)}
           onDragLeave={ev => this.handleDragLeave(ev)}
         >
-          <span class="drop-zone__icon">🔗</span>
+          <span class="drop-zone__icon">&#x1F517;</span>
           <span class="drop-zone__label">Unlink</span>
         </div>
 
@@ -462,7 +495,7 @@ export class SpOrgChart {
           onDrop={ev => this.handleDeleteDrop(ev)}
           onDragLeave={ev => this.handleDragLeave(ev)}
         >
-          <span class="drop-zone__icon">🗑️</span>
+          <span class="drop-zone__icon">&#x1F5D1;</span>
           <span class="drop-zone__label">Delete</span>
         </div>
       </div>
@@ -477,17 +510,6 @@ export class SpOrgChart {
 
     return (
       <Host class={hostClass}>
-        <div class="org-chart-toolbar">
-          <input
-            type="text"
-            class="filter-input"
-            part="filter-input"
-            placeholder="Filter by name or role..."
-            onInput={this.handleFilterInput}
-            value={this.filterText}
-          />
-        </div>
-
         {this.users.length === 0 && (
           <div class="no-data" part="no-data">
             {this.noDataMessage}
