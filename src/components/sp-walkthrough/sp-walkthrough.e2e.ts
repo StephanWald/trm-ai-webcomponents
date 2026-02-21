@@ -126,7 +126,7 @@ test.describe('sp-walkthrough E2E', () => {
     const sceneInfo = await page.evaluate(() => {
       const el = document.querySelector('sp-walkthrough');
       const title = el?.shadowRoot?.querySelector('.scene-title')?.textContent;
-      const description = el?.shadowRoot?.querySelector('.scene-description')?.textContent;
+      const description = el?.shadowRoot?.querySelector('.scene-description-markdown')?.textContent;
       return { title, description };
     });
 
@@ -349,11 +349,19 @@ test.describe('sp-walkthrough E2E', () => {
 
     await page.waitForTimeout(300);
 
-    // Open the popup then click the third scene item
+    // Open the scene list popup and click the third item
     await page.evaluate(() => {
       const el = document.querySelector('sp-walkthrough');
-      // Use the programmatic handleSceneSelectByIndex method
-      (el as any).handleSceneSelectByIndex(2);
+      const trigger = el?.shadowRoot?.querySelector('.scene-list-trigger') as HTMLElement;
+      trigger?.click();
+    });
+
+    await page.waitForTimeout(200);
+
+    await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      const items = el?.shadowRoot?.querySelectorAll('.scene-list-popup__item');
+      (items?.[2] as HTMLElement)?.click();
     });
 
     await page.waitForTimeout(300);
