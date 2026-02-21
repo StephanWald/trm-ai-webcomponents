@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 6 of 6 (Documentation & Publishing)
-Plan: 2 of 5 in current phase
+Plan: 3 of 5 in current phase
 Status: In Progress
-Last activity: 2026-02-21 — Plan 06-02 complete, CI/CD workflows for npm provenance and GitHub Pages deployment created
+Last activity: 2026-02-21 — Plan 06-03 complete, Docusaurus site scaffold with LiveExample + ApiReference components and getting-started/theming guides
 
-Progress: [█████████░] 95%
+Progress: [█████████░] 96%
 
 ## Performance Metrics
 
@@ -32,7 +32,7 @@ Progress: [█████████░] 95%
 | 03-walkthrough-component | 3/3 | 15.5min | 5.2min |
 | 04-markdown-editor-component | 4/4 | 31.3min | 7.8min |
 | 05-testing-quality | 3/3 | ~70min | ~23min |
-| 06-documentation-publishing | 2/5 | ~2min (running) | ~1min |
+| 06-documentation-publishing | 3/5 | ~15min | ~5min |
 
 **Recent Trend:**
 - Last 5 plans: 04-01 (4.1min), 04-02 (3.0min), 04-03 (5.2min), 04-04 (19.0min)
@@ -42,6 +42,7 @@ Progress: [█████████░] 95%
 | Phase 05-testing-quality P01 | 87 | 2 tasks | 3 files |
 | Phase 06-documentation-publishing P02 | 1 | 2 tasks | 2 files |
 | Phase 06-documentation-publishing P01 | 10 | 2 tasks | 9 files |
+| Phase 06-documentation-publishing P03 | 7 | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -109,6 +110,9 @@ Recent decisions affecting current work:
 - [Phase 06-02]: GitHub Pages native deploy: actions/upload-pages-artifact@v3 + actions/deploy-pages@v4 (no gh-pages branch needed)
 - [Phase 06-01]: @part JSDoc docs strings (not just part= attributes) populate the docs field in docs.json — Stencil picks up part names from render method but docs only from @part tags in component JSDoc block
 - [Phase 06-01]: sp-walkthrough deliberately exposes no CSS parts — panel is self-contained overlay; use CSS custom properties for theming instead of ::part() selectors
+- [Phase 06-documentation-publishing]: Docusaurus docs-only mode (routeBasePath: '/') — component library docs served from site root without blog
+- [Phase 06-documentation-publishing]: React.JSX.Element return type (not JSX.Element) — React 18 react-jsx transform no longer exposes global JSX namespace
+- [Phase 06-documentation-publishing]: tsconfig.json uses moduleResolution:Bundler, jsx:react-jsx, esModuleInterop for Docusaurus 3.9.2 React component compilation
 
 ### Pending Todos
 
@@ -121,12 +125,12 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-21 (phase execution)
-Stopped at: Completed 06-01-PLAN.md — docs-json output target + CSS @prop annotations + @part JSDoc; docs.json generated with complete API metadata for all 3 components
+Stopped at: Completed 06-03-PLAN.md — Docusaurus site scaffold in /docs; LiveExample iframe component + ApiReference docs.json tables; getting-started guide (npm + CDN) and theming guide (--dwc-* tokens, dark mode); site builds successfully
 Resume file: None
 
 ## Next Steps
 
-**Phase 6 In Progress - 2 of 5 plans executed**:
+**Phase 6 In Progress - 3 of 5 plans executed**:
 
 Plan 06-01 complete:
 - stencil.config.ts docs-json output target added
@@ -138,6 +142,14 @@ Plan 06-02 complete:
 - release.yml updated with NPM_CONFIG_PROVENANCE and createGithubReleases
 - docs-deploy.yml created for GitHub Pages deployment (build: Stencil then Docusaurus; deploy: native actions/deploy-pages@v4)
 
-**Ready for Plan 06-03**: Docusaurus site scaffolding
+Plan 06-03 complete:
+- Docusaurus 3 site scaffolded in /docs (package.json, docusaurus.config.ts, sidebars.ts)
+- LiveExample.tsx: sandboxed iframe with editable source textarea, loads CDN script
+- ApiReference.tsx: renders props/events/methods/styles/parts tables from docs.json data
+- getting-started.md: npm install, CDN script tag, quick start, peer dependencies (DOCS-04)
+- theming.md: --dwc-* tokens, customization, dark mode, CSS parts, DWC integration (DOCS-05)
+- Site builds successfully: `npm run build` generates static files in docs/build/
+
+**Ready for Plan 06-04**: Component pages with LiveExample and ApiReference
 
 **No blockers or concerns**
