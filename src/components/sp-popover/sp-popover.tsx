@@ -82,6 +82,13 @@ export class SpPopover {
 
   private rafHandle: number | null = null;
 
+  /** Sync initial open prop on component load — @Watch does not fire for initial values */
+  componentDidLoad(): void {
+    if (this.open) {
+      this.openInternal();
+    }
+  }
+
   /** Watch for external prop changes — sync open state */
   @Watch('open')
   onOpenChange(newVal: boolean) {
@@ -96,16 +103,16 @@ export class SpPopover {
   @Method()
   async showPopover(): Promise<void> {
     if (this.isOpen) return;
+    // Setting open=true triggers @Watch('open') → openInternal()
     this.open = true;
-    this.openInternal();
   }
 
   /** Close the popover and emit popover-close (POPV-04) */
   @Method()
   async hidePopover(): Promise<void> {
     if (!this.isOpen) return;
+    // Setting open=false triggers @Watch('open') → closeInternal()
     this.open = false;
-    this.closeInternal();
   }
 
   /** Toggle between open and closed states (POPV-04) */
