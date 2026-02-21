@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 6 of 6 (Documentation & Publishing)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase
 Status: In Progress
-Last activity: 2026-02-21 — Plan 06-03 complete, Docusaurus site scaffold with LiveExample + ApiReference components and getting-started/theming guides
+Last activity: 2026-02-21 — Plan 06-04 complete, three component MDX pages (sp-org-chart, sp-walkthrough, sp-markdown-editor) with LiveExample demos and ApiReference from docs.json; changelog page; full Docusaurus build success
 
-Progress: [█████████░] 96%
+Progress: [█████████░] 98%
 
 ## Performance Metrics
 
@@ -43,6 +43,7 @@ Progress: [█████████░] 96%
 | Phase 06-documentation-publishing P02 | 1 | 2 tasks | 2 files |
 | Phase 06-documentation-publishing P01 | 10 | 2 tasks | 9 files |
 | Phase 06-documentation-publishing P03 | 7 | 3 tasks | 14 files |
+| Phase 06-documentation-publishing P04 | 5 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -113,6 +114,9 @@ Recent decisions affecting current work:
 - [Phase 06-documentation-publishing]: Docusaurus docs-only mode (routeBasePath: '/') — component library docs served from site root without blog
 - [Phase 06-documentation-publishing]: React.JSX.Element return type (not JSX.Element) — React 18 react-jsx transform no longer exposes global JSX namespace
 - [Phase 06-documentation-publishing]: tsconfig.json uses moduleResolution:Bundler, jsx:react-jsx, esModuleInterop for Docusaurus 3.9.2 React component compilation
+- [Phase 06-documentation-publishing]: Use @site/../docs.json import path in MDX — @site alias maps to docs/, so this resolves to repo-root docs.json
+- [Phase 06-documentation-publishing]: Escape closing script tags as <\/script> in JSX template literals — prevents MDX acorn parser failures
+- [Phase 06-documentation-publishing]: Avoid backtick chars in LiveExample template literal content — MDX acorn cannot parse nested backticks reliably
 
 ### Pending Todos
 
@@ -125,12 +129,12 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-21 (phase execution)
-Stopped at: Completed 06-03-PLAN.md — Docusaurus site scaffold in /docs; LiveExample iframe component + ApiReference docs.json tables; getting-started guide (npm + CDN) and theming guide (--dwc-* tokens, dark mode); site builds successfully
+Stopped at: Completed 06-04-PLAN.md — three component MDX pages with LiveExample + ApiReference; changelog page; full Docusaurus build success
 Resume file: None
 
 ## Next Steps
 
-**Phase 6 In Progress - 3 of 5 plans executed**:
+**Phase 6 In Progress - 4 of 5 plans executed**:
 
 Plan 06-01 complete:
 - stencil.config.ts docs-json output target added
@@ -150,6 +154,13 @@ Plan 06-03 complete:
 - theming.md: --dwc-* tokens, customization, dark mode, CSS parts, DWC integration (DOCS-05)
 - Site builds successfully: `npm run build` generates static files in docs/build/
 
-**Ready for Plan 06-04**: Component pages with LiveExample and ApiReference
+Plan 06-04 complete:
+- docs/docs/components/sp-org-chart.mdx: 5 live examples + API reference
+- docs/docs/components/sp-walkthrough.mdx: 4 live examples + API reference
+- docs/docs/components/sp-markdown-editor.mdx: 5 live examples + peer dep notes + API reference
+- docs/docs/changelog.md: v0.0.1 content + Changesets versioning strategy note
+- All three component HTML pages built in docs/build/components/
+
+**Ready for Plan 06-05**: Final publishing checks
 
 **No blockers or concerns**

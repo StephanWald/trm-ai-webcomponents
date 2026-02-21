@@ -89,10 +89,10 @@
 
 - [x] **DOCS-01**: Docusaurus site builds and deploys to GitHub Pages via GitHub Actions
 - [x] **DOCS-02**: Each component has auto-generated API reference (props, events, methods, CSS custom properties, CSS parts)
-- [ ] **DOCS-03**: Each component has interactive live examples with editable code
+- [x] **DOCS-03**: Each component has interactive live examples with editable code
 - [x] **DOCS-04**: Getting started guide covers npm install, CDN script tag, and basic component usage
 - [x] **DOCS-05**: Theming guide explains `--dwc-*` token usage, customization, and dark mode setup
-- [ ] **DOCS-06**: Documentation is versioned and stays in sync with component releases
+- [x] **DOCS-06**: Documentation is versioned and stays in sync with component releases
 
 ## v2 Requirements
 
@@ -195,10 +195,10 @@
 | TEST-04 | Phase 5 | Pending |
 | DOCS-01 | Phase 6 | Complete |
 | DOCS-02 | Phase 6 | Complete |
-| DOCS-03 | Phase 6 | Pending |
+| DOCS-03 | Phase 6 | Complete |
 | DOCS-04 | Phase 6 | Complete |
 | DOCS-05 | Phase 6 | Complete |
-| DOCS-06 | Phase 6 | Pending |
+| DOCS-06 | Phase 6 | Complete |
 
 **Coverage:**
 - v1 requirements: 68 total
