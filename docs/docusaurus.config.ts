@@ -31,7 +31,7 @@ const config: Config = {
           // Docs-only mode: no separate home page, docs served from /
           routeBasePath: '/',
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/StephanWald/trm-ai-webcomponents/tree/main/docs/',
+          editUrl: 'https://github.com/StephanWald/trm-ai-webcomponents/tree/master/docs/',
         },
         // Disable blog for component library docs
         blog: false,
@@ -80,8 +80,8 @@ const config: Config = {
           title: 'More',
           items: [
             {
-              label: 'npm',
-              href: 'https://www.npmjs.com/package/@skillspilot/webcomponents',
+              label: 'Releases',
+              href: 'https://github.com/StephanWald/trm-ai-webcomponents/releases',
             },
             {
               label: 'GitHub',
