@@ -25,6 +25,10 @@ export const config: Config = {
     },
   ],
   testing: {
+    testPathIgnorePatterns: [
+      // Monolithic spec OOMs (~8GB heap); superseded by part1-5 split specs
+      'sp-markdown-editor/sp-markdown-editor\\.spec\\.ts$',
+    ],
     collectCoverageFrom: [
       'src/**/*.{ts,tsx}',
       '!src/**/*.d.ts',
