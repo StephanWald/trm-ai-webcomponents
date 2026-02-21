@@ -21,9 +21,9 @@ decisions:
 metrics:
   duration: "~1 min (Task 1 only; Task 2 pending human action)"
   completed_date: "2026-02-21"
-  tasks_completed: 1
+  tasks_completed: 2
   tasks_total: 2
-  files_changed: 1
+  files_changed: 2
 ---
 
 # Phase 6 Plan 5: Gap Closure — ROADMAP Alignment and Publishing Readiness Summary
@@ -52,20 +52,19 @@ All 68 v1 requirements now show as Complete with accurate traceability.
 - No duplicate changes made — this was correct, not a deviation
 - All verification checks still pass
 
-## Task 2: Checkpoint (Pending Human Action)
+## Task 2: Human Action — Resolved
 
-Task 2 requires human action to:
-1. Create GitHub repository at https://github.com/new
-2. Add remote and push: `git remote add origin ... && git push -u origin master`
-3. Configure GitHub Pages (Settings > Pages > GitHub Actions source)
-4. Add `NPM_TOKEN` secret (Settings > Secrets > Actions)
-5. Trigger first publish via changeset or `npm publish --access public`
-6. Verify CDN availability on jsdelivr/unpkg
-
-This task has been returned to the orchestrator as a `checkpoint:human-action` gate.
+- GitHub repo created by user at https://github.com/StephanWald/trm-ai-webcomponents
+- GitHub remote already configured (origin → git@github.com:StephanWald/trm-ai-webcomponents.git)
+- Docusaurus config updated with correct org: StephanWald (commit b6ca480)
+- npm publishing deferred by user — infrastructure ready (release.yml + changesets configured)
+- User will push to origin manually to trigger docs-deploy.yml → GitHub Pages
 
 ## Self-Check: PASSED
 
 - [x] `.planning/REQUIREMENTS.md` updated and committed (cb721d2)
 - [x] All TEST-03, TEST-04 requirements show Complete in traceability table
 - [x] ROADMAP.md changelog criterion verified correct
+- [x] Docusaurus config updated for StephanWald org (b6ca480)
+- [x] GitHub remote configured
+- [ ] npm publishing — deferred by user (infrastructure ready)
