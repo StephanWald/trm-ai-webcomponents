@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 Phase: 6 of 6 (Documentation & Publishing)
 Plan: 4 of 5 in current phase
 Status: In Progress
-Last activity: 2026-02-21 — Plan 06-04 complete, three component MDX pages (sp-org-chart, sp-walkthrough, sp-markdown-editor) with LiveExample demos and ApiReference from docs.json; changelog page; full Docusaurus build success
+Last activity: 2026-02-21 - Completed quick task 1: Improve README with docs links, GitHub artifact install instructions, and live demo references
 
 Progress: [█████████░] 98%
 
@@ -126,6 +126,12 @@ None yet.
 ### Blockers/Concerns
 
 None yet.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 1 | Improve README with docs links, GitHub artifact install instructions, and live demo references | 2026-02-21 | b347e09 | [1-improve-readme-with-docs-links-github-ar](./quick/1-improve-readme-with-docs-links-github-ar/) |
 
 ## Session Continuity
 
