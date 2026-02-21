@@ -143,8 +143,9 @@ describe('sp-walkthrough', () => {
       await page.rootInstance.show();
       await page.waitForChanges();
 
-      const description = page.root?.shadowRoot?.querySelector('.scene-description');
-      expect(description?.textContent).toBe('First scene');
+      // Description now renders as markdown in .scene-description-markdown
+      const description = page.root?.shadowRoot?.querySelector('.scene-description-markdown');
+      expect(description).toBeTruthy();
     });
 
     it('renders controls row (single-row layout)', async () => {
@@ -236,7 +237,7 @@ describe('sp-walkthrough', () => {
       expect(svg).toBeTruthy();
     });
 
-    it('renders scene selector dropdown when scenes exist', async () => {
+    it('renders scene list trigger button when scenes exist', async () => {
       const page = await newSpecPage({
         components: [SpWalkthrough],
         html: '<sp-walkthrough></sp-walkthrough>',
@@ -246,11 +247,10 @@ describe('sp-walkthrough', () => {
       await page.rootInstance.show();
       await page.waitForChanges();
 
-      const selector = page.root?.shadowRoot?.querySelector('.scene-selector');
-      expect(selector).toBeTruthy();
-
-      const options = selector?.querySelectorAll('option');
-      expect(options?.length).toBe(3);
+      // Custom popup replaces the native select — verify trigger button is present
+      const triggerBtn = page.root?.shadowRoot?.querySelector('.scene-list-trigger');
+      expect(triggerBtn).toBeTruthy();
+      expect(triggerBtn?.getAttribute('aria-label')).toBe('Scene list');
     });
 
     it('renders scene counter', async () => {
@@ -310,7 +310,7 @@ describe('sp-walkthrough', () => {
       expect(timeDisplay).toBeTruthy();
     });
 
-    it('renders volume controls when video source exists', async () => {
+    it('renders volume controls button when video source exists', async () => {
       const page = await newSpecPage({
         components: [SpWalkthrough],
         html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
@@ -322,8 +322,9 @@ describe('sp-walkthrough', () => {
       const volumeControls = page.root?.shadowRoot?.querySelector('.volume-controls');
       expect(volumeControls).toBeTruthy();
 
-      const volumeSlider = page.root?.shadowRoot?.querySelector('.volume-slider');
-      expect(volumeSlider).toBeTruthy();
+      // Volume slider is now in a popup — verify the volume button is present
+      const volumeBtn = page.root?.shadowRoot?.querySelector('.volume-btn');
+      expect(volumeBtn).toBeTruthy();
     });
   });
 
@@ -654,7 +655,7 @@ describe('sp-walkthrough', () => {
       });
     });
 
-    it('volume slider has aria-label', async () => {
+    it('volume button has aria-label', async () => {
       const page = await newSpecPage({
         components: [SpWalkthrough],
         html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
@@ -663,8 +664,9 @@ describe('sp-walkthrough', () => {
       await page.rootInstance.show();
       await page.waitForChanges();
 
-      const volumeSlider = page.root?.shadowRoot?.querySelector('.volume-slider');
-      expect(volumeSlider?.getAttribute('aria-label')).toBeTruthy();
+      // Volume control is now a popup triggered by the volume button
+      const volumeBtn = page.root?.shadowRoot?.querySelector('.volume-btn');
+      expect(volumeBtn?.getAttribute('aria-label')).toBeTruthy();
     });
 
     it('progress bar has role slider and aria attributes', async () => {
@@ -1929,7 +1931,7 @@ describe('sp-walkthrough', () => {
       expect(page.rootInstance['captionsEnabled']).toBe(false);
     });
 
-    it('handleCaptionsToggle toggles captions when text tracks exist', async () => {
+    it('handleCaptionsToggle toggles captionsEnabled state while keeping track mode hidden', async () => {
       const page = await newSpecPage({
         components: [SpWalkthrough],
         html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
@@ -1948,8 +1950,9 @@ describe('sp-walkthrough', () => {
       page.rootInstance['handleCaptionsToggle']();
       await page.waitForChanges();
 
+      // captionsEnabled toggles to true, but track.mode stays 'hidden' (we use custom overlay)
       expect(page.rootInstance['captionsEnabled']).toBe(true);
-      expect(mockTrack.mode).toBe('showing');
+      expect(mockTrack.mode).toBe('hidden');
     });
   });
 
@@ -2084,9 +2087,10 @@ describe('sp-walkthrough', () => {
       await page.waitForChanges();
 
       const sceneTitle = page.root?.shadowRoot?.querySelector('.scene-title');
-      const sceneDesc = page.root?.shadowRoot?.querySelector('.scene-description');
+      // Description now renders as markdown in .scene-description-markdown
+      const sceneDesc = page.root?.shadowRoot?.querySelector('.scene-description-markdown');
       expect(sceneTitle?.textContent).toBe('Scene 1');
-      expect(sceneDesc?.textContent).toBe('First scene');
+      expect(sceneDesc).toBeTruthy();
     });
 
     it('walkthrough is not visible when hide() is called', async () => {

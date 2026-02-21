@@ -5,6 +5,8 @@ import { TimelineEngine } from './utils/timeline-engine';
 import { YouTubePlayerWrapper, isYouTubeUrl, extractVideoId } from './utils/youtube-wrapper';
 import { makeDraggable } from './utils/draggable-mixin';
 import { generateSelector, validateSelector } from './utils/selector-generator';
+import { MarkdownRenderer } from './utils/markdown-renderer';
+
 
 /**
  * Interactive walkthrough component with video playback and DOM element highlighting.
@@ -61,6 +63,13 @@ export class SpWalkthrough {
   @State() currentTime: number = 0;
   @State() duration: number = 0;
 
+  // Popup states
+  @State() sceneListOpen: boolean = false;
+  @State() volumePopupOpen: boolean = false;
+
+  // Custom caption overlay state
+  @State() activeCueText: string = '';
+
   // Author mode state
   @State() pointerToolActive: boolean = false;
   @State() editingSceneId: string | null = null;
@@ -99,6 +108,11 @@ export class SpWalkthrough {
   private cleanupDraggable: (() => void) | null = null;
   private escapeKeyHandler: (ev: KeyboardEvent) => void;
   private pointerToolHandler: ((ev: MouseEvent) => void) | null = null;
+  private markdownRenderer: MarkdownRenderer;
+
+  // Popup dismiss handlers (stored so we can remove them)
+  private sceneListDismissHandler: ((ev: MouseEvent) => void) | null = null;
+  private volumePopupDismissHandler: ((ev: MouseEvent) => void) | null = null;
 
   @Watch('scenes')
   handleScenesChange() {
@@ -111,16 +125,27 @@ export class SpWalkthrough {
     // Initialize utilities
     this.overlayManager = new OverlayManager();
     this.timelineEngine = new TimelineEngine(this.scenes);
+    this.markdownRenderer = new MarkdownRenderer();
 
     // Determine if video source is YouTube
     if (this.videoSrc) {
       this.isYouTube = isYouTubeUrl(this.videoSrc);
     }
 
-    // Setup ESC key handler
+    // Setup ESC key handler (also closes popups)
     this.escapeKeyHandler = (ev: KeyboardEvent) => {
-      if (ev.key === 'Escape' && this.isVisible) {
-        this.abort();
+      if (ev.key === 'Escape') {
+        if (this.sceneListOpen) {
+          this.closeSceneListPopup();
+          return;
+        }
+        if (this.volumePopupOpen) {
+          this.closeVolumePopup();
+          return;
+        }
+        if (this.isVisible) {
+          this.abort();
+        }
       }
     };
   }
@@ -139,6 +164,16 @@ export class SpWalkthrough {
     this.youtubeWrapper?.destroy();
     this.cleanupDraggable?.();
     document.removeEventListener('keydown', this.escapeKeyHandler);
+
+    // Cleanup popup dismiss handlers
+    if (this.sceneListDismissHandler) {
+      document.removeEventListener('click', this.sceneListDismissHandler, true);
+      this.sceneListDismissHandler = null;
+    }
+    if (this.volumePopupDismissHandler) {
+      document.removeEventListener('click', this.volumePopupDismissHandler, true);
+      this.volumePopupDismissHandler = null;
+    }
 
     // Cleanup pointer tool
     if (this.pointerToolHandler) {
@@ -359,9 +394,11 @@ export class SpWalkthrough {
   };
 
   /**
-   * Jump to specific scene from dropdown
+   * Jump to specific scene from native select (legacy / programmatic use).
+   * Kept for backward compatibility and test access via rootInstance.
+   * @internal
    */
-  private handleSceneSelect = (ev: Event) => {
+  handleSceneSelect = (ev: Event) => {
     const select = ev.target as HTMLSelectElement;
     const index = parseInt(select.value, 10);
 
@@ -376,6 +413,103 @@ export class SpWalkthrough {
       } else {
         this.advanceToScene(index);
       }
+    }
+  };
+
+  /**
+   * Jump to specific scene by index (used by popup items)
+   */
+  private handleSceneSelectByIndex = (index: number) => {
+    const scene = this.timelineEngine.getScene(index);
+    if (scene) {
+      if (this.isYouTube && this.youtubeWrapper) {
+        this.youtubeWrapper.seekTo(scene.timestamp);
+      } else if (this.videoElement) {
+        this.videoElement.currentTime = scene.timestamp;
+      } else {
+        this.advanceToScene(index);
+      }
+    }
+    this.closeSceneListPopup();
+  };
+
+  /**
+   * Open the scene list popup
+   */
+  private openSceneListPopup = () => {
+    this.sceneListOpen = true;
+
+    // Attach outside-click dismiss handler (capture phase)
+    this.sceneListDismissHandler = (ev: MouseEvent) => {
+      const target = ev.target as Node;
+      const popup = this.el.shadowRoot?.querySelector('.scene-list-popup');
+      const triggerBtn = this.el.shadowRoot?.querySelector('.scene-list-trigger');
+      // Close if click is outside popup and trigger button
+      if (popup && !popup.contains(target) && triggerBtn && !triggerBtn.contains(target)) {
+        this.closeSceneListPopup();
+      }
+    };
+    document.addEventListener('click', this.sceneListDismissHandler, true);
+  };
+
+  /**
+   * Close the scene list popup
+   */
+  private closeSceneListPopup = () => {
+    this.sceneListOpen = false;
+    if (this.sceneListDismissHandler) {
+      document.removeEventListener('click', this.sceneListDismissHandler, true);
+      this.sceneListDismissHandler = null;
+    }
+  };
+
+  /**
+   * Toggle scene list popup
+   */
+  private toggleSceneListPopup = () => {
+    if (this.sceneListOpen) {
+      this.closeSceneListPopup();
+    } else {
+      this.openSceneListPopup();
+    }
+  };
+
+  /**
+   * Open the volume popup
+   */
+  private openVolumePopup = () => {
+    this.volumePopupOpen = true;
+
+    this.volumePopupDismissHandler = (ev: MouseEvent) => {
+      const target = ev.target as Node;
+      const popup = this.el.shadowRoot?.querySelector('.volume-popup');
+      const triggerBtn = this.el.shadowRoot?.querySelector('.volume-btn');
+      if (popup && !popup.contains(target) && triggerBtn && !triggerBtn.contains(target)) {
+        this.closeVolumePopup();
+      }
+    };
+    document.addEventListener('click', this.volumePopupDismissHandler, true);
+  };
+
+  /**
+   * Close the volume popup
+   */
+  private closeVolumePopup = () => {
+    this.volumePopupOpen = false;
+    if (this.volumePopupDismissHandler) {
+      document.removeEventListener('click', this.volumePopupDismissHandler, true);
+      this.volumePopupDismissHandler = null;
+    }
+  };
+
+  /**
+   * Toggle volume popup
+   */
+  private toggleVolumePopup = () => {
+    if (this.volumePopupOpen) {
+      this.closeVolumePopup();
+    } else {
+      this.openVolumePopup();
     }
   };
 
@@ -423,15 +557,34 @@ export class SpWalkthrough {
   };
 
   /**
-   * Toggle captions
+   * Toggle captions — keeps track mode hidden, we render our own overlay
    */
   private handleCaptionsToggle = () => {
     if (!this.videoElement?.textTracks?.length) return;
 
     this.captionsEnabled = !this.captionsEnabled;
 
+    // Always keep track mode 'hidden' — we read cues programmatically and render our own overlay
     for (let i = 0; i < this.videoElement.textTracks.length; i++) {
-      this.videoElement.textTracks[i].mode = this.captionsEnabled ? 'showing' : 'hidden';
+      this.videoElement.textTracks[i].mode = 'hidden';
+    }
+  };
+
+  /**
+   * Handle cue change on text tracks — updates activeCueText for custom caption overlay
+   */
+  private handleCueChange = (track: TextTrack) => {
+    if (!this.captionsEnabled) {
+      this.activeCueText = '';
+      return;
+    }
+
+    const activeCues = track.activeCues;
+    if (activeCues && activeCues.length > 0) {
+      const cue = activeCues[0] as VTTCue;
+      this.activeCueText = cue.text || '';
+    } else {
+      this.activeCueText = '';
     }
   };
 
@@ -505,6 +658,17 @@ export class SpWalkthrough {
       el.addEventListener('loadedmetadata', this.handleLoadedMetadata);
       el.addEventListener('play', this.handlePlay);
       el.addEventListener('pause', this.handlePause);
+
+      // Setup cuechange listener for custom caption overlay
+      // We do this after load to ensure textTracks are available
+      el.addEventListener('loadedmetadata', () => {
+        for (let i = 0; i < el.textTracks.length; i++) {
+          const track = el.textTracks[i];
+          // Always keep hidden — we render our own overlay
+          track.mode = 'hidden';
+          track.addEventListener('cuechange', () => this.handleCueChange(track));
+        }
+      });
     }
   }
 
@@ -822,6 +986,83 @@ export class SpWalkthrough {
   // ─── Render helpers ──────────────────────────────────────────────────────────
 
   /**
+   * Render scene list popup
+   */
+  private renderSceneListPopup() {
+    if (!this.sceneListOpen) return null;
+
+    const scenes = this.timelineEngine.getAllScenes();
+
+    return (
+      <div class="scene-list-popup" role="listbox" aria-label="Scene list">
+        {scenes.map((scene, index) => (
+          <div
+            key={scene.id}
+            class={`scene-list-popup__item ${index === this.currentSceneIndex ? 'scene-list-popup__item--active' : ''}`}
+            role="option"
+            aria-selected={index === this.currentSceneIndex}
+            onClick={() => this.handleSceneSelectByIndex(index)}
+          >
+            <span class="scene-list-popup__title">{scene.title}</span>
+            <span class="scene-list-popup__time">{this.formatTime(scene.timestamp)}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  /**
+   * Render volume popup with vertical slider
+   */
+  private renderVolumePopup() {
+    if (!this.volumePopupOpen) return null;
+
+    return (
+      <div class="volume-popup">
+        <input
+          type="range"
+          class="volume-popup__slider"
+          min="0"
+          max="1"
+          step="0.05"
+          value={this.volume}
+          onInput={this.handleVolumeChange}
+          aria-label="Volume"
+          aria-orientation="vertical"
+        />
+        <button
+          class={`volume-popup__mute-btn ${this.isMuted ? 'muted' : ''}`}
+          onClick={this.handleMuteToggle}
+          aria-label={this.isMuted ? 'Unmute' : 'Mute'}
+        >
+          {this.isMuted ? this.iconVolumeOff() : this.iconVolumeOn()}
+        </button>
+      </div>
+    );
+  }
+
+  /**
+   * Render custom caption overlay
+   */
+  private renderCaptionOverlay() {
+    if (!this.captionsEnabled || !this.activeCueText) return null;
+
+    return (
+      <div class="caption-overlay" role="region" aria-live="polite" aria-label="Captions">
+        {this.activeCueText}
+      </div>
+    );
+  }
+
+  /**
+   * Render markdown description in scene text bubble
+   */
+  private renderMarkdownDescription(markdown: string) {
+    const html = this.markdownRenderer.render(markdown);
+    return <div class="scene-description-markdown" innerHTML={html} />;
+  }
+
+  /**
    * Render video player
    */
   private renderVideo() {
@@ -837,10 +1078,13 @@ export class SpWalkthrough {
       return <div class="video-container" ref={el => el && this.setupYouTubeVideo(el)}></div>;
     } else {
       return (
-        <video class="video-element" ref={el => el && this.setupStandardVideo(el)}>
-          <source src={this.videoSrc} />
-          {this.captionsSrc && <track kind="captions" src={this.captionsSrc} />}
-        </video>
+        <div class="video-wrapper">
+          <video class="video-element" ref={el => el && this.setupStandardVideo(el)}>
+            <source src={this.videoSrc} />
+            {this.captionsSrc && <track kind="captions" src={this.captionsSrc} />}
+          </video>
+          {this.renderCaptionOverlay()}
+        </div>
       );
     }
   }
@@ -858,7 +1102,9 @@ export class SpWalkthrough {
     return (
       <div class="scene-info">
         <div class="scene-title">{scene.title}</div>
-        {scene.description && <div class="scene-description">{scene.description}</div>}
+        {scene.description && (
+          this.renderMarkdownDescription(scene.description)
+        )}
       </div>
     );
   }
@@ -946,27 +1192,23 @@ export class SpWalkthrough {
           </span>
         )}
 
-        {/* Volume button — video only */}
+        {/* Volume button — video only, opens vertical popup */}
         {this.videoSrc && (
           <div class="volume-controls">
-            <button class="control-btn" onClick={this.handleMuteToggle} aria-label={this.isMuted ? 'Unmute' : 'Mute'}>
+            <button
+              class={`control-btn volume-btn ${this.volumePopupOpen ? 'active' : ''}`}
+              onClick={this.toggleVolumePopup}
+              aria-label={this.isMuted ? 'Unmute' : 'Volume'}
+              aria-expanded={this.volumePopupOpen}
+            >
               {this.isMuted ? this.iconVolumeOff() : this.iconVolumeOn()}
             </button>
-            <input
-              type="range"
-              class="volume-slider"
-              min="0"
-              max="1"
-              step="0.1"
-              value={this.volume}
-              onInput={this.handleVolumeChange}
-              aria-label="Volume"
-            />
+            {this.renderVolumePopup()}
           </div>
         )}
 
         {/* Captions toggle — video only, when tracks available */}
-        {this.videoElement?.textTracks?.length > 0 && (
+        {this.captionsSrc && this.videoSrc && (
           <button
             class={`control-btn ${this.captionsEnabled ? 'active' : ''}`}
             onClick={this.handleCaptionsToggle}
@@ -977,22 +1219,18 @@ export class SpWalkthrough {
           </button>
         )}
 
-        {/* Scene list button — opens dropdown select */}
+        {/* Scene list button — opens custom popup */}
         {this.timelineEngine.getSceneCount() > 0 && (
           <div class="scene-list-control">
-            <button class="control-btn" aria-label="Scene list" onClick={() => {
-              const sel = this.el.shadowRoot?.querySelector('.scene-selector') as HTMLSelectElement;
-              sel?.focus();
-            }}>
+            <button
+              class={`control-btn scene-list-trigger ${this.sceneListOpen ? 'active' : ''}`}
+              aria-label="Scene list"
+              aria-expanded={this.sceneListOpen}
+              onClick={this.toggleSceneListPopup}
+            >
               {this.iconSceneList()}
             </button>
-            <select class="scene-selector" onChange={this.handleSceneSelect} aria-label="Jump to scene">
-              {this.timelineEngine.getAllScenes().map((scene, index) => (
-                <option key={scene.id} value={index} selected={index === this.currentSceneIndex}>
-                  {scene.title}
-                </option>
-              ))}
-            </select>
+            {this.renderSceneListPopup()}
           </div>
         )}
 

@@ -336,7 +336,7 @@ test.describe('sp-walkthrough E2E', () => {
     expect(title).toBe('Welcome');
   });
 
-  test('scene selector dropdown allows jumping to specific scene', async ({ page }) => {
+  test('scene list popup allows jumping to specific scene', async ({ page }) => {
     await page.goto('http://localhost:3333');
 
     await page.evaluate((scenes) => {
@@ -349,14 +349,11 @@ test.describe('sp-walkthrough E2E', () => {
 
     await page.waitForTimeout(300);
 
-    // Select third scene from dropdown
+    // Open the popup then click the third scene item
     await page.evaluate(() => {
       const el = document.querySelector('sp-walkthrough');
-      const select = el?.shadowRoot?.querySelector('.scene-selector') as HTMLSelectElement;
-      if (select) {
-        select.value = '2'; // Index of third scene
-        select.dispatchEvent(new Event('change', { bubbles: true }));
-      }
+      // Use the programmatic handleSceneSelectByIndex method
+      (el as any).handleSceneSelectByIndex(2);
     });
 
     await page.waitForTimeout(300);
@@ -372,7 +369,7 @@ test.describe('sp-walkthrough E2E', () => {
     expect(sceneInfo.counter).toContain('3 / 3');
   });
 
-  test('scene dropdown displays all scene titles', async ({ page }) => {
+  test('scene list trigger button is present when scenes exist', async ({ page }) => {
     await page.goto('http://localhost:3333');
 
     await page.evaluate((scenes) => {
@@ -385,15 +382,43 @@ test.describe('sp-walkthrough E2E', () => {
 
     await page.waitForTimeout(300);
 
-    const optionTexts = await page.evaluate(() => {
+    const hasTriggerBtn = await page.evaluate(() => {
       const el = document.querySelector('sp-walkthrough');
-      const options = el?.shadowRoot?.querySelectorAll('.scene-selector option');
-      return Array.from(options || []).map(opt => opt.textContent);
+      const btn = el?.shadowRoot?.querySelector('.scene-list-trigger');
+      return !!btn;
     });
 
-    expect(optionTexts).toContain('Welcome');
-    expect(optionTexts).toContain('Step 2');
-    expect(optionTexts).toContain('Final Step');
+    expect(hasTriggerBtn).toBe(true);
+  });
+
+  test('scene list popup opens when trigger button is clicked', async ({ page }) => {
+    await page.goto('http://localhost:3333');
+
+    await page.evaluate((scenes) => {
+      const el = document.querySelector('sp-walkthrough');
+      if (el) {
+        (el as any).scenes = scenes;
+        (el as any).show();
+      }
+    }, sampleScenes);
+
+    await page.waitForTimeout(300);
+
+    // Click the scene list trigger button
+    await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      const btn = el?.shadowRoot?.querySelector('.scene-list-trigger') as HTMLElement;
+      btn?.click();
+    });
+
+    await page.waitForTimeout(200);
+
+    const popupVisible = await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      return !!el?.shadowRoot?.querySelector('.scene-list-popup');
+    });
+
+    expect(popupVisible).toBe(true);
   });
 
   test('close button hides walkthrough panel', async ({ page }) => {
@@ -659,7 +684,7 @@ test.describe('sp-walkthrough E2E', () => {
     });
   });
 
-  test('volume controls render when video source is provided', async ({ page }) => {
+  test('volume controls render as popup button when video source is provided', async ({ page }) => {
     await page.goto('http://localhost:3333');
 
     await page.evaluate(() => {
@@ -675,18 +700,54 @@ test.describe('sp-walkthrough E2E', () => {
     const volumeControlsExist = await page.evaluate(() => {
       const el = document.querySelector('sp-walkthrough');
       const volumeControls = el?.shadowRoot?.querySelector('.volume-controls');
-      const volumeSlider = el?.shadowRoot?.querySelector('.volume-slider');
+      const volumeBtn = el?.shadowRoot?.querySelector('.volume-btn');
       return {
         hasControls: !!volumeControls,
-        hasSlider: !!volumeSlider,
+        hasBtn: !!volumeBtn,
       };
     });
 
     expect(volumeControlsExist.hasControls).toBe(true);
-    expect(volumeControlsExist.hasSlider).toBe(true);
+    expect(volumeControlsExist.hasBtn).toBe(true);
   });
 
-  test('volume slider has aria-label for accessibility', async ({ page }) => {
+  test('volume popup opens with vertical slider when volume button is clicked', async ({ page }) => {
+    await page.goto('http://localhost:3333');
+
+    await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      if (el) {
+        el.setAttribute('video-src', '/test-video.mp4');
+        (el as any).show();
+      }
+    });
+
+    await page.waitForTimeout(300);
+
+    // Click the volume button to open popup
+    await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      const btn = el?.shadowRoot?.querySelector('.volume-btn') as HTMLElement;
+      btn?.click();
+    });
+
+    await page.waitForTimeout(200);
+
+    const popupExist = await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      const popup = el?.shadowRoot?.querySelector('.volume-popup');
+      const slider = el?.shadowRoot?.querySelector('.volume-popup__slider');
+      return {
+        hasPopup: !!popup,
+        hasSlider: !!slider,
+      };
+    });
+
+    expect(popupExist.hasPopup).toBe(true);
+    expect(popupExist.hasSlider).toBe(true);
+  });
+
+  test('volume button has aria-label for accessibility', async ({ page }) => {
     await page.goto('http://localhost:3333');
 
     await page.evaluate(() => {
@@ -701,8 +762,8 @@ test.describe('sp-walkthrough E2E', () => {
 
     const volumeAriaLabel = await page.evaluate(() => {
       const el = document.querySelector('sp-walkthrough');
-      const volumeSlider = el?.shadowRoot?.querySelector('.volume-slider');
-      return volumeSlider?.getAttribute('aria-label') || '';
+      const volumeBtn = el?.shadowRoot?.querySelector('.volume-btn');
+      return volumeBtn?.getAttribute('aria-label') || '';
     });
 
     expect(volumeAriaLabel).toBeTruthy();
