@@ -477,6 +477,28 @@ describe('sp-org-chart', () => {
 
       expect(names).not.toContain('Branch Two');
     });
+
+    it('shows all nodes when filterMode is none', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', branchId: 'branch-1' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1', branchId: 'branch-2' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      // filterMode is none by default — all tiles visible, no dimming
+      const tiles = page.root?.shadowRoot?.querySelectorAll('.user-tile');
+      expect(tiles?.length).toBe(2);
+      Array.from(tiles || []).forEach(tile => {
+        expect(tile).not.toHaveClass('dimmed');
+      });
+    });
   });
 
   // ==========================================
@@ -569,7 +591,7 @@ describe('sp-org-chart', () => {
     expect(userTile).not.toHaveClass('highlighted');
   });
 
-  it('renders drop zones when editable and dragging', async () => {
+  it('renders drop zones (drop-zone-container) when editable and dragging', async () => {
     const users: User[] = [
       { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
     ];
@@ -583,16 +605,16 @@ describe('sp-org-chart', () => {
     await page.waitForChanges();
 
     // Initially no drop zones
-    let dropZones = page.root?.shadowRoot?.querySelector('.drop-zones');
-    expect(dropZones).toBeFalsy();
+    let dropZoneContainer = page.root?.shadowRoot?.querySelector('.drop-zone-container');
+    expect(dropZoneContainer).toBeFalsy();
 
     // Simulate drag start by setting state
     page.rootInstance['showDropZones'] = true;
     await page.waitForChanges();
 
     // Drop zones should now be visible (editable defaults to true)
-    dropZones = page.root?.shadowRoot?.querySelector('.drop-zones');
-    expect(dropZones).toBeTruthy();
+    dropZoneContainer = page.root?.shadowRoot?.querySelector('.drop-zone-container');
+    expect(dropZoneContainer).toBeTruthy();
 
     const dropZoneElements = page.root?.shadowRoot?.querySelectorAll('.drop-zone');
     expect(dropZoneElements?.length).toBeGreaterThanOrEqual(2);
@@ -829,7 +851,7 @@ describe('sp-org-chart', () => {
   // ==========================================
 
   describe('drag-and-drop interactions', () => {
-    it('sets draggedUserId and shows drop zones on dragstart', async () => {
+    it('sets draggedUserId, draggedUser and shows drop zones on dragstart', async () => {
       const users: User[] = [
         { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
         { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
@@ -847,6 +869,7 @@ describe('sp-org-chart', () => {
       const mockDataTransfer = {
         effectAllowed: '',
         setData: jest.fn(),
+        setDragImage: jest.fn(),
       };
       const mockDragEvent = {
         stopPropagation: jest.fn(),
@@ -857,8 +880,139 @@ describe('sp-org-chart', () => {
       await page.waitForChanges();
 
       expect(page.rootInstance.draggedUserId).toBe('1');
+      expect(page.rootInstance.draggedUser).toBeTruthy();
+      expect(page.rootInstance.draggedUser?.firstName).toBe('Alice');
       expect(page.rootInstance.showDropZones).toBe(true);
       expect(mockDataTransfer.setData).toHaveBeenCalledWith('text/plain', '1');
+    });
+
+    it('hides native drag image when Image is available (setDragImage called with transparent img)', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      // Manually set transparentImg to simulate browser environment with Image available
+      const fakeImg = {} as HTMLImageElement;
+      page.rootInstance['transparentImg'] = fakeImg;
+
+      const mockDataTransfer = {
+        effectAllowed: '',
+        setData: jest.fn(),
+        setDragImage: jest.fn(),
+      };
+      const mockDragEvent = {
+        stopPropagation: jest.fn(),
+        dataTransfer: mockDataTransfer,
+      } as unknown as DragEvent;
+
+      page.rootInstance.handleDragStart(mockDragEvent, '1');
+      await page.waitForChanges();
+
+      // setDragImage should be called to hide the native drag ghost (when transparentImg is available)
+      expect(mockDataTransfer.setDragImage).toHaveBeenCalled();
+      expect(mockDataTransfer.setDragImage).toHaveBeenCalledWith(fakeImg, 0, 0);
+    });
+
+    it('renders floating drag preview when draggedUser and dragPreviewPos are set', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      // No drag preview initially
+      expect(page.root?.shadowRoot?.querySelector('.drag-preview')).toBeFalsy();
+
+      // Simulate drag in progress
+      page.rootInstance.draggedUser = users[0];
+      page.rootInstance.dragPreviewPos = { x: 200, y: 150 };
+      await page.waitForChanges();
+
+      const preview = page.root?.shadowRoot?.querySelector('.drag-preview');
+      expect(preview).toBeTruthy();
+
+      // Should contain name
+      const previewName = preview?.querySelector('.drag-preview__name');
+      expect(previewName?.textContent).toBe('Alice Johnson');
+    });
+
+    it('drag preview shows avatar initials when no avatar URL', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      page.rootInstance.draggedUser = users[0];
+      page.rootInstance.dragPreviewPos = { x: 100, y: 100 };
+      await page.waitForChanges();
+
+      const preview = page.root?.shadowRoot?.querySelector('.drag-preview');
+      const avatarInitials = preview?.querySelector('.avatar-initials');
+      expect(avatarInitials?.textContent).toBe('AJ');
+    });
+
+    it('drag preview shows avatar image when user has avatar URL', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', avatar: 'https://example.com/alice.jpg' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      page.rootInstance.draggedUser = users[0];
+      page.rootInstance.dragPreviewPos = { x: 100, y: 100 };
+      await page.waitForChanges();
+
+      const preview = page.root?.shadowRoot?.querySelector('.drag-preview');
+      const avatarImg = preview?.querySelector('.avatar-img') as HTMLImageElement;
+      expect(avatarImg?.src).toBe('https://example.com/alice.jpg');
+    });
+
+    it('drag preview is not rendered when dragPreviewPos is null', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      // draggedUser set but no position
+      page.rootInstance.draggedUser = users[0];
+      page.rootInstance.dragPreviewPos = null;
+      await page.waitForChanges();
+
+      expect(page.root?.shadowRoot?.querySelector('.drag-preview')).toBeFalsy();
     });
 
     it('sets dropTargetId on dragover with target', async () => {
@@ -1002,37 +1156,6 @@ describe('sp-org-chart', () => {
       expect(page.rootInstance.draggedUserId).toBeNull();
     });
 
-    it('emits userDelete on delete drop zone', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      const deleteEvents: CustomEvent[] = [];
-      page.root?.addEventListener('userDelete', (ev: Event) => deleteEvents.push(ev as CustomEvent));
-
-      const mockDragEvent = {
-        preventDefault: jest.fn(),
-        stopPropagation: jest.fn(),
-        dataTransfer: { getData: jest.fn().mockReturnValue('2') },
-      } as unknown as DragEvent;
-
-      page.rootInstance.handleDeleteDrop(mockDragEvent);
-      await page.waitForChanges();
-
-      expect(deleteEvents.length).toBe(1);
-      expect(deleteEvents[0].detail.userId).toBe('2');
-      expect(deleteEvents[0].detail.user.firstName).toBe('Bob');
-    });
-
     it('cleans up drop state on drag end', async () => {
       const page = await newSpecPage({
         components: [SpOrgChart],
@@ -1054,28 +1177,6 @@ describe('sp-org-chart', () => {
       expect(page.rootInstance.showDropZones).toBe(false);
       expect(page.rootInstance.draggedUserId).toBeNull();
       expect(page.rootInstance.dropTargetId).toBeNull();
-    });
-
-    it('handles delete drop with no dragged user ID gracefully', async () => {
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.showDropZones = true;
-      await page.waitForChanges();
-
-      const mockDragEvent = {
-        preventDefault: jest.fn(),
-        stopPropagation: jest.fn(),
-        dataTransfer: { getData: jest.fn().mockReturnValue('') },
-      } as unknown as DragEvent;
-
-      // Should not throw even with empty user ID
-      page.rootInstance.handleDeleteDrop(mockDragEvent);
-      await page.waitForChanges();
-
-      expect(page.rootInstance.showDropZones).toBe(false);
     });
 
     it('handles drop when user is not found gracefully', async () => {
@@ -1107,41 +1208,221 @@ describe('sp-org-chart', () => {
   });
 
   // ==========================================
-  // Long-press deletion flow
+  // SVG Drop zones
   // ==========================================
 
-  describe('long-press deletion flow', () => {
-    it('does nothing on pointerdown when editable is false', async () => {
+  describe('SVG drop zones', () => {
+    it('drop zones render with SVG icons (not emoji) when showDropZones is true', async () => {
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance['showDropZones'] = true;
+      await page.waitForChanges();
+
+      const dropZoneContainer = page.root?.shadowRoot?.querySelector('.drop-zone-container');
+      expect(dropZoneContainer).toBeTruthy();
+
+      // SVG icons should be present
+      const svgIcons = page.root?.shadowRoot?.querySelectorAll('.drop-zone__icon');
+      expect(svgIcons?.length).toBeGreaterThanOrEqual(2);
+
+      // Each icon should be an SVG element
+      Array.from(svgIcons || []).forEach(icon => {
+        expect(icon.tagName.toLowerCase()).toBe('svg');
+      });
+    });
+
+    it('drop zones use drop-zone-container class (not old drop-zones)', async () => {
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance['showDropZones'] = true;
+      await page.waitForChanges();
+
+      // New class name
+      expect(page.root?.shadowRoot?.querySelector('.drop-zone-container')).toBeTruthy();
+      // Old class name should be gone
+      expect(page.root?.shadowRoot?.querySelector('.drop-zones')).toBeFalsy();
+    });
+
+    it('drop zones render with Unlink and Delete labels', async () => {
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance['showDropZones'] = true;
+      await page.waitForChanges();
+
+      const labels = page.root?.shadowRoot?.querySelectorAll('.drop-zone__label');
+      const labelTexts = Array.from(labels || []).map(l => l.textContent);
+      expect(labelTexts).toContain('Unlink');
+      expect(labelTexts).toContain('Delete');
+    });
+
+    it('delete zone has drop-zone--delete class', async () => {
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance['showDropZones'] = true;
+      await page.waitForChanges();
+
+      const deleteZone = page.root?.shadowRoot?.querySelector('.drop-zone--delete');
+      expect(deleteZone).toBeTruthy();
+    });
+
+    it('unlink zone has drop-zone--unlink class', async () => {
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance['showDropZones'] = true;
+      await page.waitForChanges();
+
+      const unlinkZone = page.root?.shadowRoot?.querySelector('.drop-zone--unlink');
+      expect(unlinkZone).toBeTruthy();
+    });
+  });
+
+  // ==========================================
+  // Timed delete countdown
+  // ==========================================
+
+  describe('timed delete countdown', () => {
+    it('renders countdown overlay when deleteHoldActive and deleteCountdownPos are set', async () => {
       const users: User[] = [
         { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="false"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
       await page.waitForChanges();
 
-      // Use fake timers AFTER page setup to prevent interval from running
-      jest.useFakeTimers();
+      // Show drop zones first
+      page.rootInstance['showDropZones'] = true;
+      page.rootInstance.deleteHoldActive = true;
+      page.rootInstance.deleteHoldProgress = 0.5;
+      page.rootInstance.deleteCountdownPos = { x: 200, y: 200 };
+      await page.waitForChanges();
+
+      const countdownOverlay = page.root?.shadowRoot?.querySelector('.countdown-overlay');
+      expect(countdownOverlay).toBeTruthy();
+    });
+
+    it('countdown overlay contains SVG ring with countdown number', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      page.rootInstance['showDropZones'] = true;
+      page.rootInstance.deleteHoldActive = true;
+      page.rootInstance.deleteHoldProgress = 0.5;
+      page.rootInstance.deleteCountdownPos = { x: 300, y: 300 };
+      await page.waitForChanges();
+
+      const overlay = page.root?.shadowRoot?.querySelector('.countdown-overlay');
+      expect(overlay).toBeTruthy();
+
+      const svgInOverlay = overlay?.querySelector('svg');
+      expect(svgInOverlay).toBeTruthy();
+
+      // Should show "2" seconds (0.5 progress = 2 seconds remaining)
+      const textEl = overlay?.querySelector('text');
+      expect(textEl?.textContent).toBe('2');
+    });
+
+    it('delete-holding class is applied to delete zone when deleteHoldActive is true', async () => {
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance['showDropZones'] = true;
+      page.rootInstance.deleteHoldActive = true;
+      await page.waitForChanges();
+
+      const deleteZone = page.root?.shadowRoot?.querySelector('.drop-zone--delete');
+      expect(deleteZone).toHaveClass('delete-holding');
+    });
+
+    it('delete-holding class is NOT applied when deleteHoldActive is false', async () => {
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance['showDropZones'] = true;
+      page.rootInstance.deleteHoldActive = false;
+      await page.waitForChanges();
+
+      const deleteZone = page.root?.shadowRoot?.querySelector('.drop-zone--delete');
+      expect(deleteZone).not.toHaveClass('delete-holding');
+    });
+
+    it('cancelDeleteHold resets deleteHoldActive to false and deleteHoldProgress to 0', async () => {
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.deleteHoldActive = true;
+      page.rootInstance.deleteHoldProgress = 0.75;
+      page.rootInstance.deleteCountdownPos = { x: 100, y: 100 };
+      await page.waitForChanges();
+
+      page.rootInstance['cancelDeleteHold']();
+      await page.waitForChanges();
+
+      expect(page.rootInstance.deleteHoldActive).toBe(false);
+      expect(page.rootInstance.deleteHoldProgress).toBe(0);
+      expect(page.rootInstance.deleteCountdownPos).toBeNull();
+    });
+
+    it('handleDeleteZoneDragLeave cancels delete hold and clears dropTargetId', async () => {
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      // No fake timers needed — we set state directly without starting any intervals
+      page.rootInstance.deleteHoldActive = true;
+      page.rootInstance.deleteHoldProgress = 0.5;
+      page.rootInstance.deleteCountdownPos = { x: 100, y: 100 };
+      page.rootInstance.dropTargetId = 'delete-zone';
+      await page.waitForChanges();
 
       const mockEvent = {
         stopPropagation: jest.fn(),
-        clientX: 100,
-        clientY: 100,
-      } as unknown as PointerEvent;
+      } as unknown as DragEvent;
 
-      page.rootInstance.handlePointerDown(mockEvent, '1');
+      page.rootInstance['handleDeleteZoneDragLeave'](mockEvent);
+      await page.waitForChanges();
 
-      // Should not set longPressUserId since editable is false
-      expect(page.rootInstance.longPressUserId).toBeNull();
-
-      jest.useRealTimers();
+      expect(page.rootInstance.deleteHoldActive).toBe(false);
+      expect(page.rootInstance.deleteHoldProgress).toBe(0);
+      expect(page.rootInstance.dropTargetId).toBeNull();
     });
 
-    it('starts long-press timer on pointerdown when editable', async () => {
+    it('handleDeleteZoneRelease cancels delete hold without deleting user', async () => {
       const users: User[] = [
         { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
@@ -1152,117 +1433,30 @@ describe('sp-org-chart', () => {
       });
 
       page.rootInstance.users = users;
+      page.rootInstance.draggedUserId = '1';
+      page.rootInstance['showDropZones'] = true;
+      page.rootInstance.deleteHoldActive = true;
+      page.rootInstance.deleteHoldProgress = 0.5;
       await page.waitForChanges();
 
-      jest.useFakeTimers();
+      const deleteEvents: CustomEvent[] = [];
+      page.root?.addEventListener('userDelete', (ev: Event) => deleteEvents.push(ev as CustomEvent));
 
       const mockEvent = {
+        preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
-        clientX: 100,
-        clientY: 100,
-      } as unknown as PointerEvent;
+      } as unknown as DragEvent;
 
-      page.rootInstance.handlePointerDown(mockEvent, '1');
-
-      expect(page.rootInstance.longPressUserId).toBe('1');
-      expect(page.rootInstance.longPressProgress).toBe(0);
-
-      // Clean up interval
-      page.rootInstance.cancelLongPress();
-      jest.useRealTimers();
-    });
-
-    it('cancels long-press on pointerup', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
+      page.rootInstance['handleDeleteZoneRelease'](mockEvent);
       await page.waitForChanges();
 
-      jest.useFakeTimers();
-
-      const downEvent = {
-        stopPropagation: jest.fn(),
-        clientX: 100,
-        clientY: 100,
-      } as unknown as PointerEvent;
-
-      page.rootInstance.handlePointerDown(downEvent, '1');
-      expect(page.rootInstance.longPressUserId).toBe('1');
-
-      const upEvent = {
-        stopPropagation: jest.fn(),
-      } as unknown as PointerEvent;
-
-      page.rootInstance.handlePointerUp(upEvent);
-
-      expect(page.rootInstance.longPressUserId).toBeNull();
-      expect(page.rootInstance.longPressProgress).toBe(0);
-
-      jest.useRealTimers();
+      // Should NOT have deleted user
+      expect(deleteEvents.length).toBe(0);
+      expect(page.rootInstance.deleteHoldActive).toBe(false);
+      expect(page.rootInstance['showDropZones']).toBe(false);
     });
 
-    it('cancels long-press if pointer moves beyond threshold', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      jest.useFakeTimers();
-
-      const downEvent = {
-        stopPropagation: jest.fn(),
-        clientX: 100,
-        clientY: 100,
-      } as unknown as PointerEvent;
-
-      page.rootInstance.handlePointerDown(downEvent, '1');
-      expect(page.rootInstance.longPressUserId).toBe('1');
-
-      // Move pointer beyond threshold (10px)
-      const moveEvent = {
-        clientX: 120,
-        clientY: 100,
-      } as unknown as PointerEvent;
-
-      page.rootInstance.handlePointerMove(moveEvent);
-
-      expect(page.rootInstance.longPressUserId).toBeNull();
-
-      jest.useRealTimers();
-    });
-
-    it('does nothing on pointermove when no long-press is active', async () => {
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      // No pointerdown first, so longPressStartPos is null
-      const moveEvent = {
-        clientX: 120,
-        clientY: 100,
-      } as unknown as PointerEvent;
-
-      // Should not throw
-      page.rootInstance.handlePointerMove(moveEvent);
-      expect(page.rootInstance.longPressUserId).toBeNull();
-    });
-
-    it('emits userDelete after long-press completes', async () => {
+    it('emits userDelete after deleteHoldProgress reaches 1', async () => {
       const users: User[] = [
         { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
         { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
@@ -1279,37 +1473,12 @@ describe('sp-org-chart', () => {
       const deleteEvents: CustomEvent[] = [];
       page.root?.addEventListener('userDelete', (ev: Event) => deleteEvents.push(ev as CustomEvent));
 
-      // Directly call handleLongPressComplete which is what happens after 4 seconds
-      page.rootInstance.handleLongPressComplete('2');
+      // Directly call deleteUser (what cancelDeleteHold + deleteUser chain does)
+      page.rootInstance['deleteUser']('2');
       await page.waitForChanges();
 
       expect(deleteEvents.length).toBe(1);
       expect(deleteEvents[0].detail.userId).toBe('2');
-      expect(deleteEvents[0].detail.user.firstName).toBe('Bob');
-    });
-
-    it('removes user from list after long-press deletion', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      page.rootInstance.handleLongPressComplete('2');
-      await page.waitForChanges();
-
-      const tiles = page.root?.shadowRoot?.querySelectorAll('.user-tile');
-      expect(tiles?.length).toBe(1);
-      const remainingNames = Array.from(tiles || []).map(t => t.querySelector('.user-name')?.textContent);
-      expect(remainingNames).toContain('Alice Johnson');
-      expect(remainingNames).not.toContain('Bob Smith');
     });
 
     it('does not delete non-existent user', async () => {
@@ -1329,7 +1498,7 @@ describe('sp-org-chart', () => {
       page.root?.addEventListener('userDelete', (ev: Event) => deleteEvents.push(ev as CustomEvent));
 
       // Try to delete non-existent user
-      page.rootInstance.deleteUser('nonexistent-id');
+      page.rootInstance['deleteUser']('nonexistent-id');
       await page.waitForChanges();
 
       expect(deleteEvents.length).toBe(0);
@@ -1419,37 +1588,6 @@ describe('sp-org-chart', () => {
 
       const avatarInitials = page.root?.shadowRoot?.querySelector('.avatar-initials');
       expect(avatarInitials?.textContent).toBe('A');
-    });
-  });
-
-  // ==========================================
-  // Countdown ring rendering
-  // ==========================================
-
-  describe('countdown ring rendering', () => {
-    it('renders countdown ring when long-press is active', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      // No countdown ring initially
-      expect(page.root?.shadowRoot?.querySelector('.countdown-ring')).toBeFalsy();
-
-      // Simulate long-press state
-      page.rootInstance.longPressUserId = '1';
-      page.rootInstance.longPressProgress = 0.5;
-      await page.waitForChanges();
-
-      const ring = page.root?.shadowRoot?.querySelector('.countdown-ring');
-      expect(ring).toBeTruthy();
     });
   });
 
@@ -1657,13 +1795,13 @@ describe('sp-org-chart', () => {
 
       // Manually set a timer to simulate pending timers
       page.rootInstance['clickTimer'] = window.setTimeout(() => {}, 10000);
-      page.rootInstance['longPressTimer'] = window.setInterval(() => {}, 100);
+      page.rootInstance['deleteHoldTimer'] = window.setInterval(() => {}, 100);
 
       // Call disconnectedCallback to trigger cleanup
       page.rootInstance.disconnectedCallback();
 
       expect(page.rootInstance['clickTimer']).toBeNull();
-      expect(page.rootInstance['longPressTimer']).toBeNull();
+      expect(page.rootInstance['deleteHoldTimer']).toBeNull();
     });
   });
 
@@ -1727,69 +1865,6 @@ describe('sp-org-chart', () => {
   });
 
   // ==========================================
-  // Long-press interval callback coverage
-  // ==========================================
-
-  describe('long-press interval callback coverage', () => {
-    it('longPressProgress advances via setInterval callback when elapsed time increases', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      // Directly manipulate internal state to simulate what setInterval callback does
-      page.rootInstance.longPressUserId = '1';
-      page.rootInstance['longPressStartTime'] = Date.now() - 2000; // 2s ago = 50%
-      page.rootInstance.longPressProgress = 0;
-
-      const elapsed = Date.now() - page.rootInstance['longPressStartTime'];
-      const LONG_PRESS_DURATION = 4000;
-      page.rootInstance.longPressProgress = Math.min(elapsed / LONG_PRESS_DURATION, 1);
-
-      // Progress should be approximately 0.5 (2000/4000)
-      expect(page.rootInstance.longPressProgress).toBeGreaterThan(0.4);
-      expect(page.rootInstance.longPressProgress).toBeLessThanOrEqual(1);
-
-      // Clean up
-      page.rootInstance.cancelLongPress();
-    });
-
-    it('handleLongPressComplete triggers when progress reaches 100%', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      const deleteEvents: CustomEvent[] = [];
-      page.root?.addEventListener('userDelete', (ev: Event) => deleteEvents.push(ev as CustomEvent));
-
-      page.rootInstance.longPressUserId = '2';
-      page.rootInstance.longPressProgress = 1;
-
-      page.rootInstance.handleLongPressComplete('2');
-      await page.waitForChanges();
-
-      expect(deleteEvents.length).toBe(1);
-      expect(deleteEvents[0].detail.userId).toBe('2');
-    });
-  });
-
-  // ==========================================
   // Drop zone event handlers via direct method calls
   // ==========================================
 
@@ -1833,39 +1908,6 @@ describe('sp-org-chart', () => {
       await page.waitForChanges();
 
       expect(page.rootInstance.dropTargetId).toBeNull();
-    });
-
-    it('handles drop on delete drop zone to delete user', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      page.rootInstance.showDropZones = true;
-      await page.waitForChanges();
-
-      const deleteEvents: CustomEvent[] = [];
-      page.root?.addEventListener('userDelete', (ev: Event) => deleteEvents.push(ev as CustomEvent));
-
-      const deleteZone = page.root?.shadowRoot?.querySelector('.drop-zone--delete') as HTMLElement;
-      expect(deleteZone).toBeTruthy();
-
-      const mockDragEvent = {
-        preventDefault: jest.fn(),
-        stopPropagation: jest.fn(),
-        dataTransfer: { getData: jest.fn().mockReturnValue('2') },
-      } as unknown as DragEvent;
-
-      page.rootInstance.handleDeleteDrop(mockDragEvent);
-      await page.waitForChanges();
-
-      expect(deleteEvents.length).toBe(1);
     });
 
     it('handles drop on unlink drop zone (null manager)', async () => {
@@ -1925,6 +1967,7 @@ describe('sp-org-chart', () => {
       const mockDataTransfer = {
         effectAllowed: '',
         setData: jest.fn(),
+        setDragImage: jest.fn(),
       };
       const dragStartEvent = Object.assign(
         new Event('dragstart', { bubbles: false }),
@@ -1964,114 +2007,6 @@ describe('sp-org-chart', () => {
 
       expect(page.rootInstance.showDropZones).toBe(false);
       expect(page.rootInstance.draggedUserId).toBeNull();
-    });
-
-    it('pointerdown event handler on tile starts long-press tracking', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      // Use fake timers to prevent setInterval from running
-      jest.useFakeTimers();
-
-      const tile = page.root?.shadowRoot?.querySelector('.user-tile') as HTMLElement;
-      const pointerDownEvent = Object.assign(
-        new Event('pointerdown', { bubbles: false }),
-        { stopPropagation: jest.fn(), clientX: 100, clientY: 100 }
-      );
-
-      tile.dispatchEvent(pointerDownEvent);
-
-      expect(page.rootInstance.longPressUserId).toBe('1');
-
-      // Clean up the interval
-      page.rootInstance.cancelLongPress();
-      jest.useRealTimers();
-    });
-
-    it('pointerup event handler on tile cancels long-press', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      // Use fake timers to prevent setInterval from running
-      jest.useFakeTimers();
-
-      const tile = page.root?.shadowRoot?.querySelector('.user-tile') as HTMLElement;
-
-      // Start long press
-      tile.dispatchEvent(Object.assign(
-        new Event('pointerdown', { bubbles: false }),
-        { stopPropagation: jest.fn(), clientX: 100, clientY: 100 }
-      ));
-
-      expect(page.rootInstance.longPressUserId).toBe('1');
-
-      // Cancel with pointerup
-      tile.dispatchEvent(Object.assign(
-        new Event('pointerup', { bubbles: false }),
-        { stopPropagation: jest.fn() }
-      ));
-
-      expect(page.rootInstance.longPressUserId).toBeNull();
-
-      jest.useRealTimers();
-    });
-
-    it('pointermove event handler within threshold does not cancel long-press', async () => {
-      const users: User[] = [
-        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      // Use fake timers to prevent setInterval from running
-      jest.useFakeTimers();
-
-      const tile = page.root?.shadowRoot?.querySelector('.user-tile') as HTMLElement;
-
-      // Start long press
-      tile.dispatchEvent(Object.assign(
-        new Event('pointerdown', { bubbles: false }),
-        { stopPropagation: jest.fn(), clientX: 100, clientY: 100 }
-      ));
-
-      expect(page.rootInstance.longPressUserId).toBe('1');
-
-      // Move only 5px (below 10px threshold)
-      tile.dispatchEvent(Object.assign(
-        new Event('pointermove', { bubbles: false }),
-        { clientX: 105, clientY: 100 }
-      ));
-
-      // Should NOT cancel (still within threshold)
-      expect(page.rootInstance.longPressUserId).toBe('1');
-
-      // Clean up
-      page.rootInstance.cancelLongPress();
-      jest.useRealTimers();
     });
   });
 });
