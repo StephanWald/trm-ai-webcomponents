@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Developers can add a single script tag or npm install and immediately use production-ready, self-contained Skillspilot UI components that look and behave consistently — without framework lock-in.
-**Current focus:** v1.1 — Phase 9: sp-popover
+**Current focus:** v1.1 — Phase 9: sp-popover (complete)
 
 ## Current Position
 
 Phase: 9 of 12 (sp-popover)
-Plan: 1 of 1 in current phase (09-01 complete)
-Status: Phase 9 plan 1 complete — sp-popover built
-Last activity: 2026-02-21 — Completed 09-01-PLAN.md: sp-popover component with 6 placements, viewport boundary detection, dismiss behaviors, public methods, events, and animation
+Plan: 2 of 2 in current phase (09-02 complete — phase complete)
+Status: Phase 9 complete — sp-popover built and fully tested
+Last activity: 2026-02-21 — Completed 09-02-PLAN.md: sp-popover test suite (252-line position spec, 410-line component spec, 12 E2E tests; 2 bugs fixed)
 
-Progress: [█████░░░░░] 25% (v1.1)
+Progress: [█████░░░░░] 30% (v1.1)
 
 ## Performance Metrics
 
 **Velocity (v1.1):**
-- Total plans completed: 6
-- Average duration: 11.8m
-- Total execution time: 71m
+- Total plans completed: 8
+- Average duration: 10.5m
+- Total execution time: 87m
 
 **By Phase:**
 
@@ -29,7 +29,7 @@ Progress: [█████░░░░░] 25% (v1.1)
 |-------|-------|-------|----------|
 | 07-org-chart-parity | 3 | 52m | 17.3m |
 | 08-walkthrough-parity | 2 | 16m | 8m |
-| 09-popover-utility | 1 | 3m | 3m |
+| 09-popover-utility | 2 | 16m | 8m |
 
 *Updated after each plan completion*
 
@@ -63,6 +63,9 @@ v1.1 key decisions:
 - [Phase 09-01]: position: fixed (not absolute) so positions match getBoundingClientRect() viewport coordinates
 - [Phase 09-01]: rAF defers position compute in openInternal() so shadow DOM container has rendered dimensions before measurement
 - [Phase 09-01]: Placement flip logic only flips when new position is actually better — then clamps to 10px margin
+- [Phase 09-02]: global.requestAnimationFrame sync shim at module level required for Stencil spec tests when component uses rAF in lifecycle (mock-doc implements rAF as setTimeout which flushAll doesn't drain)
+- [Phase 09-02]: showPopover/hidePopover should only set the open prop — @Watch drives openInternal/closeInternal to prevent double-open/close events
+- [Phase 09-02]: componentDidLoad() needed for initial open=true — Stencil @Watch does not fire for initial prop values
 
 ### Pending Todos
 
@@ -81,5 +84,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 09-01-PLAN.md (sp-popover component — Phase 9 complete)
+Stopped at: Completed 09-02-PLAN.md (sp-popover test suite — Phase 9 fully complete)
 Resume file: None

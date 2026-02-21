@@ -27,7 +27,7 @@
 
 - [x] **Phase 7: Org Chart Parity** — Rebuild sp-org-chart to match original prototype layout, data model, and behaviors (completed 2026-02-21)
 - [x] **Phase 8: Walkthrough Parity** — Upgrade sp-walkthrough to match original prototype controls, animations, and rendering (completed 2026-02-21)
-- [ ] **Phase 9: Popover Utility** — Deliver sp-popover as a reusable viewport-aware positioning foundation
+- [x] **Phase 9: Popover Utility** — Deliver sp-popover as a reusable viewport-aware positioning foundation (completed 2026-02-21)
 - [ ] **Phase 10: Language & Voice** — Port sp-language-selector, sp-language-list, and sp-voice-input-button
 - [ ] **Phase 11: Communication & Splash** — Port sp-communication-preferences and sp-splash
 - [ ] **Phase 12: Docs & Tests** — Complete documentation and test coverage for all v1.1 components
@@ -124,7 +124,7 @@ Plans:
 | 6. Documentation & Publishing | v1.0 | 5/5 | Complete | 2026-02-21 |
 | 7. Org Chart Parity | 3/3 | Complete   | 2026-02-21 | - |
 | 8. Walkthrough Parity | 2/2 | Complete   | 2026-02-21 | - |
-| 9. Popover Utility | 1/2 | In Progress|  | - |
+| 9. Popover Utility | 2/2 | Complete   | 2026-02-21 | - |
 | 10. Language & Voice | v1.1 | 0/TBD | Not started | - |
 | 11. Communication & Splash | v1.1 | 0/TBD | Not started | - |
 | 12. Docs & Tests | v1.1 | 0/TBD | Not started | - |
