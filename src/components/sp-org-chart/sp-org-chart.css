@@ -1,6 +1,7 @@
 /**
  * sp-org-chart component styles
- * Consumes DWC tokens with fallback defaults
+ * Vertical indented list layout with DWC token theming and fallback defaults.
+ * Every var() call has a fallback default — no bare var(--dwc-*) calls.
  */
 
 :host {
@@ -8,71 +9,43 @@
    * @prop --dwc-font-family: Base font family for all text in the org chart
    * @prop --dwc-font-size-base: Base font size for names and body text
    * @prop --dwc-font-size-sm: Small font size for role labels and secondary text
+   * @prop --dwc-font-size-xs: Extra-small font size for branch badge
    * @prop --dwc-font-size-lg: Large font size for avatar initials and empty-state message
    * @prop --dwc-font-size-xl: Extra-large font size for drop zone icons
-   * @prop --dwc-font-weight-semibold: Semibold weight for user names and drop zone labels
-   * @prop --dwc-font-weight-medium: Medium weight for labels
+   * @prop --dwc-font-weight-semibold: Semibold weight for user names
+   * @prop --dwc-font-weight-medium: Medium weight for labels and badges
    * @prop --dwc-line-height-normal: Normal line height for body text
-   * @prop --dwc-color-surface: Background color for user tiles, toolbar, and drop zones
-   * @prop --dwc-color-border: Border color for user tiles, toolbar, drop zones, and tree connectors
-   * @prop --dwc-color-text: Primary text color for user names and drop zone labels
-   * @prop --dwc-color-text-secondary: Secondary text color for role labels and empty-state message
-   * @prop --dwc-color-primary: Accent color for selected tile border, avatar initials background, and drag-over state
+   * @prop --dwc-color-surface: Background color for user tiles and drop zones
+   * @prop --dwc-color-surface-alt: Alternate surface for branch tiles
+   * @prop --dwc-color-border: Border color for tiles, children connector, and drop zones
+   * @prop --dwc-color-text: Primary text color for user names
+   * @prop --dwc-color-text-secondary: Secondary text color for role/email/phone labels
+   * @prop --dwc-color-primary: Accent color for selected tile, avatar initials background, branch tile border
    * @prop --dwc-color-primary-text: Text color on primary-colored surfaces (avatar initials)
-   * @prop --dwc-color-warning: Warning color for highlighted tile border (search match)
-   * @prop --dwc-color-danger: Danger color for the delete drop zone border on hover
-   * @prop --dwc-border-radius: Border radius for user tiles, filter input, and drop zones
+   * @prop --dwc-color-primary-surface: Light primary surface for branch badge background
+   * @prop --dwc-color-warning: Warning color for highlighted tile border
+   * @prop --dwc-color-danger: Danger color for countdown ring and delete drop zone
+   * @prop --dwc-border-radius: Border radius for user tiles and drop zones
+   * @prop --dwc-border-radius-sm: Small border radius for branch badge
    * @prop --dwc-border-radius-full: Full (circular) border radius for user avatars
    * @prop --dwc-border-radius-lg: Large border radius for the floating drop zones container
    * @prop --dwc-shadow-sm: Small box shadow on resting user tiles
    * @prop --dwc-shadow-md: Medium box shadow on hovered user tiles
    * @prop --dwc-shadow-xl: Extra-large box shadow on the floating drop zones container
    * @prop --dwc-transition-fast: Fast transition duration for hover and drag states
-   * @prop --dwc-spacing-xs: Extra-small spacing for minor gaps (avatar margin, name margin)
-   * @prop --dwc-spacing-sm: Small spacing for filter input padding and tree children gap
-   * @prop --dwc-spacing-md: Medium spacing for toolbar padding and tile internal padding
-   * @prop --dwc-spacing-lg: Large spacing for horizontal gap between tree siblings
-   * @prop --dwc-spacing-xl: Extra-large spacing for vertical connector height and tree padding
-   * @prop --dwc-spacing-2xl: Double extra-large spacing for the empty-state message padding
+   * @prop --dwc-spacing-xs: Extra-small spacing (4px default)
+   * @prop --dwc-spacing-sm: Small spacing (8px default)
+   * @prop --dwc-spacing-md: Medium spacing for tile padding and container padding (12px default)
+   * @prop --dwc-spacing-lg: Large spacing for drop zone gaps (16px default)
+   * @prop --dwc-spacing-xl: Extra-large spacing for children indentation (32px default)
+   * @prop --dwc-spacing-2xl: Double extra-large spacing for empty-state padding
    */
   display: block;
-  font-family: var(--dwc-font-family);
-  font-size: var(--dwc-font-size-base);
-  line-height: var(--dwc-line-height-normal);
+  font-family: var(--dwc-font-family, system-ui, sans-serif);
+  font-size: var(--dwc-font-size-base, 14px);
+  line-height: var(--dwc-line-height-normal, 1.5);
   overflow: auto;
   position: relative;
-}
-
-/* === Toolbar === */
-
-.org-chart-toolbar {
-  padding: var(--dwc-spacing-md);
-  border-bottom: 1px solid var(--dwc-color-border);
-  background: var(--dwc-color-surface);
-}
-
-.filter-input {
-  width: 100%;
-  max-width: 400px;
-  padding: var(--dwc-spacing-sm) var(--dwc-spacing-md);
-  border: 1px solid var(--dwc-color-border);
-  border-radius: var(--dwc-border-radius);
-  font-family: var(--dwc-font-family);
-  font-size: var(--dwc-font-size-base);
-  color: var(--dwc-color-text);
-  background: var(--dwc-color-surface);
-  transition: border-color var(--dwc-transition-fast) ease;
-}
-
-.filter-input:focus {
-  outline: none;
-  border-color: var(--dwc-color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
-}
-
-.filter-input::placeholder {
-  color: var(--dwc-color-text-secondary);
-  opacity: 0.6;
 }
 
 /* === No Data Message === */
@@ -81,109 +54,76 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--dwc-spacing-2xl);
-  color: var(--dwc-color-text-secondary);
-  font-size: var(--dwc-font-size-lg);
+  padding: var(--dwc-spacing-2xl, 48px);
+  color: var(--dwc-color-text-secondary, #666666);
+  font-size: var(--dwc-font-size-lg, 16px);
   text-align: center;
 }
 
 /* === Tree Container === */
 
+/* Tree renders as a vertical list. Each node is a row. */
 .tree-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: var(--dwc-spacing-xl);
-  min-height: 200px;
+  padding: var(--dwc-spacing-md, 12px);
 }
 
 /* === Tree Structure === */
 
+/* Each tree node is a vertical stack: tile + children */
 .tree-node {
   display: flex;
   flex-direction: column;
-  align-items: center;
   position: relative;
 }
 
+/* Children are indented with left margin and border connectors */
 .tree-children {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: var(--dwc-spacing-lg);
-  margin-top: var(--dwc-spacing-xl);
-  position: relative;
-  padding-top: var(--dwc-spacing-xl);
+  flex-direction: column;
+  margin-left: var(--dwc-spacing-xl, 32px);
+  padding-left: var(--dwc-spacing-md, 12px);
+  border-left: 2px solid var(--dwc-color-border, #e0e0e0);
 }
 
-/* Vertical connector from parent to children row */
-.tree-node:has(.tree-children) > .user-tile::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  width: 2px;
-  height: var(--dwc-spacing-xl);
-  background: var(--dwc-color-border);
-  transform: translateX(-50%);
-}
-
-/* Horizontal connector across children */
-.tree-children::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--dwc-color-border);
-}
-
-/* Vertical drop from horizontal line to each child */
+/* Horizontal connector from vertical line to each child tile */
 .tree-children > .tree-node::before {
   content: '';
   position: absolute;
-  top: calc(-1 * var(--dwc-spacing-xl));
-  left: 50%;
-  width: 2px;
-  height: var(--dwc-spacing-xl);
-  background: var(--dwc-color-border);
-  transform: translateX(-50%);
-}
-
-/* Hide connectors for single child */
-.tree-children:has(:only-child)::before {
-  display: none;
+  top: calc(var(--dwc-spacing-sm, 8px) + 20px);
+  left: calc(-1 * var(--dwc-spacing-md, 12px));
+  width: var(--dwc-spacing-md, 12px);
+  height: 2px;
+  background: var(--dwc-color-border, #e0e0e0);
 }
 
 /* === User Tile === */
 
 .user-tile {
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Horizontal: avatar left, info right */
   align-items: center;
-  min-width: 150px;
-  max-width: 200px;
-  padding: var(--dwc-spacing-md);
-  background: var(--dwc-color-surface);
-  border: 1px solid var(--dwc-color-border);
-  border-radius: var(--dwc-border-radius);
-  box-shadow: var(--dwc-shadow-sm);
+  padding: var(--dwc-spacing-sm, 8px) var(--dwc-spacing-md, 12px);
+  margin: var(--dwc-spacing-xs, 4px) 0;
+  background: var(--dwc-color-surface, #ffffff);
+  border: 1px solid var(--dwc-color-border, #e0e0e0);
+  border-radius: var(--dwc-border-radius, 6px);
+  box-shadow: var(--dwc-shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
   cursor: pointer;
-  transition: box-shadow var(--dwc-transition-fast) ease,
-    border-color var(--dwc-transition-fast) ease,
-    transform var(--dwc-transition-fast) ease,
-    opacity var(--dwc-transition-fast) ease;
+  transition: box-shadow var(--dwc-transition-fast, 150ms) ease,
+    border-color var(--dwc-transition-fast, 150ms) ease;
   position: relative;
   user-select: none;
+  gap: var(--dwc-spacing-sm, 8px);
 }
 
 .user-tile:hover {
-  box-shadow: var(--dwc-shadow-md);
+  box-shadow: var(--dwc-shadow-md, 0 2px 6px rgba(0, 0, 0, 0.1));
 }
 
 .user-tile.selected {
-  border: 2px solid var(--dwc-color-primary);
+  border: 2px solid var(--dwc-color-primary, #0066cc);
   box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
 }
 
@@ -198,9 +138,9 @@
 }
 
 .user-tile.drag-over {
-  border: 2px dashed var(--dwc-color-primary);
+  border: 2px dashed var(--dwc-color-primary, #0066cc);
   background: rgba(0, 102, 204, 0.05);
-  transform: scale(1.02);
+  transform: scale(1.01);
 }
 
 .user-tile[draggable='true'] {
@@ -211,17 +151,31 @@
   cursor: grabbing;
 }
 
+/* === Branch Tile === */
+
+.branch-tile {
+  background: var(--dwc-color-surface-alt, #f8f9fa);
+  border-color: var(--dwc-color-primary, #0066cc);
+  border-left: 3px solid var(--dwc-color-primary, #0066cc);
+}
+
 /* === User Avatar === */
 
 .user-avatar {
-  width: 48px;
-  height: 48px;
-  margin-bottom: var(--dwc-spacing-sm);
-  border-radius: var(--dwc-border-radius-full);
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: var(--dwc-border-radius-full, 50%);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--dwc-color-primary, #0066cc);
+}
+
+/* Branch entities get square avatar */
+.branch-avatar {
+  border-radius: var(--dwc-border-radius, 6px);
 }
 
 .avatar-img {
@@ -236,31 +190,51 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--dwc-color-primary);
-  color: var(--dwc-color-primary-text);
-  font-size: var(--dwc-font-size-lg);
-  font-weight: var(--dwc-font-weight-semibold);
+  background: var(--dwc-color-primary, #0066cc);
+  color: var(--dwc-color-primary-text, #ffffff);
+  font-size: var(--dwc-font-size-sm, 12px);
+  font-weight: var(--dwc-font-weight-semibold, 600);
 }
 
 /* === User Info === */
 
 .user-info {
-  text-align: center;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Allow text truncation */
+  flex: 1;
 }
 
 .user-name {
-  font-weight: var(--dwc-font-weight-semibold);
-  color: var(--dwc-color-text);
-  font-size: var(--dwc-font-size-base);
-  margin-bottom: var(--dwc-spacing-xs);
-  word-wrap: break-word;
+  font-weight: var(--dwc-font-weight-semibold, 600);
+  color: var(--dwc-color-text, #1a1a1a);
+  font-size: var(--dwc-font-size-base, 14px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user-role {
-  color: var(--dwc-color-text-secondary);
-  font-size: var(--dwc-font-size-sm);
-  word-wrap: break-word;
+  color: var(--dwc-color-text-secondary, #666666);
+  font-size: var(--dwc-font-size-sm, 12px);
+}
+
+.user-email,
+.user-phone {
+  color: var(--dwc-color-text-secondary, #666666);
+  font-size: var(--dwc-font-size-sm, 12px);
+}
+
+.user-branch-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  margin-top: 2px;
+  font-size: var(--dwc-font-size-xs, 11px);
+  background: var(--dwc-color-primary-surface, rgba(0, 102, 204, 0.08));
+  color: var(--dwc-color-primary, #0066cc);
+  border-radius: var(--dwc-border-radius-sm, 3px);
+  font-weight: var(--dwc-font-weight-medium, 500);
+  white-space: nowrap;
 }
 
 /* === Long-Press Countdown Ring === */
@@ -284,16 +258,16 @@
 
 .drop-zones {
   position: fixed;
-  bottom: var(--dwc-spacing-xl);
+  bottom: var(--dwc-spacing-xl, 32px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: var(--dwc-spacing-lg);
+  gap: var(--dwc-spacing-lg, 16px);
   z-index: 100;
-  padding: var(--dwc-spacing-md);
-  background: var(--dwc-color-surface);
-  border-radius: var(--dwc-border-radius-lg);
-  box-shadow: var(--dwc-shadow-xl);
+  padding: var(--dwc-spacing-md, 12px);
+  background: var(--dwc-color-surface, #ffffff);
+  border-radius: var(--dwc-border-radius-lg, 12px);
+  box-shadow: var(--dwc-shadow-xl, 0 8px 24px rgba(0, 0, 0, 0.15));
 }
 
 .drop-zone {
@@ -301,18 +275,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--dwc-spacing-sm);
+  gap: var(--dwc-spacing-sm, 8px);
   min-width: 120px;
-  padding: var(--dwc-spacing-lg);
-  border: 2px dashed var(--dwc-color-border);
-  border-radius: var(--dwc-border-radius);
-  background: var(--dwc-color-surface);
+  padding: var(--dwc-spacing-lg, 16px);
+  border: 2px dashed var(--dwc-color-border, #e0e0e0);
+  border-radius: var(--dwc-border-radius, 6px);
+  background: var(--dwc-color-surface, #ffffff);
   cursor: pointer;
-  transition: all var(--dwc-transition-fast) ease;
+  transition: all var(--dwc-transition-fast, 150ms) ease;
 }
 
 .drop-zone:hover {
-  border-color: var(--dwc-color-primary);
+  border-color: var(--dwc-color-primary, #0066cc);
   background: rgba(0, 102, 204, 0.05);
   transform: scale(1.05);
 }
@@ -323,35 +297,19 @@
 }
 
 .drop-zone__icon {
-  font-size: var(--dwc-font-size-xl);
+  font-size: var(--dwc-font-size-xl, 20px);
 }
 
 .drop-zone__label {
-  font-size: var(--dwc-font-size-sm);
-  font-weight: var(--dwc-font-weight-medium);
-  color: var(--dwc-color-text);
+  font-size: var(--dwc-font-size-sm, 12px);
+  font-weight: var(--dwc-font-weight-medium, 500);
+  color: var(--dwc-color-text, #1a1a1a);
 }
 
 /* === Theme Overrides === */
 
 :host(.theme-light) {
   color: #1a1a1a;
-}
-
-:host(.theme-light) .org-chart-toolbar {
-  background: #ffffff;
-  border-bottom-color: #e0e0e0;
-}
-
-:host(.theme-light) .filter-input {
-  background: #ffffff;
-  border-color: #e0e0e0;
-  color: #1a1a1a;
-}
-
-:host(.theme-light) .filter-input:focus {
-  border-color: #0066cc;
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
 }
 
 :host(.theme-light) .no-data {
@@ -373,6 +331,19 @@
   background: rgba(255, 193, 7, 0.05);
 }
 
+:host(.theme-light) .branch-tile {
+  background: #f8f9fa;
+  border-color: #0066cc;
+}
+
+:host(.theme-light) .tree-children {
+  border-left-color: #e0e0e0;
+}
+
+:host(.theme-light) .tree-children > .tree-node::before {
+  background: #e0e0e0;
+}
+
 :host(.theme-light) .avatar-initials {
   background: #0066cc;
   color: #ffffff;
@@ -382,8 +353,15 @@
   color: #1a1a1a;
 }
 
-:host(.theme-light) .user-role {
+:host(.theme-light) .user-role,
+:host(.theme-light) .user-email,
+:host(.theme-light) .user-phone {
   color: #666666;
+}
+
+:host(.theme-light) .user-branch-badge {
+  background: rgba(0, 102, 204, 0.08);
+  color: #0066cc;
 }
 
 :host(.theme-light) .drop-zones {
@@ -413,22 +391,6 @@
   color: #e0e0e0;
 }
 
-:host(.theme-dark) .org-chart-toolbar {
-  background: #1e1e2e;
-  border-bottom-color: #3a3a4a;
-}
-
-:host(.theme-dark) .filter-input {
-  background: #2a2a3a;
-  border-color: #3a3a4a;
-  color: #e0e0e0;
-}
-
-:host(.theme-dark) .filter-input:focus {
-  border-color: #4da6ff;
-  box-shadow: 0 0 0 3px rgba(77, 166, 255, 0.2);
-}
-
 :host(.theme-dark) .no-data {
   color: #b0b0c0;
 }
@@ -448,6 +410,19 @@
   background: rgba(255, 193, 7, 0.1);
 }
 
+:host(.theme-dark) .branch-tile {
+  background: #1e2235;
+  border-color: #4da6ff;
+}
+
+:host(.theme-dark) .tree-children {
+  border-left-color: #3a3a4a;
+}
+
+:host(.theme-dark) .tree-children > .tree-node::before {
+  background: #3a3a4a;
+}
+
 :host(.theme-dark) .avatar-initials {
   background: #4da6ff;
   color: #1a1a1a;
@@ -457,8 +432,15 @@
   color: #e0e0e0;
 }
 
-:host(.theme-dark) .user-role {
+:host(.theme-dark) .user-role,
+:host(.theme-dark) .user-email,
+:host(.theme-dark) .user-phone {
   color: #b0b0c0;
+}
+
+:host(.theme-dark) .user-branch-badge {
+  background: rgba(77, 166, 255, 0.12);
+  color: #4da6ff;
 }
 
 :host(.theme-dark) .drop-zones {
@@ -482,10 +464,4 @@
 
 :host(.theme-dark) .drop-zone__label {
   color: #e0e0e0;
-}
-
-:host(.theme-dark) .tree-children::before,
-:host(.theme-dark) .tree-children > .tree-node::before,
-:host(.theme-dark) .tree-node:has(.tree-children) > .user-tile::after {
-  background: #3a3a4a;
 }
