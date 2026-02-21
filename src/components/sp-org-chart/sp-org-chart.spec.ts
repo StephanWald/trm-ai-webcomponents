@@ -16,9 +16,9 @@ describe('sp-org-chart', () => {
     expect(noData).toBeTruthy();
     expect(noData?.textContent?.trim()).toBe('No data available');
 
-    // Verify filter input exists
+    // Filter input should NOT exist (removed in Plan 02)
     const filterInput = page.root?.shadowRoot?.querySelector('.filter-input');
-    expect(filterInput).toBeTruthy();
+    expect(filterInput).toBeFalsy();
   });
 
   it('displays custom no-data message when prop is set', async () => {
@@ -33,8 +33,8 @@ describe('sp-org-chart', () => {
 
   it('renders user tiles when users prop is set', async () => {
     const users: User[] = [
-      { id: '1', name: 'Alice Johnson', role: 'CEO' },
-      { id: '2', name: 'Bob Smith', role: 'CTO', reportsTo: '1' },
+      { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+      { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
     ];
 
     const page = await newSpecPage({
@@ -68,11 +68,57 @@ describe('sp-org-chart', () => {
     expect(userRoles).toContain('CTO');
   });
 
+  it('renders expanded tile content: email, phone, and branch badge', async () => {
+    const users: User[] = [
+      {
+        id: '1',
+        firstName: 'Alice',
+        lastName: 'Johnson',
+        role: 'CEO',
+        email: 'alice@example.com',
+        phone: '555-1234',
+        branchName: 'HQ',
+      },
+    ];
+
+    const page = await newSpecPage({
+      components: [SpOrgChart],
+      html: '<sp-org-chart></sp-org-chart>',
+    });
+
+    page.rootInstance.users = users;
+    await page.waitForChanges();
+
+    const tile = page.root?.shadowRoot?.querySelector('.user-tile');
+    expect(tile?.querySelector('.user-email')?.textContent).toBe('alice@example.com');
+    expect(tile?.querySelector('.user-phone')?.textContent).toBe('555-1234');
+    expect(tile?.querySelector('.user-branch-badge')?.textContent).toBe('HQ');
+  });
+
+  it('does not render email or phone elements when fields are absent', async () => {
+    const users: User[] = [
+      { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+    ];
+
+    const page = await newSpecPage({
+      components: [SpOrgChart],
+      html: '<sp-org-chart></sp-org-chart>',
+    });
+
+    page.rootInstance.users = users;
+    await page.waitForChanges();
+
+    const tile = page.root?.shadowRoot?.querySelector('.user-tile');
+    expect(tile?.querySelector('.user-email')).toBeFalsy();
+    expect(tile?.querySelector('.user-phone')).toBeFalsy();
+    expect(tile?.querySelector('.user-branch-badge')).toBeFalsy();
+  });
+
   it('renders hierarchical tree structure with nested children', async () => {
     const users: User[] = [
-      { id: '1', name: 'Alice', role: 'CEO' },
-      { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
-      { id: '3', name: 'Carol', role: 'Engineer', reportsTo: '2' },
+      { id: '1', firstName: 'Alice', lastName: 'Smith', role: 'CEO' },
+      { id: '2', firstName: 'Bob', lastName: 'Jones', role: 'CTO', reportsTo: '1' },
+      { id: '3', firstName: 'Carol', lastName: 'Lee', role: 'Engineer', reportsTo: '2' },
     ];
 
     const page = await newSpecPage({
@@ -92,12 +138,12 @@ describe('sp-org-chart', () => {
     expect(treeNodes?.length).toBe(3);
   });
 
-  it('renders siblings in alphabetical order by name', async () => {
+  it('renders siblings in alphabetical order by display name', async () => {
     const users: User[] = [
-      { id: '1', name: 'Alice', role: 'CEO' },
-      { id: '2', name: 'Zoe', role: 'CTO', reportsTo: '1' },
-      { id: '3', name: 'Bob', role: 'CFO', reportsTo: '1' },
-      { id: '4', name: 'Carol', role: 'COO', reportsTo: '1' },
+      { id: '1', firstName: 'Alice', lastName: 'Smith', role: 'CEO' },
+      { id: '2', firstName: 'Zoe', lastName: 'Clark', role: 'CTO', reportsTo: '1' },
+      { id: '3', firstName: 'Bob', lastName: 'Adams', role: 'CFO', reportsTo: '1' },
+      { id: '4', firstName: 'Carol', lastName: 'King', role: 'COO', reportsTo: '1' },
     ];
 
     const page = await newSpecPage({
@@ -111,12 +157,154 @@ describe('sp-org-chart', () => {
     const userNames = Array.from(page.root?.shadowRoot?.querySelectorAll('.user-name') || [])
       .map(el => el.textContent);
 
-    // Alice is root, then children should be Bob, Carol, Zoe
-    expect(userNames[0]).toBe('Alice');
-    // Children of Alice should be sorted
+    // Alice is root, children should be sorted by display name
+    expect(userNames[0]).toBe('Alice Smith');
     const children = userNames.slice(1);
-    expect(children).toEqual(['Bob', 'Carol', 'Zoe']);
+    expect(children).toEqual(['Bob Adams', 'Carol King', 'Zoe Clark']);
   });
+
+  // ==========================================
+  // Branch entity rendering
+  // ==========================================
+
+  describe('branch entity rendering', () => {
+    it('renders branch entity with branch-tile and branch-avatar classes', async () => {
+      const users: User[] = [
+        { id: 'branch-1', firstName: 'Acme Corp', role: 'Branch', branchId: 'branch-1' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      const tile = page.root?.shadowRoot?.querySelector('.user-tile');
+      expect(tile).toHaveClass('branch-tile');
+
+      const avatar = tile?.querySelector('.user-avatar');
+      expect(avatar).toHaveClass('branch-avatar');
+    });
+
+    it('does not show branch badge for branch entities themselves', async () => {
+      const users: User[] = [
+        { id: 'branch-1', firstName: 'Acme Corp', role: 'Branch', branchName: 'Acme' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      // Branch entities should not show their own branchName as badge
+      const badge = page.root?.shadowRoot?.querySelector('.user-branch-badge');
+      expect(badge).toBeFalsy();
+    });
+
+    it('renders branch logo as avatar image for branch entity', async () => {
+      const users: User[] = [
+        { id: 'branch-1', firstName: 'Acme Corp', role: 'Branch', branchLogo: 'https://example.com/logo.png' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      const avatarImg = page.root?.shadowRoot?.querySelector('.avatar-img') as HTMLImageElement;
+      expect(avatarImg).toBeTruthy();
+      expect(avatarImg?.src).toBe('https://example.com/logo.png');
+    });
+
+    it('renders regular user with circular avatar (no branch-avatar class)', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      const tile = page.root?.shadowRoot?.querySelector('.user-tile');
+      expect(tile).not.toHaveClass('branch-tile');
+
+      const avatar = tile?.querySelector('.user-avatar');
+      expect(avatar).not.toHaveClass('branch-avatar');
+    });
+  });
+
+  // ==========================================
+  // Editable defaults to true
+  // ==========================================
+
+  describe('editable prop behavior', () => {
+    it('editable defaults to true — tiles are draggable by default', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      const userTile = page.root?.shadowRoot?.querySelector('.user-tile');
+      expect(userTile?.getAttribute('draggable')).toBe('true');
+    });
+
+    it('makes tiles not draggable when editable prop is explicitly false', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart editable="false"></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      const userTile = page.root?.shadowRoot?.querySelector('.user-tile');
+      expect(userTile?.getAttribute('draggable')).toBe('false');
+    });
+
+    it('makes tiles draggable when editable prop is explicitly true', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart editable="true"></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      const userTile = page.root?.shadowRoot?.querySelector('.user-tile');
+      expect(userTile?.getAttribute('draggable')).toBe('true');
+    });
+  });
+
+  // ==========================================
+  // Theme tests
+  // ==========================================
 
   it('applies theme-light class when theme prop is "light"', async () => {
     const page = await newSpecPage({
@@ -146,43 +334,158 @@ describe('sp-org-chart', () => {
     expect(page.root).not.toHaveClass('theme-dark');
   });
 
-  it('makes tiles draggable when editable prop is true', async () => {
-    const users: User[] = [
-      { id: '1', name: 'Alice', role: 'CEO' },
-    ];
+  // ==========================================
+  // Branch filtering via filterMode/filterBranchId props
+  // ==========================================
 
-    const page = await newSpecPage({
-      components: [SpOrgChart],
-      html: '<sp-org-chart editable="true"></sp-org-chart>',
+  describe('branch filtering via props', () => {
+    it('shows all users when filterMode is none (default)', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', branchId: 'branch-1' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1', branchId: 'branch-2' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      const tiles = page.root?.shadowRoot?.querySelectorAll('.user-tile');
+      expect(tiles?.length).toBe(2);
+
+      // No tiles should be dimmed when no filter is active
+      Array.from(tiles || []).forEach(tile => {
+        expect(tile).not.toHaveClass('dimmed');
+      });
     });
 
-    page.rootInstance.users = users;
-    await page.waitForChanges();
+    it('dims non-matching users when filterMode is highlight', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', branchId: 'branch-1' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1', branchId: 'branch-2' },
+      ];
 
-    const userTile = page.root?.shadowRoot?.querySelector('.user-tile');
-    expect(userTile?.getAttribute('draggable')).toBe('true');
-  });
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
 
-  it('makes tiles not draggable when editable prop is false', async () => {
-    const users: User[] = [
-      { id: '1', name: 'Alice', role: 'CEO' },
-    ];
+      page.rootInstance.users = users;
+      await page.waitForChanges();
 
-    const page = await newSpecPage({
-      components: [SpOrgChart],
-      html: '<sp-org-chart></sp-org-chart>',
+      // Set highlight filter for branch-1
+      page.rootInstance.filterMode = 'highlight';
+      page.rootInstance.filterBranchId = 'branch-1';
+      // Manually call applyBranchFilter since @Watch won't fire in test direct assignment
+      page.rootInstance['applyBranchFilter']();
+      await page.waitForChanges();
+
+      expect(page.rootInstance.branchFilterResults).not.toBeNull();
+
+      const userTiles = page.root?.shadowRoot?.querySelectorAll('.user-tile');
+      const aliceTile = Array.from(userTiles || []).find(t => t.querySelector('.user-name')?.textContent === 'Alice Johnson');
+      const bobTile = Array.from(userTiles || []).find(t => t.querySelector('.user-name')?.textContent === 'Bob Smith');
+
+      // Alice matches branch-1, Bob does not and is not ancestor
+      expect(aliceTile).not.toHaveClass('dimmed');
+      expect(bobTile).toHaveClass('dimmed');
     });
 
-    page.rootInstance.users = users;
-    await page.waitForChanges();
+    it('clears branch filter when filterMode is set back to none', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', branchId: 'branch-1' },
+      ];
 
-    const userTile = page.root?.shadowRoot?.querySelector('.user-tile');
-    expect(userTile?.getAttribute('draggable')).toBe('false');
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      // Apply filter
+      page.rootInstance.filterMode = 'highlight';
+      page.rootInstance.filterBranchId = 'branch-1';
+      page.rootInstance['applyBranchFilter']();
+      await page.waitForChanges();
+      expect(page.rootInstance.branchFilterResults).not.toBeNull();
+
+      // Clear filter
+      page.rootInstance.filterMode = 'none';
+      page.rootInstance['applyBranchFilter']();
+      await page.waitForChanges();
+      expect(page.rootInstance.branchFilterResults).toBeNull();
+    });
+
+    it('clears branch filter when filterBranchId is empty', async () => {
+      const users: User[] = [
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', branchId: 'branch-1' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      // Apply filter then clear branchId
+      page.rootInstance.filterMode = 'highlight';
+      page.rootInstance.filterBranchId = 'branch-1';
+      page.rootInstance['applyBranchFilter']();
+      await page.waitForChanges();
+      expect(page.rootInstance.branchFilterResults).not.toBeNull();
+
+      // Empty filterBranchId clears results
+      page.rootInstance.filterBranchId = '';
+      page.rootInstance['applyBranchFilter']();
+      await page.waitForChanges();
+      expect(page.rootInstance.branchFilterResults).toBeNull();
+    });
+
+    it('hides unrelated branch entities in isolate mode', async () => {
+      const users: User[] = [
+        { id: 'branch-1', firstName: 'Branch One', role: 'Branch', branchId: 'branch-1' },
+        { id: 'branch-2', firstName: 'Branch Two', role: 'Branch', branchId: 'branch-2' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', reportsTo: 'branch-1', branchId: 'branch-1' },
+      ];
+
+      const page = await newSpecPage({
+        components: [SpOrgChart],
+        html: '<sp-org-chart></sp-org-chart>',
+      });
+
+      page.rootInstance.users = users;
+      await page.waitForChanges();
+
+      // Apply isolate filter for branch-1
+      page.rootInstance.filterMode = 'isolate';
+      page.rootInstance.filterBranchId = 'branch-1';
+      page.rootInstance['applyBranchFilter']();
+      await page.waitForChanges();
+
+      // branch-2 entity should be hidden (it has no matching descendants)
+      // branch-1 should be visible (it matches or has matching descendants)
+      const names = Array.from(
+        page.root?.shadowRoot?.querySelectorAll('.user-name') || []
+      ).map(n => n.textContent);
+
+      expect(names).not.toContain('Branch Two');
+    });
   });
+
+  // ==========================================
+  // Event emissions
+  // ==========================================
 
   it('emits userClick event when tile is clicked', async () => {
     const users: User[] = [
-      { id: '1', name: 'Alice', role: 'CEO' },
+      { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
     ];
 
     const page = await newSpecPage({
@@ -205,7 +508,7 @@ describe('sp-org-chart', () => {
 
     expect(spyEvent).toHaveBeenCalled();
     expect(spyEvent.mock.calls[0][0].detail.userId).toBe('1');
-    expect(spyEvent.mock.calls[0][0].detail.user.name).toBe('Alice');
+    expect(spyEvent.mock.calls[0][0].detail.user.firstName).toBe('Alice');
   });
 
   it('returns null from getSelected() when nothing is selected', async () => {
@@ -220,7 +523,7 @@ describe('sp-org-chart', () => {
 
   it('sets highlighted state via highlightUser() method', async () => {
     const users: User[] = [
-      { id: '1', name: 'Alice', role: 'CEO' },
+      { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
     ];
 
     const page = await newSpecPage({
@@ -240,7 +543,7 @@ describe('sp-org-chart', () => {
 
   it('clears highlighted state via clearHighlight() method', async () => {
     const users: User[] = [
-      { id: '1', name: 'Alice', role: 'CEO' },
+      { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
     ];
 
     const page = await newSpecPage({
@@ -266,26 +569,14 @@ describe('sp-org-chart', () => {
     expect(userTile).not.toHaveClass('highlighted');
   });
 
-  it('renders filter input element', async () => {
-    const page = await newSpecPage({
-      components: [SpOrgChart],
-      html: '<sp-org-chart></sp-org-chart>',
-    });
-
-    const filterInput = page.root?.shadowRoot?.querySelector('.filter-input');
-    expect(filterInput).toBeTruthy();
-    expect(filterInput?.getAttribute('type')).toBe('text');
-    expect(filterInput?.getAttribute('placeholder')).toContain('Filter');
-  });
-
   it('renders drop zones when editable and dragging', async () => {
     const users: User[] = [
-      { id: '1', name: 'Alice', role: 'CEO' },
+      { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
     ];
 
     const page = await newSpecPage({
       components: [SpOrgChart],
-      html: '<sp-org-chart editable="true"></sp-org-chart>',
+      html: '<sp-org-chart></sp-org-chart>',
     });
 
     page.rootInstance.users = users;
@@ -299,7 +590,7 @@ describe('sp-org-chart', () => {
     page.rootInstance['showDropZones'] = true;
     await page.waitForChanges();
 
-    // Drop zones should now be visible
+    // Drop zones should now be visible (editable defaults to true)
     dropZones = page.root?.shadowRoot?.querySelector('.drop-zones');
     expect(dropZones).toBeTruthy();
 
@@ -309,7 +600,7 @@ describe('sp-org-chart', () => {
 
   it('exposes CSS parts for styling', async () => {
     const users: User[] = [
-      { id: '1', name: 'Alice', role: 'CEO' },
+      { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
     ];
 
     const page = await newSpecPage({
@@ -320,9 +611,7 @@ describe('sp-org-chart', () => {
     page.rootInstance.users = users;
     await page.waitForChanges();
 
-    const filterInput = page.root?.shadowRoot?.querySelector('[part="filter-input"]');
-    expect(filterInput).toBeTruthy();
-
+    // filter-input part removed, tree-container and user-tile remain
     const treeContainer = page.root?.shadowRoot?.querySelector('[part="tree-container"]');
     expect(treeContainer).toBeTruthy();
 
@@ -331,146 +620,14 @@ describe('sp-org-chart', () => {
   });
 
   // ==========================================
-  // Interaction handler tests (coverage gaps)
+  // User selection via click
   // ==========================================
-
-  describe('filter input handling', () => {
-    it('updates filterText when typing in filter input', async () => {
-      const users: User[] = [
-        { id: '1', name: 'Alice Johnson', role: 'CEO' },
-        { id: '2', name: 'Bob Smith', role: 'CTO', reportsTo: '1' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      const filterInput = page.root?.shadowRoot?.querySelector('.filter-input') as HTMLInputElement;
-      filterInput.value = 'Alice';
-      filterInput.dispatchEvent(new Event('input'));
-      await page.waitForChanges();
-
-      expect(page.rootInstance.filterText).toBe('Alice');
-    });
-
-    it('sets filterResults when filter text is non-empty', async () => {
-      const users: User[] = [
-        { id: '1', name: 'Alice Johnson', role: 'CEO' },
-        { id: '2', name: 'Bob Smith', role: 'CTO', reportsTo: '1' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      const filterInput = page.root?.shadowRoot?.querySelector('.filter-input') as HTMLInputElement;
-      filterInput.value = 'Alice';
-      filterInput.dispatchEvent(new Event('input'));
-      await page.waitForChanges();
-
-      expect(page.rootInstance.filterResults).not.toBeNull();
-    });
-
-    it('clears filterResults when filter text is empty', async () => {
-      const users: User[] = [
-        { id: '1', name: 'Alice Johnson', role: 'CEO' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      // First set a filter
-      const filterInput = page.root?.shadowRoot?.querySelector('.filter-input') as HTMLInputElement;
-      filterInput.value = 'Alice';
-      filterInput.dispatchEvent(new Event('input'));
-      await page.waitForChanges();
-      expect(page.rootInstance.filterResults).not.toBeNull();
-
-      // Then clear it
-      filterInput.value = '';
-      filterInput.dispatchEvent(new Event('input'));
-      await page.waitForChanges();
-
-      expect(page.rootInstance.filterResults).toBeNull();
-    });
-
-    it('dims nodes that do not match the filter', async () => {
-      const users: User[] = [
-        { id: '1', name: 'Alice Johnson', role: 'CEO' },
-        { id: '2', name: 'Bob Smith', role: 'CTO', reportsTo: '1' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      const filterInput = page.root?.shadowRoot?.querySelector('.filter-input') as HTMLInputElement;
-      filterInput.value = 'Alice';
-      filterInput.dispatchEvent(new Event('input'));
-      await page.waitForChanges();
-
-      const userTiles = page.root?.shadowRoot?.querySelectorAll('.user-tile');
-      const bobTile = Array.from(userTiles || []).find(tile =>
-        tile.querySelector('.user-name')?.textContent === 'Bob Smith'
-      );
-      // Alice is an ancestor of Bob (no, actually Bob reports to Alice, so Alice is ancestor)
-      // Alice matches the filter so she won't be dimmed; Bob is a descendant so also won't be dimmed
-      // Actually Bob reports TO Alice, so Alice is a PARENT, not a child.
-      // Bob does not match 'Alice', but Alice is his ancestor (ancestor of match = visible)
-      // Wait: filterTree keeps ancestors of matches AND matched nodes. Alice matches, Bob is her child (descendant).
-      // So Bob should be dimmed since he doesn't match "Alice" and is not an ancestor of Alice.
-      // But Alice IS parent of Bob, so Bob's tree doesn't have a matching descendant.
-      expect(bobTile).toHaveClass('dimmed');
-    });
-
-    it('filters by role as well as name', async () => {
-      const users: User[] = [
-        { id: '1', name: 'Alice Johnson', role: 'CEO' },
-        { id: '2', name: 'Bob Smith', role: 'CTO', reportsTo: '1' },
-      ];
-
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      page.rootInstance.users = users;
-      await page.waitForChanges();
-
-      const filterInput = page.root?.shadowRoot?.querySelector('.filter-input') as HTMLInputElement;
-      filterInput.value = 'CTO';
-      filterInput.dispatchEvent(new Event('input'));
-      await page.waitForChanges();
-
-      expect(page.rootInstance.filterResults).not.toBeNull();
-      // Bob matches by role 'CTO'
-      const bobResult = page.rootInstance.filterResults?.get('2');
-      expect(bobResult?.matched).toBe(true);
-    });
-  });
 
   describe('user selection via click', () => {
     it('sets selectedUserId state when tile is clicked (single-click)', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
@@ -492,9 +649,9 @@ describe('sp-org-chart', () => {
       expect(page.rootInstance.selectedUserId).toBe('1');
     });
 
-    it('emits user-selected event on single click with user detail', async () => {
+    it('emits userClick event on single click with user detail', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
@@ -516,12 +673,17 @@ describe('sp-org-chart', () => {
 
       expect(clickEvents.length).toBe(1);
       expect(clickEvents[0].detail.userId).toBe('1');
-      expect(clickEvents[0].detail.user).toEqual({ id: '1', name: 'Alice', role: 'CEO' });
+      expect(clickEvents[0].detail.user).toEqual({
+        id: '1',
+        firstName: 'Alice',
+        lastName: 'Johnson',
+        role: 'CEO',
+      });
     });
 
     it('getSelected() returns selected user after click', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
@@ -539,12 +701,17 @@ describe('sp-org-chart', () => {
       await page.waitForChanges();
 
       const selected = await page.rootInstance.getSelected();
-      expect(selected).toEqual({ id: '1', name: 'Alice', role: 'CEO' });
+      expect(selected).toEqual({
+        id: '1',
+        firstName: 'Alice',
+        lastName: 'Johnson',
+        role: 'CEO',
+      });
     });
 
     it('applies selected CSS class to clicked tile', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
@@ -566,10 +733,14 @@ describe('sp-org-chart', () => {
     });
   });
 
+  // ==========================================
+  // User double-click
+  // ==========================================
+
   describe('user double-click', () => {
     it('emits userDblclick event when tile is double-clicked', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
@@ -594,9 +765,13 @@ describe('sp-org-chart', () => {
 
       expect(dblclickEvents.length).toBe(1);
       expect(dblclickEvents[0].detail.userId).toBe('1');
-      expect(dblclickEvents[0].detail.user.name).toBe('Alice');
+      expect(dblclickEvents[0].detail.user.firstName).toBe('Alice');
     });
   });
+
+  // ==========================================
+  // Users @Watch handler
+  // ==========================================
 
   describe('users @Watch handler', () => {
     it('rebuilds tree when users prop changes', async () => {
@@ -610,8 +785,8 @@ describe('sp-org-chart', () => {
 
       // Set users via prop assignment (triggers @Watch)
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
       page.rootInstance.users = users;
       await page.waitForChanges();
@@ -621,9 +796,9 @@ describe('sp-org-chart', () => {
       expect(tiles?.length).toBe(2);
     });
 
-    it('resets filterText when users prop changes', async () => {
+    it('resets branchFilterResults when users prop changes', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', branchId: 'branch-1' },
       ];
 
       const page = await newSpecPage({
@@ -635,31 +810,34 @@ describe('sp-org-chart', () => {
       await page.waitForChanges();
 
       // Set a filter
-      const filterInput = page.root?.shadowRoot?.querySelector('.filter-input') as HTMLInputElement;
-      filterInput.value = 'Alice';
-      filterInput.dispatchEvent(new Event('input'));
+      page.rootInstance.filterMode = 'highlight';
+      page.rootInstance.filterBranchId = 'branch-1';
+      page.rootInstance['applyBranchFilter']();
       await page.waitForChanges();
-      expect(page.rootInstance.filterText).toBe('Alice');
+      expect(page.rootInstance.branchFilterResults).not.toBeNull();
 
-      // Change users (triggers handleUsersChange watch)
-      page.rootInstance.users = [{ id: '2', name: 'Bob', role: 'CTO' }];
+      // Change users (triggers handleUsersChange watch) — clears branchFilterResults
+      page.rootInstance.users = [{ id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO' }];
       await page.waitForChanges();
 
-      expect(page.rootInstance.filterText).toBe('');
-      expect(page.rootInstance.filterResults).toBeNull();
+      expect(page.rootInstance.branchFilterResults).toBeNull();
     });
   });
+
+  // ==========================================
+  // Drag-and-drop interactions
+  // ==========================================
 
   describe('drag-and-drop interactions', () => {
     it('sets draggedUserId and shows drop zones on dragstart', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -685,13 +863,13 @@ describe('sp-org-chart', () => {
 
     it('sets dropTargetId on dragover with target', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -713,7 +891,7 @@ describe('sp-org-chart', () => {
     it('clears dropTargetId on dragleave', async () => {
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.dropTargetId = '2';
@@ -731,14 +909,14 @@ describe('sp-org-chart', () => {
 
     it('emits hierarchyChange event on drop with new manager', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
-        { id: '3', name: 'Carol', role: 'Engineer', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
+        { id: '3', firstName: 'Carol', lastName: 'Lee', role: 'Engineer', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -765,13 +943,13 @@ describe('sp-org-chart', () => {
 
     it('emits hierarchyChange with null manager on unlink drop', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -797,12 +975,12 @@ describe('sp-org-chart', () => {
 
     it('cleans up drag state when same user dropped on themselves', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -826,13 +1004,13 @@ describe('sp-org-chart', () => {
 
     it('emits userDelete on delete drop zone', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -852,13 +1030,13 @@ describe('sp-org-chart', () => {
 
       expect(deleteEvents.length).toBe(1);
       expect(deleteEvents[0].detail.userId).toBe('2');
-      expect(deleteEvents[0].detail.user.name).toBe('Bob');
+      expect(deleteEvents[0].detail.user.firstName).toBe('Bob');
     });
 
     it('cleans up drop state on drag end', async () => {
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.showDropZones = true;
@@ -881,7 +1059,7 @@ describe('sp-org-chart', () => {
     it('handles delete drop with no dragged user ID gracefully', async () => {
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.showDropZones = true;
@@ -902,12 +1080,12 @@ describe('sp-org-chart', () => {
 
     it('handles drop when user is not found gracefully', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -928,15 +1106,19 @@ describe('sp-org-chart', () => {
     });
   });
 
+  // ==========================================
+  // Long-press deletion flow
+  // ==========================================
+
   describe('long-press deletion flow', () => {
     it('does nothing on pointerdown when editable is false', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
+        html: '<sp-org-chart editable="false"></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -961,12 +1143,12 @@ describe('sp-org-chart', () => {
 
     it('starts long-press timer on pointerdown when editable', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -992,12 +1174,12 @@ describe('sp-org-chart', () => {
 
     it('cancels long-press on pointerup', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1028,12 +1210,12 @@ describe('sp-org-chart', () => {
 
     it('cancels long-press if pointer moves beyond threshold', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1066,7 +1248,7 @@ describe('sp-org-chart', () => {
     it('does nothing on pointermove when no long-press is active', async () => {
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       // No pointerdown first, so longPressStartPos is null
@@ -1082,13 +1264,13 @@ describe('sp-org-chart', () => {
 
     it('emits userDelete after long-press completes', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1103,18 +1285,18 @@ describe('sp-org-chart', () => {
 
       expect(deleteEvents.length).toBe(1);
       expect(deleteEvents[0].detail.userId).toBe('2');
-      expect(deleteEvents[0].detail.user.name).toBe('Bob');
+      expect(deleteEvents[0].detail.user.firstName).toBe('Bob');
     });
 
     it('removes user from list after long-press deletion', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1126,18 +1308,18 @@ describe('sp-org-chart', () => {
       const tiles = page.root?.shadowRoot?.querySelectorAll('.user-tile');
       expect(tiles?.length).toBe(1);
       const remainingNames = Array.from(tiles || []).map(t => t.querySelector('.user-name')?.textContent);
-      expect(remainingNames).toContain('Alice');
-      expect(remainingNames).not.toContain('Bob');
+      expect(remainingNames).toContain('Alice Johnson');
+      expect(remainingNames).not.toContain('Bob Smith');
     });
 
     it('does not delete non-existent user', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1154,13 +1336,17 @@ describe('sp-org-chart', () => {
     });
   });
 
+  // ==========================================
+  // Three-level tree rendering
+  // ==========================================
+
   describe('three-level tree rendering', () => {
     it('renders correct parent-child relationships in 3-level deep tree', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'VP', reportsTo: '1' },
-        { id: '3', name: 'Carol', role: 'Manager', reportsTo: '2' },
-        { id: '4', name: 'Dave', role: 'Engineer', reportsTo: '3' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'VP', reportsTo: '1' },
+        { id: '3', firstName: 'Carol', lastName: 'Lee', role: 'Manager', reportsTo: '2' },
+        { id: '4', firstName: 'Dave', lastName: 'Park', role: 'Engineer', reportsTo: '3' },
       ];
 
       const page = await newSpecPage({
@@ -1176,15 +1362,15 @@ describe('sp-org-chart', () => {
 
       const userNames = Array.from(page.root?.shadowRoot?.querySelectorAll('.user-name') || [])
         .map(el => el.textContent);
-      expect(userNames).toContain('Alice');
-      expect(userNames).toContain('Bob');
-      expect(userNames).toContain('Carol');
-      expect(userNames).toContain('Dave');
+      expect(userNames).toContain('Alice Johnson');
+      expect(userNames).toContain('Bob Smith');
+      expect(userNames).toContain('Carol Lee');
+      expect(userNames).toContain('Dave Park');
     });
 
     it('renders with avatar img when user has avatar URL', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO', avatar: 'https://example.com/alice.jpg' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', avatar: 'https://example.com/alice.jpg' },
       ];
 
       const page = await newSpecPage({
@@ -1202,7 +1388,7 @@ describe('sp-org-chart', () => {
 
     it('renders avatar initials when no avatar URL', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice Johnson', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
@@ -1218,9 +1404,9 @@ describe('sp-org-chart', () => {
       expect(avatarInitials?.textContent).toBe('AJ');
     });
 
-    it('renders single-word name initials correctly', async () => {
+    it('renders branch entity (no lastName) initials using first char of firstName only', async () => {
       const users: User[] = [
-        { id: '1', name: 'Madonna', role: 'Artist' },
+        { id: '1', firstName: 'Acme', role: 'Branch' },
       ];
 
       const page = await newSpecPage({
@@ -1232,19 +1418,23 @@ describe('sp-org-chart', () => {
       await page.waitForChanges();
 
       const avatarInitials = page.root?.shadowRoot?.querySelector('.avatar-initials');
-      expect(avatarInitials?.textContent).toBe('M');
+      expect(avatarInitials?.textContent).toBe('A');
     });
   });
+
+  // ==========================================
+  // Countdown ring rendering
+  // ==========================================
 
   describe('countdown ring rendering', () => {
     it('renders countdown ring when long-press is active', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1263,16 +1453,20 @@ describe('sp-org-chart', () => {
     });
   });
 
+  // ==========================================
+  // Drag-over visual feedback
+  // ==========================================
+
   describe('drag-over visual feedback', () => {
     it('applies drag-over CSS class when drop target matches tile', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1289,7 +1483,7 @@ describe('sp-org-chart', () => {
       await page.waitForChanges();
 
       const tilesAfter = Array.from(page.root?.shadowRoot?.querySelectorAll('.user-tile') || []);
-      const bobTile = tilesAfter.find(t => t.querySelector('.user-name')?.textContent === 'Bob');
+      const bobTile = tilesAfter.find(t => t.querySelector('.user-name')?.textContent === 'Bob Smith');
       expect(bobTile).toHaveClass('drag-over');
     });
   });
@@ -1311,8 +1505,8 @@ describe('sp-org-chart', () => {
 
     it('renders user tiles with text content when users are provided', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice Johnson', role: 'Chief Executive Officer' },
-        { id: '2', name: 'Bob Smith', role: 'Chief Technology Officer', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'Chief Executive Officer' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'Chief Technology Officer', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
@@ -1334,23 +1528,6 @@ describe('sp-org-chart', () => {
       });
     });
 
-    it('renders filter input as visible and functional', async () => {
-      const page = await newSpecPage({
-        components: [SpOrgChart],
-        html: '<sp-org-chart></sp-org-chart>',
-      });
-
-      const filterInput = page.root?.shadowRoot?.querySelector('.filter-input') as HTMLInputElement;
-      expect(filterInput).toBeTruthy();
-      expect(filterInput.type).toBe('text');
-
-      // Filter input should be functional
-      filterInput.value = 'test';
-      filterInput.dispatchEvent(new Event('input'));
-      await page.waitForChanges();
-      expect(page.rootInstance.filterText).toBe('test');
-    });
-
     it('renders no-data message when users is empty', async () => {
       const page = await newSpecPage({
         components: [SpOrgChart],
@@ -1364,8 +1541,8 @@ describe('sp-org-chart', () => {
 
     it('renders tree-container with children when data is provided', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
@@ -1381,19 +1558,23 @@ describe('sp-org-chart', () => {
       expect(treeContainer?.children.length).toBeGreaterThan(0);
     });
 
-    it('component structure is intact with org-chart-toolbar always present', async () => {
+    it('component structure has no toolbar (filter input removed)', async () => {
       const page = await newSpecPage({
         components: [SpOrgChart],
         html: '<sp-org-chart></sp-org-chart>',
       });
 
+      // toolbar and filter-input are removed in Plan 02
       const toolbar = page.root?.shadowRoot?.querySelector('.org-chart-toolbar');
-      expect(toolbar).toBeTruthy();
+      expect(toolbar).toBeFalsy();
+
+      const filterInput = page.root?.shadowRoot?.querySelector('.filter-input');
+      expect(filterInput).toBeFalsy();
     });
 
     it('renders with theme-light class providing visual fallback', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
@@ -1411,7 +1592,7 @@ describe('sp-org-chart', () => {
 
     it('renders with theme-dark class providing visual fallback', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
@@ -1427,7 +1608,7 @@ describe('sp-org-chart', () => {
 
     it('avatar initials are readable as text content (fallback to initials when no image)', async () => {
       const users: User[] = [
-        { id: '1', name: 'John Doe', role: 'Director' },
+        { id: '1', firstName: 'John', lastName: 'Doe', role: 'Director' },
       ];
 
       const page = await newSpecPage({
@@ -1445,7 +1626,7 @@ describe('sp-org-chart', () => {
     it('drop zones render with labels when editable and dragging active', async () => {
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.showDropZones = true;
@@ -1462,6 +1643,10 @@ describe('sp-org-chart', () => {
       expect(labelTexts).toContain('Delete');
     });
   });
+
+  // ==========================================
+  // disconnectedCallback cleanup
+  // ==========================================
 
   describe('disconnectedCallback cleanup', () => {
     it('cleans up timers when component disconnects', async () => {
@@ -1482,10 +1667,14 @@ describe('sp-org-chart', () => {
     });
   });
 
+  // ==========================================
+  // scrollToUser method
+  // ==========================================
+
   describe('scrollToUser method', () => {
     it('calls scrollIntoView when element is found', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
@@ -1537,27 +1726,29 @@ describe('sp-org-chart', () => {
     });
   });
 
+  // ==========================================
+  // Long-press interval callback coverage
+  // ==========================================
+
   describe('long-press interval callback coverage', () => {
     it('longPressProgress advances via setInterval callback when elapsed time increases', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
       await page.waitForChanges();
 
       // Directly manipulate internal state to simulate what setInterval callback does
-      // This covers the interval callback lines without needing fake timers
       page.rootInstance.longPressUserId = '1';
       page.rootInstance['longPressStartTime'] = Date.now() - 2000; // 2s ago = 50%
       page.rootInstance.longPressProgress = 0;
 
-      // Simulate one tick of the interval: calculate elapsed and update progress
       const elapsed = Date.now() - page.rootInstance['longPressStartTime'];
       const LONG_PRESS_DURATION = 4000;
       page.rootInstance.longPressProgress = Math.min(elapsed / LONG_PRESS_DURATION, 1);
@@ -1572,13 +1763,13 @@ describe('sp-org-chart', () => {
 
     it('handleLongPressComplete triggers when progress reaches 100%', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1587,11 +1778,9 @@ describe('sp-org-chart', () => {
       const deleteEvents: CustomEvent[] = [];
       page.root?.addEventListener('userDelete', (ev: Event) => deleteEvents.push(ev as CustomEvent));
 
-      // Simulate the interval completing: progress = 1, triggering handleLongPressComplete
       page.rootInstance.longPressUserId = '2';
       page.rootInstance.longPressProgress = 1;
 
-      // This is what the interval callback does when progress >= 1
       page.rootInstance.handleLongPressComplete('2');
       await page.waitForChanges();
 
@@ -1600,35 +1789,36 @@ describe('sp-org-chart', () => {
     });
   });
 
+  // ==========================================
+  // Drop zone event handlers via direct method calls
+  // ==========================================
+
   describe('drop zone event handlers via direct method calls', () => {
     it('handleDragOver without targetId does not set dropTargetId', async () => {
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.showDropZones = true;
       await page.waitForChanges();
 
-      // Call handleDragOver without targetId (as the drop zone lambdas do)
       const mockDragEvent = {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
         dataTransfer: { dropEffect: '' },
       } as unknown as DragEvent;
 
-      // This covers the lambda: ev => this.handleDragOver(ev) (no targetId)
       page.rootInstance.handleDragOver(mockDragEvent);
       await page.waitForChanges();
 
-      // dropTargetId should not be set since no targetId was passed
       expect(page.rootInstance.dropTargetId).toBeNull();
     });
 
     it('handleDragLeave on drop zone clears dropTargetId', async () => {
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.showDropZones = true;
@@ -1639,7 +1829,6 @@ describe('sp-org-chart', () => {
         stopPropagation: jest.fn(),
       } as unknown as DragEvent;
 
-      // Cover the drop zone lambda: ev => this.handleDragLeave(ev)
       page.rootInstance.handleDragLeave(mockDragEvent);
       await page.waitForChanges();
 
@@ -1648,13 +1837,13 @@ describe('sp-org-chart', () => {
 
     it('handles drop on delete drop zone to delete user', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1681,13 +1870,13 @@ describe('sp-org-chart', () => {
 
     it('handles drop on unlink drop zone (null manager)', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
-        { id: '2', name: 'Bob', role: 'CTO', reportsTo: '1' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
+        { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', reportsTo: '1' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1703,7 +1892,6 @@ describe('sp-org-chart', () => {
         dataTransfer: { getData: jest.fn().mockReturnValue('2') },
       } as unknown as DragEvent;
 
-      // Cover the drop zone lambda: ev => this.handleDrop(ev, null)
       page.rootInstance.handleDrop(mockDragEvent, null);
       await page.waitForChanges();
 
@@ -1712,15 +1900,19 @@ describe('sp-org-chart', () => {
     });
   });
 
+  // ==========================================
+  // Editable tile event handlers in rendered DOM
+  // ==========================================
+
   describe('editable tile event handlers in rendered DOM', () => {
     it('dragstart event handler on tile triggers drag start state', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1748,12 +1940,12 @@ describe('sp-org-chart', () => {
 
     it('dragend event handler on tile cleans up drag state', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1776,12 +1968,12 @@ describe('sp-org-chart', () => {
 
     it('pointerdown event handler on tile starts long-press tracking', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1807,12 +1999,12 @@ describe('sp-org-chart', () => {
 
     it('pointerup event handler on tile cancels long-press', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
@@ -1844,12 +2036,12 @@ describe('sp-org-chart', () => {
 
     it('pointermove event handler within threshold does not cancel long-press', async () => {
       const users: User[] = [
-        { id: '1', name: 'Alice', role: 'CEO' },
+        { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO' },
       ];
 
       const page = await newSpecPage({
         components: [SpOrgChart],
-        html: '<sp-org-chart editable="true"></sp-org-chart>',
+        html: '<sp-org-chart></sp-org-chart>',
       });
 
       page.rootInstance.users = users;
