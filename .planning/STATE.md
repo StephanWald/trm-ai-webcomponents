@@ -5,30 +5,30 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Developers can add a single script tag or npm install and immediately use production-ready, self-contained Skillspilot UI components that look and behave consistently — without framework lock-in.
-**Current focus:** v1.1 — Phase 8: Walkthrough Parity
+**Current focus:** v1.1 — Phase 9: sp-popover
 
 ## Current Position
 
-Phase: 8 of 12 (Walkthrough Parity)
-Plan: 1 of 2 in current phase (08-01 complete)
-Status: In progress
-Last activity: 2026-02-21 — Completed 08-01-PLAN.md: Tabler SVG icons, single-row controls, progress bar, skip/restart
+Phase: 9 of 12 (sp-popover)
+Plan: 0 of N in current phase (08 complete)
+Status: Phase 8 complete, ready for Phase 9
+Last activity: 2026-02-21 — Completed 08-02-PLAN.md: Scene list popup, volume popup, caption overlay, markdown, highlight animations
 
-Progress: [████░░░░░░] 18% (v1.1)
+Progress: [█████░░░░░] 22% (v1.1)
 
 ## Performance Metrics
 
 **Velocity (v1.1):**
-- Total plans completed: 4
-- Average duration: 15.5m
-- Total execution time: 61m
+- Total plans completed: 5
+- Average duration: 13.6m
+- Total execution time: 68m
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 07-org-chart-parity | 3 | 52m | 17.3m |
-| 08-walkthrough-parity | 1 | 9m | 9m |
+| 08-walkthrough-parity | 2 | 16m | 8m |
 
 *Updated after each plan completion*
 
@@ -55,6 +55,9 @@ v1.1 key decisions:
 - [Phase 08-01]: Single-row controls-row replaces panel-header — acts as both drag handle and controls container
 - [Phase 08-01]: Previous/next scene buttons kept alongside skip-back/forward — skip only works with video, prev/next needed for manual mode
 - [Phase 08-01]: SVG icon helpers are private TSX methods returning JSX — same pattern as sp-org-chart inline icons
+- [Phase 08-02]: MarkdownRenderer copied into sp-walkthrough/utils/ rather than imported cross-component to avoid Stencil bundling issues
+- [Phase 08-02]: TextTrack mode kept 'hidden' always; cuechange listener reads cues programmatically for custom caption overlay
+- [Phase 08-02]: injectHighlightStyles() uses document.getElementById guard for idempotent @keyframes injection; clearHighlights() leaves styles in document.head
 
 ### Pending Todos
 
@@ -73,5 +76,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 08-01-PLAN.md (Tabler SVG icons, single-row controls, progress bar, skip/restart)
+Stopped at: Completed 08-02-PLAN.md (Scene list popup, volume popup, caption overlay, markdown, highlight animations — Phase 8 complete)
 Resume file: None

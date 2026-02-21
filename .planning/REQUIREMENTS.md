@@ -28,11 +28,11 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 - [x] **WALK-02**: Visual progress bar displays in controls row showing current playback position with click-to-seek
 - [x] **WALK-03**: Skip backward 10s and skip forward 10s buttons present and functional
 - [x] **WALK-04**: Restart button returns playback to beginning
-- [ ] **WALK-05**: Scene list displays as custom popup (not native select dropdown) with title and timestamp per scene
-- [ ] **WALK-06**: Volume control renders as vertical popup slider (rotated 90deg) with custom thumb/track styling
-- [ ] **WALK-07**: Custom caption rendering with styled overlay (dark background, white text, text shadow) instead of native browser captions
-- [ ] **WALK-08**: Scene description supports markdown rendering in text bubble (h1-h3, p, ul, ol, code, pre)
-- [ ] **WALK-09**: Highlight animations match original: reddish-brown border with dual glow, green active state, breathing animation (1.5s ease-in-out)
+- [x] **WALK-05**: Scene list displays as custom popup (not native select dropdown) with title and timestamp per scene
+- [x] **WALK-06**: Volume control renders as vertical popup slider (rotated 90deg) with custom thumb/track styling
+- [x] **WALK-07**: Custom caption rendering with styled overlay (dark background, white text, text shadow) instead of native browser captions
+- [x] **WALK-08**: Scene description supports markdown rendering in text bubble (h1-h3, p, ul, ol, code, pre)
+- [x] **WALK-09**: Highlight animations match original: reddish-brown border with dual glow, green active state, breathing animation (1.5s ease-in-out)
 - [x] **WALK-10**: Controls layout matches original single-row design without separate panel header
 - [x] **WALK-11**: All colors/fonts use DWC CSS custom properties with sensible fallback defaults
 
@@ -143,11 +143,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | WALK-02 | Phase 8 | Complete |
 | WALK-03 | Phase 8 | Complete |
 | WALK-04 | Phase 8 | Complete |
-| WALK-05 | Phase 8 | Pending |
-| WALK-06 | Phase 8 | Pending |
-| WALK-07 | Phase 8 | Pending |
-| WALK-08 | Phase 8 | Pending |
-| WALK-09 | Phase 8 | Pending |
+| WALK-05 | Phase 8 | Complete |
+| WALK-06 | Phase 8 | Complete |
+| WALK-07 | Phase 8 | Complete |
+| WALK-08 | Phase 8 | Complete |
+| WALK-09 | Phase 8 | Complete |
 | WALK-10 | Phase 8 | Complete |
 | WALK-11 | Phase 8 | Complete |
 | LANG-01 | Phase 10 | Pending |
