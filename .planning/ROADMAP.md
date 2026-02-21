@@ -89,7 +89,11 @@ Plans:
   3. sp-voice-input-button renders as a 44px circular button with a microphone icon; hovering triggers a 2-second progress bar cue then opens the language dropdown
   4. When listening, the button turns red with a pulse animation and blinking recording indicator; errors trigger a shake animation with an error message; the mode indicator shows a globe or robot icon based on the mode prop
   5. Both component groups emit their full event sets (languageChange, start, stop, error, transcriptionUpdate) and support enabled/disabled, compact mode, and dark theme via DWC variables
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 10-01-PLAN.md — Language components: shared types, language data, sp-language-list, sp-language-selector with sp-popover dropdown
+- [ ] 10-02-PLAN.md — Voice input button: sp-voice-input-button with hover language cue, listening/error states, pulse/shake animations, mode indicator
+- [ ] 10-03-PLAN.md — Tests: spec tests for all language/voice components and E2E tests for browser interactions
 
 ### Phase 11: Communication & Splash
 **Goal**: sp-communication-preferences (selector + list) and sp-splash are fully ported with correct channel icons, selection state, dismiss behaviors, slot-based content, and DWC theming
@@ -125,10 +129,10 @@ Plans:
 | 7. Org Chart Parity | 3/3 | Complete   | 2026-02-21 | - |
 | 8. Walkthrough Parity | 2/2 | Complete   | 2026-02-21 | - |
 | 9. Popover Utility | 2/2 | Complete   | 2026-02-21 | - |
-| 10. Language & Voice | v1.1 | 0/TBD | Not started | - |
+| 10. Language & Voice | v1.1 | 0/3 | Planned | - |
 | 11. Communication & Splash | v1.1 | 0/TBD | Not started | - |
 | 12. Docs & Tests | v1.1 | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-01-31*
-*Last updated: 2026-02-21 — v1.1 milestone roadmap added (phases 7-12)*
+*Last updated: 2026-02-21 — Phase 10 planned (3 plans in 3 waves)*
