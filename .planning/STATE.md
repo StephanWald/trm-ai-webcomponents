@@ -10,24 +10,24 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 7 of 12 (Org Chart Parity)
-Plan: 2 of 5 in current phase (07-02 complete)
+Plan: 3 of 5 in current phase (07-03 complete)
 Status: In progress
-Last activity: 2026-02-21 — Completed 07-02-PLAN.md: component TSX/CSS rewrite for vertical list layout
+Last activity: 2026-02-21 — Completed 07-03-PLAN.md: custom drag preview, SVG drop zones, timed delete, branch filtering
 
-Progress: [██░░░░░░░░] 10% (v1.1)
+Progress: [███░░░░░░░] 15% (v1.1)
 
 ## Performance Metrics
 
 **Velocity (v1.1):**
-- Total plans completed: 2
-- Average duration: 5.5m
-- Total execution time: 11m
+- Total plans completed: 3
+- Average duration: 17.7m
+- Total execution time: 52m
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 07-org-chart-parity | 2 | 11m | 5.5m |
+| 07-org-chart-parity | 3 | 52m | 17.3m |
 
 *Updated after each plan completion*
 
@@ -47,6 +47,10 @@ v1.1 key decisions:
 - [Phase 07-02]: Filter input removed entirely — branch filtering via filterMode/filterBranchId props only
 - [Phase 07-02]: editable defaults to true to match prototype drag-and-drop-on behavior
 - [Phase 07-02]: applyBranchFilter() consumed at render layer (shouldDimNode/shouldHideNode) for highlight vs isolate
+- [Phase 07-03]: Timed delete via drag-hold on delete drop zone (not long-press on tiles) — cancelDeleteHold() resets all hold state
+- [Phase 07-03]: document-level dragover listener attached in handleDragStart and detached in cleanupDragState for floating preview cursor tracking
+- [Phase 07-03]: typeof Image guard in componentWillLoad needed for JSDOM spec test compatibility
+- [Phase 07-03]: jest.useFakeTimers() must never precede await page.waitForChanges() in Stencil spec tests (blocks async resolution)
 
 ### Pending Todos
 
@@ -65,5 +69,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 07-02-PLAN.md (component TSX/CSS rewrite for vertical list layout and expanded tiles)
+Stopped at: Completed 07-03-PLAN.md (custom drag preview, SVG drop zones, timed delete, branch filtering)
 Resume file: None
