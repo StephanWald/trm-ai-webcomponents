@@ -6,3 +6,21 @@ loader/
 .stencil/
 *.log
 .DS_Store
+
+# Test & coverage output
+coverage/
+test-results/
+
+# Docusaurus build artifacts
+docs/build/
+docs/.docusaurus/
+
+# IDE
+.idea/
+
+# Claude Code
+.claude/
+
+# Local dev/debug scripts
+jest.md-*.config.js
+run-md-spec.sh

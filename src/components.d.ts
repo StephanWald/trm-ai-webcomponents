@@ -25,6 +25,10 @@ export namespace Components {
          */
         "theme": 'light' | 'dark' | 'auto';
     }
+    /**
+     * Rich markdown editor component with source, WYSIWYG, and split editing modes.
+     * Supports voice dictation, undo/redo history, auto-save, file import/export, and print.
+     */
     interface SpMarkdownEditor {
         /**
           * @default true
@@ -97,7 +101,11 @@ export namespace Components {
         "users": User[];
     }
     /**
-     * Interactive walkthrough component with video playback and DOM element highlighting
+     * Interactive walkthrough component with video playback and DOM element highlighting.
+     * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.
+     * Note: sp-walkthrough does not expose CSS parts. The panel is a self-contained overlay UI and
+     * is not designed for external structural customization via ::part() selectors. Use CSS custom
+     * properties (--dwc-*) to theme colors, spacing, and typography.
      */
     interface SpWalkthrough {
         /**
@@ -196,6 +204,10 @@ declare global {
         "exportFile": ExportEvent;
         "imagePaste": ImagePasteEvent;
     }
+    /**
+     * Rich markdown editor component with source, WYSIWYG, and split editing modes.
+     * Supports voice dictation, undo/redo history, auto-save, file import/export, and print.
+     */
     interface HTMLSpMarkdownEditorElement extends Components.SpMarkdownEditor, HTMLStencilElement {
         addEventListener<K extends keyof HTMLSpMarkdownEditorElementEventMap>(type: K, listener: (this: HTMLSpMarkdownEditorElement, ev: SpMarkdownEditorCustomEvent<HTMLSpMarkdownEditorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -238,7 +250,11 @@ declare global {
         "timelineUpdated": TimelineUpdateDetail;
     }
     /**
-     * Interactive walkthrough component with video playback and DOM element highlighting
+     * Interactive walkthrough component with video playback and DOM element highlighting.
+     * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.
+     * Note: sp-walkthrough does not expose CSS parts. The panel is a self-contained overlay UI and
+     * is not designed for external structural customization via ::part() selectors. Use CSS custom
+     * properties (--dwc-*) to theme colors, spacing, and typography.
      */
     interface HTMLSpWalkthroughElement extends Components.SpWalkthrough, HTMLStencilElement {
         addEventListener<K extends keyof HTMLSpWalkthroughElementEventMap>(type: K, listener: (this: HTMLSpWalkthroughElement, ev: SpWalkthroughCustomEvent<HTMLSpWalkthroughElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -279,6 +295,10 @@ declare namespace LocalJSX {
          */
         "theme"?: 'light' | 'dark' | 'auto';
     }
+    /**
+     * Rich markdown editor component with source, WYSIWYG, and split editing modes.
+     * Supports voice dictation, undo/redo history, auto-save, file import/export, and print.
+     */
     interface SpMarkdownEditor {
         /**
           * @default true
@@ -350,7 +370,11 @@ declare namespace LocalJSX {
         "users"?: User[];
     }
     /**
-     * Interactive walkthrough component with video playback and DOM element highlighting
+     * Interactive walkthrough component with video playback and DOM element highlighting.
+     * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.
+     * Note: sp-walkthrough does not expose CSS parts. The panel is a self-contained overlay UI and
+     * is not designed for external structural customization via ::part() selectors. Use CSS custom
+     * properties (--dwc-*) to theme colors, spacing, and typography.
      */
     interface SpWalkthrough {
         /**
@@ -414,10 +438,18 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "sp-example": LocalJSX.SpExample & JSXBase.HTMLAttributes<HTMLSpExampleElement>;
+            /**
+             * Rich markdown editor component with source, WYSIWYG, and split editing modes.
+             * Supports voice dictation, undo/redo history, auto-save, file import/export, and print.
+             */
             "sp-markdown-editor": LocalJSX.SpMarkdownEditor & JSXBase.HTMLAttributes<HTMLSpMarkdownEditorElement>;
             "sp-org-chart": LocalJSX.SpOrgChart & JSXBase.HTMLAttributes<HTMLSpOrgChartElement>;
             /**
-             * Interactive walkthrough component with video playback and DOM element highlighting
+             * Interactive walkthrough component with video playback and DOM element highlighting.
+             * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.
+             * Note: sp-walkthrough does not expose CSS parts. The panel is a self-contained overlay UI and
+             * is not designed for external structural customization via ::part() selectors. Use CSS custom
+             * properties (--dwc-*) to theme colors, spacing, and typography.
              */
             "sp-walkthrough": LocalJSX.SpWalkthrough & JSXBase.HTMLAttributes<HTMLSpWalkthroughElement>;
         }
