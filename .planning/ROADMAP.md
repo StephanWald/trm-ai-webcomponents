@@ -101,7 +101,7 @@ Plans:
 Plans:
 - [x] 05-01-PLAN.md — Coverage threshold config in stencil.config.ts, CI update, and sp-org-chart gap + fallback tests
 - [x] 05-02-PLAN.md — sp-walkthrough and utility (draggable-mixin, youtube-wrapper) gap + fallback tests
-- [ ] 05-03-PLAN.md — sp-markdown-editor gap + fallback tests
+- [x] 05-03-PLAN.md — sp-markdown-editor gap + fallback tests
 
 ### Phase 6: Documentation & Publishing
 **Goal**: Comprehensive Docusaurus documentation site live on GitHub Pages, published npm package, CDN availability, and automated release workflow with changelogs
@@ -112,14 +112,15 @@ Plans:
   2. Each component page shows auto-generated API docs (props, events, methods, CSS properties, CSS parts) and interactive live examples with editable code
   3. Developer can run `npm install @skillspilot/webcomponents` or add CDN script tag from jsdelivr/unpkg and immediately use components
   4. Maintainer can create GitHub release and see automated CI/CD publish to npm with provenance, generate changelog via Changesets, and deploy updated docs to GitHub Pages
-  5. Documentation versioning keeps docs in sync with component releases, showing version picker with historical API references
-**Plans**: 4 plans
+  5. Documentation stays in sync with component releases via changelog page tracking all versions; full Docusaurus version picker deferred to v1.0.0 per research recommendation
+**Plans**: 5 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Stencil docs-json output target, CSS @prop annotations, @part JSDoc tags
-- [ ] 06-02-PLAN.md — CI/CD: release.yml npm provenance, docs-deploy.yml GitHub Pages workflow
-- [ ] 06-03-PLAN.md — Docusaurus site scaffolding, config, LiveExample/ApiReference components, getting-started + theming guides
-- [ ] 06-04-PLAN.md — Component MDX pages with API reference + live examples, changelog
+- [x] 06-01-PLAN.md — Stencil docs-json output target, CSS @prop annotations, @part JSDoc tags
+- [x] 06-02-PLAN.md — CI/CD: release.yml npm provenance, docs-deploy.yml GitHub Pages workflow
+- [x] 06-03-PLAN.md — Docusaurus site scaffolding, config, LiveExample/ApiReference components, getting-started + theming guides
+- [x] 06-04-PLAN.md — Component MDX pages with API reference + live examples, changelog
+- [ ] 06-05-PLAN.md — Gap closure: ROADMAP alignment and publishing readiness
 
 ## Progress
 
@@ -133,8 +134,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 3. Walkthrough Component | 3/3 | ✓ Complete | 2026-01-31 |
 | 4. Markdown Editor Component | 4/4 | ✓ Complete | 2026-01-31 |
 | 5. Testing & Quality | 3/3 | Complete   | 2026-02-20 |
-| 6. Documentation & Publishing | 4/4 | Complete   | 2026-02-21 |
+| 6. Documentation & Publishing | 4/5 | In Progress | 2026-02-21 |
 
 ---
 *Roadmap created: 2026-01-31*
-*Last updated: 2026-02-21 — Phase 6 plans created (4 plans in 3 waves)*
+*Last updated: 2026-02-21 — Phase 6 gap closure plan added (5 plans total)*
