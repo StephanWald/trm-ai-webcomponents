@@ -1,0 +1,139 @@
+---
+title: sp-org-chart
+description: Hierarchical org chart with drag-and-drop reorganization, search/filter, and user selection.
+sidebar_position: 1
+---
+
+import docsData from '@site/../docs.json';
+import LiveExample from '@site/src/components/LiveExample';
+import ApiReference from '@site/src/components/ApiReference';
+
+export const componentDocs = docsData.components.find(c => c.tag === 'sp-org-chart');
+
+# sp-org-chart
+
+Hierarchical org chart web component with drag-and-drop reorganization, search/filter, user selection, and full keyboard navigation support. Pass an array of user objects via the `users` property; the component builds the hierarchy automatically from `reportsTo` relationships.
+
+## Installation
+
+```bash
+npm install @skillspilot/webcomponents
+```
+
+Or load from CDN:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@skillspilot/webcomponents/dist/skillspilot/skillspilot.esm.js"></script>
+```
+
+## Examples
+
+### Basic Org Chart
+
+A flat user array with `reportsTo` relationships. The component builds the hierarchy automatically.
+
+<LiveExample height="340px" code={`
+<sp-org-chart id="chart1"></sp-org-chart>
+<script>
+  const chart = document.getElementById('chart1');
+  chart.users = [
+    { id: '1', name: 'Alice Johnson', title: 'CEO', department: 'Executive', avatarUrl: '' },
+    { id: '2', name: 'Bob Smith', title: 'CTO', department: 'Engineering', reportsTo: '1', avatarUrl: '' },
+    { id: '3', name: 'Carol White', title: 'CFO', department: 'Finance', reportsTo: '1', avatarUrl: '' },
+    { id: '4', name: 'Dave Lee', title: 'Lead Engineer', department: 'Engineering', reportsTo: '2', avatarUrl: '' },
+    { id: '5', name: 'Eve Davis', title: 'Engineer', department: 'Engineering', reportsTo: '4', avatarUrl: '' }
+  ];
+</script>
+`} />
+
+### Editable Mode
+
+Enable drag-and-drop reorganization with `editable="true"`. Users can long-press (500ms) on a tile and drag it to a new manager.
+
+<LiveExample height="340px" code={`
+<sp-org-chart id="chart2" editable="true"></sp-org-chart>
+<script>
+  const chart = document.getElementById('chart2');
+  chart.users = [
+    { id: '1', name: 'Alice Johnson', title: 'CEO', department: 'Executive', avatarUrl: '' },
+    { id: '2', name: 'Bob Smith', title: 'CTO', department: 'Engineering', reportsTo: '1', avatarUrl: '' },
+    { id: '3', name: 'Carol White', title: 'CFO', department: 'Finance', reportsTo: '1', avatarUrl: '' },
+    { id: '4', name: 'Dave Lee', title: 'Lead Engineer', department: 'Engineering', reportsTo: '2', avatarUrl: '' }
+  ];
+</script>
+`} />
+
+### Filtered View
+
+Use the search input to filter users by name, title, or department. Filtered results show the full ancestor chain so context is preserved.
+
+<LiveExample height="340px" code={`
+<sp-org-chart id="chart3"></sp-org-chart>
+<p style="margin-top:8px;font-size:0.85rem;color:#666">
+  Try typing "Engineering" in the search box above the chart.
+</p>
+<script>
+  const chart = document.getElementById('chart3');
+  chart.users = [
+    { id: '1', name: 'Alice Johnson', title: 'CEO', department: 'Executive', avatarUrl: '' },
+    { id: '2', name: 'Bob Smith', title: 'CTO', department: 'Engineering', reportsTo: '1', avatarUrl: '' },
+    { id: '3', name: 'Carol White', title: 'CFO', department: 'Finance', reportsTo: '1', avatarUrl: '' },
+    { id: '4', name: 'Dave Lee', title: 'Lead Engineer', department: 'Engineering', reportsTo: '2', avatarUrl: '' },
+    { id: '5', name: 'Frank Brown', title: 'Accountant', department: 'Finance', reportsTo: '3', avatarUrl: '' }
+  ];
+</script>
+`} />
+
+### Event Handling
+
+Listen to `user-click`, `user-dblclick`, `user-delete`, and `hierarchy-change` events emitted by the component.
+
+<LiveExample height="380px" code={`
+<sp-org-chart id="chart4" editable="true"></sp-org-chart>
+<div id="log" style="margin-top:8px;padding:8px;background:#f5f5f5;border-radius:4px;font-family:monospace;font-size:0.8rem;min-height:60px;"></div>
+<script>
+  const chart = document.getElementById('chart4');
+  const log = document.getElementById('log');
+
+  function addLog(msg) {
+    const p = document.createElement('p');
+    p.style.margin = '2px 0';
+    p.textContent = msg;
+    log.prepend(p);
+    if (log.children.length > 5) log.lastChild.remove();
+  }
+
+  chart.users = [
+    { id: '1', name: 'Alice Johnson', title: 'CEO', department: 'Executive', avatarUrl: '' },
+    { id: '2', name: 'Bob Smith', title: 'CTO', department: 'Engineering', reportsTo: '1', avatarUrl: '' },
+    { id: '3', name: 'Carol White', title: 'CFO', department: 'Finance', reportsTo: '1', avatarUrl: '' }
+  ];
+
+  chart.addEventListener('userClick', e => addLog('userClick: ' + e.detail.name));
+  chart.addEventListener('userDblclick', e => addLog('userDblclick: ' + e.detail.name));
+  chart.addEventListener('hierarchyChange', e => addLog('hierarchyChange: ' + JSON.stringify(e.detail).substring(0, 60)));
+</script>
+`} />
+
+### Dark Mode
+
+Apply the `theme-dark` class (or set the `theme` attribute) to switch to the dark color scheme using DWC design tokens.
+
+<LiveExample height="340px" code={`
+<div class="theme-dark" style="background:#1a1a2e;padding:16px;border-radius:8px">
+  <sp-org-chart id="chart5" theme="dark"></sp-org-chart>
+</div>
+<script>
+  const chart = document.getElementById('chart5');
+  chart.users = [
+    { id: '1', name: 'Alice Johnson', title: 'CEO', department: 'Executive', avatarUrl: '' },
+    { id: '2', name: 'Bob Smith', title: 'CTO', department: 'Engineering', reportsTo: '1', avatarUrl: '' },
+    { id: '3', name: 'Carol White', title: 'CFO', department: 'Finance', reportsTo: '1', avatarUrl: '' },
+    { id: '4', name: 'Dave Lee', title: 'Lead Engineer', department: 'Engineering', reportsTo: '2', avatarUrl: '' }
+  ];
+</script>
+`} />
+
+## API Reference
+
+<ApiReference component={componentDocs} />

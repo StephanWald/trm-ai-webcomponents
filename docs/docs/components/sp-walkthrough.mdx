@@ -1,0 +1,132 @@
+---
+title: sp-walkthrough
+description: Interactive video walkthrough component with scene timeline, DOM element highlighting, and author mode.
+sidebar_position: 2
+---
+
+import docsData from '@site/../docs.json';
+import LiveExample from '@site/src/components/LiveExample';
+import ApiReference from '@site/src/components/ApiReference';
+
+export const componentDocs = docsData.components.find(c => c.tag === 'sp-walkthrough');
+
+# sp-walkthrough
+
+Interactive video walkthrough component that overlays timed scenes on a video. Each scene can highlight a DOM element, display a caption, and auto-advance on a timeline. Includes author mode for creating walkthroughs by pointing and clicking elements on the page.
+
+:::info Preview Limitation
+Walkthrough examples below use a text-only mode (no video source) to demonstrate scene-based navigation. Full video playback requires an MP4 source and does not work inside documentation iframes. The component's full functionality — video sync, DOM highlighting, and captions — is available when used in a real application.
+:::
+
+## Installation
+
+```bash
+npm install @skillspilot/webcomponents
+```
+
+Or load from CDN:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@skillspilot/webcomponents/dist/skillspilot/skillspilot.esm.js"></script>
+```
+
+## Examples
+
+### Basic Walkthrough (Manual Navigation)
+
+A walkthrough with no video — scenes advance manually via the Next/Prev buttons. Useful for UI tours without a recorded video.
+
+<LiveExample height="300px" code={`
+<sp-walkthrough id="wt1"></sp-walkthrough>
+<button onclick="document.getElementById('wt1').show()" style="margin-top:8px;padding:6px 16px;cursor:pointer">
+  Show Walkthrough
+</button>
+<script>
+  const wt = document.getElementById('wt1');
+  wt.scenes = [
+    { id: 's1', caption: 'Welcome! This walkthrough shows you around the interface.', startTime: 0, endTime: 3 },
+    { id: 's2', caption: 'Step 2: Click the menu button to open the navigation panel.', startTime: 3, endTime: 6 },
+    { id: 's3', caption: 'Step 3: Select your workspace from the list on the left.', startTime: 6, endTime: 9 }
+  ];
+</script>
+`} />
+
+### Author Mode
+
+Enable author mode with `author-mode="true"` to create new scenes by clicking DOM elements. The component activates a pointer tool and records element selectors into the scene timeline.
+
+<LiveExample height="300px" code={`
+<p id="para1" style="padding:8px;border:1px solid #ddd;border-radius:4px">
+  Click on any element while in author mode to record it as a scene target.
+</p>
+<button id="btn1" style="padding:6px 16px;cursor:pointer">Sample Button</button>
+<sp-walkthrough id="wt2" author-mode="true"></sp-walkthrough>
+<button onclick="document.getElementById('wt2').show()" style="margin-top:8px;padding:6px 16px;cursor:pointer">
+  Launch Author Mode
+</button>
+<script>
+  const wt = document.getElementById('wt2');
+  wt.scenes = [
+    { id: 's1', caption: 'Author mode active — click elements to record selector targets.', startTime: 0, endTime: 5 }
+  ];
+</script>
+`} />
+
+### Event Handling
+
+Listen to `walkthrough-shown`, `walkthrough-hidden`, `scene-changed`, and `timeline-updated` events to integrate the walkthrough into your application state.
+
+<LiveExample height="380px" code={`
+<sp-walkthrough id="wt3"></sp-walkthrough>
+<button onclick="document.getElementById('wt3').show()" style="padding:6px 16px;cursor:pointer">
+  Show Walkthrough
+</button>
+<div id="evtlog" style="margin-top:8px;padding:8px;background:#f5f5f5;border-radius:4px;font-family:monospace;font-size:0.8rem;min-height:60px;"></div>
+<script>
+  const wt = document.getElementById('wt3');
+  const log = document.getElementById('evtlog');
+
+  function addLog(msg) {
+    const p = document.createElement('p');
+    p.style.margin = '2px 0';
+    p.textContent = new Date().toLocaleTimeString() + ' - ' + msg;
+    log.prepend(p);
+    if (log.children.length > 5) log.lastChild.remove();
+  }
+
+  wt.scenes = [
+    { id: 's1', caption: 'Scene 1: Introduction', startTime: 0, endTime: 4 },
+    { id: 's2', caption: 'Scene 2: Main feature overview', startTime: 4, endTime: 8 }
+  ];
+
+  wt.addEventListener('walkthroughShown', () => addLog('walkthroughShown'));
+  wt.addEventListener('walkthroughHidden', () => addLog('walkthroughHidden'));
+  wt.addEventListener('sceneChanged', e => addLog('sceneChanged: scene ' + e.detail?.id));
+  wt.addEventListener('timelineUpdated', e => addLog('timelineUpdated: ' + e.detail?.scenes?.length + ' scenes'));
+</script>
+`} />
+
+### Programmatic Control
+
+Use the component's methods (`show()`, `hide()`, `play()`, `pause()`, `restart()`, `abort()`) to control the walkthrough from your application code.
+
+<LiveExample height="300px" code={`
+<sp-walkthrough id="wt4"></sp-walkthrough>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+  <button onclick="document.getElementById('wt4').show()" style="padding:6px 12px;cursor:pointer">show()</button>
+  <button onclick="document.getElementById('wt4').hide()" style="padding:6px 12px;cursor:pointer">hide()</button>
+  <button onclick="document.getElementById('wt4').restart()" style="padding:6px 12px;cursor:pointer">restart()</button>
+  <button onclick="document.getElementById('wt4').abort()" style="padding:6px 12px;cursor:pointer">abort()</button>
+</div>
+<script>
+  const wt = document.getElementById('wt4');
+  wt.scenes = [
+    { id: 's1', caption: 'Scene 1: Use the buttons above to control this walkthrough.', startTime: 0, endTime: 5 },
+    { id: 's2', caption: 'Scene 2: The walkthrough can be hidden or aborted at any time.', startTime: 5, endTime: 10 }
+  ];
+</script>
+`} />
+
+## API Reference
+
+<ApiReference component={componentDocs} />
