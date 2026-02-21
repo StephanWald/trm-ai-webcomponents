@@ -33,6 +33,7 @@ export const config: Config = {
       'src/**/*.{ts,tsx}',
       '!src/**/*.d.ts',
       '!src/**/*.e2e.ts',
+      '!src/**/*.spec.ts',
       '!src/components.d.ts',
     ],
     coverageDirectory: 'coverage',
