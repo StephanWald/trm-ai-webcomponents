@@ -78,6 +78,21 @@
   </div>
 
   <div class="demo-section" style="grid-column: 1 / -1;">
+    <h2>Popover Component</h2>
+    <p>Viewport-aware popover with 6 placements, auto-flip boundary detection, and configurable dismiss behaviors.</p>
+    <div style="display: flex; gap: 1rem; align-items: flex-start; padding: 2rem;">
+      <button id="popoverAnchor" style="padding: 0.5rem 1rem; cursor: pointer;">Toggle Popover</button>
+      <sp-popover id="popoverDemo" anchor="#popoverAnchor" placement="bottom-start">
+        <div style="padding: 0.5rem; min-width: 150px;">
+          <strong>Popover Content</strong>
+          <p style="margin: 0.25rem 0 0; font-size: 0.875rem; color: #666;">Click outside or press Escape to close.</p>
+        </div>
+      </sp-popover>
+    </div>
+    <div id="popoverEventLog" style="margin-top: 0.5rem; padding: 0.5rem; background: #f5f5f5; border-radius: 4px; font-family: monospace; font-size: 0.75rem; min-height: 2rem;"></div>
+  </div>
+
+  <div class="demo-section" style="grid-column: 1 / -1;">
     <h2>OrgChart Component</h2>
     <p>Hierarchical organization chart with drag-and-drop, filtering, and selection. Toggle editable mode with checkbox.</p>
     <label style="margin-bottom: 1rem; display: block;">
@@ -117,6 +132,21 @@
         console.log('Button clicked on:', e.target);
         alert('sp-example-click event fired!');
       });
+    });
+
+    // Popover demo
+    const popoverAnchor = document.getElementById('popoverAnchor');
+    const popoverDemo = document.getElementById('popoverDemo');
+    const popoverEventLog = document.getElementById('popoverEventLog');
+
+    popoverAnchor.addEventListener('click', () => {
+      popoverDemo.togglePopover();
+    });
+    popoverDemo.addEventListener('popoverOpen', () => {
+      popoverEventLog.textContent = 'popoverOpen event fired';
+    });
+    popoverDemo.addEventListener('popoverClose', () => {
+      popoverEventLog.textContent = 'popoverClose event fired';
     });
 
     // OrgChart demo data and event handling

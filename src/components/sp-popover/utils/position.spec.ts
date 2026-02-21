@@ -1,5 +1,4 @@
 import { calculatePosition, getFlippedPlacement } from './position';
-import { Placement } from '../types';
 
 // Standard anchor and popover dimensions used across most tests
 const ANCHOR: DOMRect = {
