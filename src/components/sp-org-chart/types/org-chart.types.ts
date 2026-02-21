@@ -3,14 +3,35 @@
  */
 
 /**
- * User data structure with reporting relationships
+ * User data structure with reporting relationships and branch information.
+ * Branch entities are users without a lastName field.
  */
 export interface User {
   id: string;
-  name: string;
+  firstName: string;
+  lastName?: string;       // Absent for branch entities
+  email?: string;
+  phone?: string;
   role: string;
-  reportsTo?: string;
   avatar?: string;
+  reportsTo?: string;
+  branchId?: string;
+  branchName?: string;
+  branchLogo?: string;     // URL for branch square logo
+}
+
+/**
+ * Get display name: "firstName lastName" or just "firstName" for branches
+ */
+export function getDisplayName(user: User): string {
+  return user.lastName ? `${user.firstName} ${user.lastName}` : user.firstName;
+}
+
+/**
+ * Check if a user entry represents a branch entity (no lastName)
+ */
+export function isBranch(user: User): boolean {
+  return !user.lastName;
 }
 
 /**
@@ -47,3 +68,8 @@ export interface UserEventDetail {
   userId: string;
   user: User;
 }
+
+/**
+ * Branch filter mode for branch-based filtering
+ */
+export type BranchFilterMode = 'none' | 'highlight' | 'isolate';
