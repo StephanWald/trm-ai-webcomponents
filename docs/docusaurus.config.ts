@@ -7,13 +7,11 @@ const config: Config = {
   tagline: 'Production-ready web components for Skillspilot/TRM-AI',
   favicon: 'img/favicon.ico',
 
-  // TODO: Update when GitHub remote is established
-  url: 'https://skillspilot.github.io',
-  // Matches repo name for GitHub Pages
+  url: 'https://stephanwald.github.io',
   baseUrl: '/trm-ai-webcomponents/',
 
   // GitHub Pages deployment config
-  organizationName: 'skillspilot',
+  organizationName: 'StephanWald',
   projectName: 'trm-ai-webcomponents',
   trailingSlash: false,
 
@@ -33,7 +31,7 @@ const config: Config = {
           // Docs-only mode: no separate home page, docs served from /
           routeBasePath: '/',
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/skillspilot/trm-ai-webcomponents/tree/main/docs/',
+          editUrl: 'https://github.com/StephanWald/trm-ai-webcomponents/tree/main/docs/',
         },
         // Disable blog for component library docs
         blog: false,
@@ -56,7 +54,7 @@ const config: Config = {
           label: 'Docs',
         },
         {
-          href: 'https://github.com/skillspilot/trm-ai-webcomponents',
+          href: 'https://github.com/StephanWald/trm-ai-webcomponents',
           label: 'GitHub',
           position: 'right',
         },
@@ -87,7 +85,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/skillspilot/trm-ai-webcomponents',
+              href: 'https://github.com/StephanWald/trm-ai-webcomponents',
             },
           ],
         },
