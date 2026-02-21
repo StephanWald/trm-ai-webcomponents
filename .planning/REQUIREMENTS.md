@@ -82,8 +82,8 @@
 
 - [x] **TEST-01**: Each component has Jest spec tests covering props, state, events, and methods
 - [x] **TEST-02**: Each component has E2E tests covering rendering, user interaction, and accessibility
-- [ ] **TEST-03**: CI enforces minimum 70% code coverage across all metrics
-- [ ] **TEST-04**: Tests validate that components work without DWC theme loaded (fallback defaults)
+- [x] **TEST-03**: CI enforces minimum 70% code coverage across all metrics
+- [x] **TEST-04**: Tests validate that components work without DWC theme loaded (fallback defaults)
 
 ### Documentation
 
@@ -191,8 +191,8 @@
 | ORGC-13 | Phase 2 | Complete |
 | TEST-01 | Phase 2, 3, 4 | Complete |
 | TEST-02 | Phase 2, 3, 4 | Complete |
-| TEST-03 | Phase 5 | Pending |
-| TEST-04 | Phase 5 | Pending |
+| TEST-03 | Phase 5 | Complete |
+| TEST-04 | Phase 5 | Complete |
 | DOCS-01 | Phase 6 | Complete |
 | DOCS-02 | Phase 6 | Complete |
 | DOCS-03 | Phase 6 | Complete |
@@ -207,4 +207,4 @@
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-31 — Phase 4 requirements complete*
+*Last updated: 2026-02-21 — Phase 5 and 6 requirements marked Complete (TEST-03, TEST-04, DOCS-06, INFRA-07)*
