@@ -127,67 +127,67 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ORGC-01 | — | Pending |
-| ORGC-02 | — | Pending |
-| ORGC-03 | — | Pending |
-| ORGC-04 | — | Pending |
-| ORGC-05 | — | Pending |
-| ORGC-06 | — | Pending |
-| ORGC-07 | — | Pending |
-| ORGC-08 | — | Pending |
-| ORGC-09 | — | Pending |
-| ORGC-10 | — | Pending |
-| ORGC-11 | — | Pending |
-| ORGC-12 | — | Pending |
-| WALK-01 | — | Pending |
-| WALK-02 | — | Pending |
-| WALK-03 | — | Pending |
-| WALK-04 | — | Pending |
-| WALK-05 | — | Pending |
-| WALK-06 | — | Pending |
-| WALK-07 | — | Pending |
-| WALK-08 | — | Pending |
-| WALK-09 | — | Pending |
-| WALK-10 | — | Pending |
-| WALK-11 | — | Pending |
-| LANG-01 | — | Pending |
-| LANG-02 | — | Pending |
-| LANG-03 | — | Pending |
-| LANG-04 | — | Pending |
-| LANG-05 | — | Pending |
-| LANG-06 | — | Pending |
-| VOIC-01 | — | Pending |
-| VOIC-02 | — | Pending |
-| VOIC-03 | — | Pending |
-| VOIC-04 | — | Pending |
-| VOIC-05 | — | Pending |
-| VOIC-06 | — | Pending |
-| COMM-01 | — | Pending |
-| COMM-02 | — | Pending |
-| COMM-03 | — | Pending |
-| COMM-04 | — | Pending |
-| COMM-05 | — | Pending |
-| SPLS-01 | — | Pending |
-| SPLS-02 | — | Pending |
-| SPLS-03 | — | Pending |
-| SPLS-04 | — | Pending |
-| SPLS-05 | — | Pending |
-| SPLS-06 | — | Pending |
-| POPV-01 | — | Pending |
-| POPV-02 | — | Pending |
-| POPV-03 | — | Pending |
-| POPV-04 | — | Pending |
-| POPV-05 | — | Pending |
-| POPV-06 | — | Pending |
-| DOCS-01 | — | Pending |
-| DOCS-02 | — | Pending |
-| DOCS-03 | — | Pending |
+| ORGC-01 | Phase 7 | Pending |
+| ORGC-02 | Phase 7 | Pending |
+| ORGC-03 | Phase 7 | Pending |
+| ORGC-04 | Phase 7 | Pending |
+| ORGC-05 | Phase 7 | Pending |
+| ORGC-06 | Phase 7 | Pending |
+| ORGC-07 | Phase 7 | Pending |
+| ORGC-08 | Phase 7 | Pending |
+| ORGC-09 | Phase 7 | Pending |
+| ORGC-10 | Phase 7 | Pending |
+| ORGC-11 | Phase 7 | Pending |
+| ORGC-12 | Phase 7 | Pending |
+| WALK-01 | Phase 8 | Pending |
+| WALK-02 | Phase 8 | Pending |
+| WALK-03 | Phase 8 | Pending |
+| WALK-04 | Phase 8 | Pending |
+| WALK-05 | Phase 8 | Pending |
+| WALK-06 | Phase 8 | Pending |
+| WALK-07 | Phase 8 | Pending |
+| WALK-08 | Phase 8 | Pending |
+| WALK-09 | Phase 8 | Pending |
+| WALK-10 | Phase 8 | Pending |
+| WALK-11 | Phase 8 | Pending |
+| LANG-01 | Phase 10 | Pending |
+| LANG-02 | Phase 10 | Pending |
+| LANG-03 | Phase 10 | Pending |
+| LANG-04 | Phase 10 | Pending |
+| LANG-05 | Phase 10 | Pending |
+| LANG-06 | Phase 10 | Pending |
+| VOIC-01 | Phase 10 | Pending |
+| VOIC-02 | Phase 10 | Pending |
+| VOIC-03 | Phase 10 | Pending |
+| VOIC-04 | Phase 10 | Pending |
+| VOIC-05 | Phase 10 | Pending |
+| VOIC-06 | Phase 10 | Pending |
+| COMM-01 | Phase 11 | Pending |
+| COMM-02 | Phase 11 | Pending |
+| COMM-03 | Phase 11 | Pending |
+| COMM-04 | Phase 11 | Pending |
+| COMM-05 | Phase 11 | Pending |
+| SPLS-01 | Phase 11 | Pending |
+| SPLS-02 | Phase 11 | Pending |
+| SPLS-03 | Phase 11 | Pending |
+| SPLS-04 | Phase 11 | Pending |
+| SPLS-05 | Phase 11 | Pending |
+| SPLS-06 | Phase 11 | Pending |
+| POPV-01 | Phase 9 | Pending |
+| POPV-02 | Phase 9 | Pending |
+| POPV-03 | Phase 9 | Pending |
+| POPV-04 | Phase 9 | Pending |
+| POPV-05 | Phase 9 | Pending |
+| POPV-06 | Phase 9 | Pending |
+| DOCS-01 | Phase 12 | Pending |
+| DOCS-02 | Phase 12 | Pending |
+| DOCS-03 | Phase 12 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 50 total
-- Mapped to phases: 0
-- Unmapped: 50
+- Mapped to phases: 50
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-21*
-*Last updated: 2026-02-21 after initial definition*
+*Last updated: 2026-02-21 — traceability complete, all 50 requirements mapped to phases 7-12*
