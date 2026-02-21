@@ -41,6 +41,7 @@ Progress: [█████████░] 95%
 *Updated after each plan completion*
 | Phase 05-testing-quality P01 | 87 | 2 tasks | 3 files |
 | Phase 06-documentation-publishing P02 | 1 | 2 tasks | 2 files |
+| Phase 06-documentation-publishing P01 | 10 | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -106,6 +107,8 @@ Recent decisions affecting current work:
 - [Phase 06-02]: NPM_CONFIG_PROVENANCE env var on changesets action step (not npm publish flag) for OIDC-based provenance attestation
 - [Phase 06-02]: docs-deploy.yml must build Stencil before Docusaurus — docs.json must exist before Docusaurus imports it
 - [Phase 06-02]: GitHub Pages native deploy: actions/upload-pages-artifact@v3 + actions/deploy-pages@v4 (no gh-pages branch needed)
+- [Phase 06-01]: @part JSDoc docs strings (not just part= attributes) populate the docs field in docs.json — Stencil picks up part names from render method but docs only from @part tags in component JSDoc block
+- [Phase 06-01]: sp-walkthrough deliberately exposes no CSS parts — panel is self-contained overlay; use CSS custom properties for theming instead of ::part() selectors
 
 ### Pending Todos
 
@@ -118,7 +121,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-21 (phase execution)
-Stopped at: Completed 06-02-PLAN.md — CI/CD workflows for npm provenance and GitHub Pages deployment created
+Stopped at: Completed 06-01-PLAN.md — docs-json output target + CSS @prop annotations + @part JSDoc; docs.json generated with complete API metadata for all 3 components
 Resume file: None
 
 ## Next Steps
@@ -126,7 +129,10 @@ Resume file: None
 **Phase 6 In Progress - 2 of 5 plans executed**:
 
 Plan 06-01 complete:
-- Phase plans created
+- stencil.config.ts docs-json output target added
+- CSS @prop JSDoc annotations: sp-org-chart (29 props), sp-walkthrough (34 props), sp-markdown-editor (18 props)
+- @part JSDoc annotations: sp-markdown-editor (5 parts with docs), sp-walkthrough (0 parts, documented by design)
+- docs.json generated with complete API metadata
 
 Plan 06-02 complete:
 - release.yml updated with NPM_CONFIG_PROVENANCE and createGithubReleases
