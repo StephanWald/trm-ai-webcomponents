@@ -1,0 +1,14 @@
+{
+  // This file is not used in compilation. It is here just for a nice editor experience.
+  "extends": "@docusaurus/module-type-aliases/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@site/*": ["./*"],
+      "@generated/*": ["./.docusaurus/*"]
+    },
+    "noEmit": true
+  },
+  "include": ["**/*.ts", "**/*.tsx", ".docusaurus/**/*.ts", ".docusaurus/**/*.tsx"]
+}
