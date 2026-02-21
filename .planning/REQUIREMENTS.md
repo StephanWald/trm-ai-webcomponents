@@ -10,9 +10,9 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 ### Org Chart Parity (ORGC)
 
 - [ ] **ORGC-01**: Org chart renders as vertical indented list (subordinates nested below/right with left-margin indent and CSS border connectors), matching original layout
-- [ ] **ORGC-02**: User data model supports firstName, lastName, email, phone, branchId, branchName, branchLogo, avatar, role, reportsTo fields
+- [x] **ORGC-02**: User data model supports firstName, lastName, email, phone, branchId, branchName, branchLogo, avatar, role, reportsTo fields
 - [ ] **ORGC-03**: User tile displays horizontally (avatar left, info right) with name, role, email, phone, and branch badge
-- [ ] **ORGC-04**: Branch entities (no lastName) render with square logo avatar and branch-specific styling
+- [x] **ORGC-04**: Branch entities (no lastName) render with square logo avatar and branch-specific styling
 - [ ] **ORGC-05**: Branch filtering via filterMode and filterBranchId props dims non-matching users and hides unrelated branches
 - [ ] **ORGC-06**: Drag-and-drop shows custom floating preview (avatar + name) following cursor, hiding native drag image
 - [ ] **ORGC-07**: Drop zones appear bottom-right with SVG icons for Unlink and Delete actions
@@ -128,9 +128,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | ORGC-01 | Phase 7 | Pending |
-| ORGC-02 | Phase 7 | Pending |
+| ORGC-02 | Phase 7 | Complete |
 | ORGC-03 | Phase 7 | Pending |
-| ORGC-04 | Phase 7 | Pending |
+| ORGC-04 | Phase 7 | Complete |
 | ORGC-05 | Phase 7 | Pending |
 | ORGC-06 | Phase 7 | Pending |
 | ORGC-07 | Phase 7 | Pending |

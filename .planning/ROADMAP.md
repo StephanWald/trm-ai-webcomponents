@@ -116,7 +116,7 @@ Plans:
 | 4. Markdown Editor Component | v1.0 | 4/4 | Complete | 2026-01-31 |
 | 5. Testing & Quality | v1.0 | 3/3 | Complete | 2026-02-20 |
 | 6. Documentation & Publishing | v1.0 | 5/5 | Complete | 2026-02-21 |
-| 7. Org Chart Parity | v1.1 | 0/3 | Planned | - |
+| 7. Org Chart Parity | 1/3 | In Progress|  | - |
 | 8. Walkthrough Parity | v1.1 | 0/TBD | Not started | - |
 | 9. Popover Utility | v1.1 | 0/TBD | Not started | - |
 | 10. Language & Voice | v1.1 | 0/TBD | Not started | - |

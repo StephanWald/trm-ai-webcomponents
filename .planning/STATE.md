@@ -10,24 +10,24 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 7 of 12 (Org Chart Parity)
-Plan: — of — in current phase
-Status: Ready to plan
-Last activity: 2026-02-21 — v1.1 roadmap created (phases 7-12)
+Plan: 1 of 5 in current phase (07-01 complete)
+Status: In progress
+Last activity: 2026-02-21 — Completed 07-01-PLAN.md: data model expansion and tree utilities
 
-Progress: [░░░░░░░░░░] 0% (v1.1)
+Progress: [█░░░░░░░░░] 5% (v1.1)
 
 ## Performance Metrics
 
 **Velocity (v1.1):**
-- Total plans completed: 0
-- Average duration: —
-- Total execution time: —
+- Total plans completed: 1
+- Average duration: 4m
+- Total execution time: 4m
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 07-org-chart-parity | 1 | 4m | 4m |
 
 *Updated after each plan completion*
 
@@ -41,6 +41,9 @@ v1.1 key decisions:
 - Original prototypes are the visual source of truth — sp-org-chart and sp-walkthrough must match 1:1
 - sp-popover (Phase 9) built before language/comm components so they can use it for dropdowns
 - sp-markdown-editor has no parity work in v1.1 — already production-ready
+- [Phase 07-01]: Branch entities are users without lastName; isBranch() type guard is the canonical check
+- [Phase 07-01]: filterByBranch mode (highlight/isolate) is a component concern; filter logic is identical for both modes
+- [Phase 07-01]: getDisplayName() centralises firstName+lastName display name formatting across all utilities
 
 ### Pending Todos
 
@@ -59,5 +62,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: v1.1 roadmap created — ready to plan Phase 7
+Stopped at: Completed 07-01-PLAN.md (data model expansion and tree utilities)
 Resume file: None
