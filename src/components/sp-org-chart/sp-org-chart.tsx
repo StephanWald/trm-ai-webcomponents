@@ -53,10 +53,13 @@ export class SpOrgChart {
   @State() highlightedUserId: string | null = null;
   @State() branchFilterResults: Map<string, FilterResult> | null = null;
   @State() draggedUserId: string | null = null;
+  @State() draggedUser: User | null = null;
+  @State() dragPreviewPos: { x: number; y: number } | null = null;
   @State() showDropZones: boolean = false;
   @State() dropTargetId: string | null = null;
-  @State() longPressUserId: string | null = null;
-  @State() longPressProgress: number = 0;
+  @State() deleteHoldActive: boolean = false;
+  @State() deleteHoldProgress: number = 0;
+  @State() deleteCountdownPos: { x: number; y: number } | null = null;
 
   /**
    * Emitted when a user tile is clicked
@@ -79,12 +82,11 @@ export class SpOrgChart {
   @Event() userDelete: EventEmitter<UserEventDetail>;
 
   private clickTimer: number | null = null;
-  private longPressTimer: number | null = null;
-  private longPressStartTime: number = 0;
-  private longPressStartPos: { x: number; y: number } | null = null;
+  private deleteHoldTimer: number | null = null;
+  private deleteHoldStartTime: number = 0;
+  private transparentImg: HTMLImageElement;
   private readonly DOUBLE_CLICK_DELAY = 300;
   private readonly LONG_PRESS_DURATION = 4000;
-  private readonly MOVEMENT_THRESHOLD = 10;
 
   @Watch('users')
   handleUsersChange() {
@@ -103,10 +105,17 @@ export class SpOrgChart {
 
   componentWillLoad() {
     this.rebuildTree();
+    // Create 1x1 transparent image for hiding native drag ghost
+    // Guard against JSDOM/test environment where Image may not be available
+    if (typeof Image !== 'undefined') {
+      this.transparentImg = new Image(1, 1);
+      this.transparentImg.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    }
   }
 
   disconnectedCallback() {
     this.cleanupTimers();
+    document.removeEventListener('dragover', this.handleDocumentDragOver);
   }
 
   private cleanupTimers() {
@@ -114,9 +123,9 @@ export class SpOrgChart {
       window.clearTimeout(this.clickTimer);
       this.clickTimer = null;
     }
-    if (this.longPressTimer) {
-      window.clearInterval(this.longPressTimer);
-      this.longPressTimer = null;
+    if (this.deleteHoldTimer) {
+      window.clearInterval(this.deleteHoldTimer);
+      this.deleteHoldTimer = null;
     }
   }
 
@@ -211,13 +220,29 @@ export class SpOrgChart {
     }
   }
 
+  // Document-level dragover to track cursor position for floating preview
+  private handleDocumentDragOver = (ev: DragEvent) => {
+    ev.preventDefault();
+    this.dragPreviewPos = { x: ev.clientX, y: ev.clientY };
+  };
+
   // Drag-and-drop handling
   private handleDragStart = (ev: DragEvent, userId: string) => {
     ev.stopPropagation();
     ev.dataTransfer!.effectAllowed = 'move';
     ev.dataTransfer!.setData('text/plain', userId);
+
+    // Hide native drag ghost
+    if (this.transparentImg) {
+      ev.dataTransfer!.setDragImage(this.transparentImg, 0, 0);
+    }
+
     this.draggedUserId = userId;
+    this.draggedUser = this.users.find(u => u.id === userId) || null;
     this.showDropZones = true;
+
+    // Attach document-level dragover for preview tracking
+    document.addEventListener('dragover', this.handleDocumentDragOver);
   };
 
   private handleDragOver = (ev: DragEvent, targetId?: string) => {
@@ -263,81 +288,72 @@ export class SpOrgChart {
     this.cleanupDragState();
   };
 
-  private handleDeleteDrop = (ev: DragEvent) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-
-    const draggedId = ev.dataTransfer!.getData('text/plain');
-    if (!draggedId) {
-      this.cleanupDragState();
-      return;
-    }
-
-    this.deleteUser(draggedId);
-    this.cleanupDragState();
-  };
-
   private handleDragEnd = (ev: DragEvent) => {
     ev.stopPropagation();
     this.cleanupDragState();
   };
 
+  // Delete drop zone handlers — timed 4-second hold
+  private handleDeleteZoneDragOver = (ev: DragEvent) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    ev.dataTransfer!.dropEffect = 'move';
+    this.deleteCountdownPos = { x: ev.clientX, y: ev.clientY };
+
+    if (!this.deleteHoldActive) {
+      this.deleteHoldActive = true;
+      this.deleteHoldStartTime = Date.now();
+      this.deleteHoldProgress = 0;
+
+      this.deleteHoldTimer = window.setInterval(() => {
+        const elapsed = Date.now() - this.deleteHoldStartTime;
+        this.deleteHoldProgress = Math.min(elapsed / this.LONG_PRESS_DURATION, 1);
+
+        if (this.deleteHoldProgress >= 1) {
+          // 4 seconds elapsed — execute delete
+          this.cancelDeleteHold();
+          const draggedId = this.draggedUserId;
+          if (draggedId) {
+            this.deleteUser(draggedId);
+          }
+          this.cleanupDragState();
+        }
+      }, 16);
+    }
+  };
+
+  private handleDeleteZoneDragLeave = (ev: DragEvent) => {
+    ev.stopPropagation();
+    this.cancelDeleteHold();
+    this.dropTargetId = null;
+  };
+
+  private handleDeleteZoneRelease = (ev: DragEvent) => {
+    // Released before 4 seconds — cancel, no instant delete
+    ev.preventDefault();
+    ev.stopPropagation();
+    this.cancelDeleteHold();
+    this.cleanupDragState();
+  };
+
+  private cancelDeleteHold() {
+    if (this.deleteHoldTimer) {
+      window.clearInterval(this.deleteHoldTimer);
+      this.deleteHoldTimer = null;
+    }
+    this.deleteHoldActive = false;
+    this.deleteHoldProgress = 0;
+    this.deleteCountdownPos = null;
+  }
+
   private cleanupDragState() {
+    document.removeEventListener('dragover', this.handleDocumentDragOver);
     this.showDropZones = false;
     this.draggedUserId = null;
+    this.draggedUser = null;
+    this.dragPreviewPos = null;
     this.dropTargetId = null;
-  }
-
-  // Long-press handling
-  private handlePointerDown = (ev: PointerEvent, userId: string) => {
-    if (!this.editable) return;
-
-    ev.stopPropagation();
-    this.longPressStartTime = Date.now();
-    this.longPressStartPos = { x: ev.clientX, y: ev.clientY };
-    this.longPressUserId = userId;
-    this.longPressProgress = 0;
-
-    this.longPressTimer = window.setInterval(() => {
-      const elapsed = Date.now() - this.longPressStartTime;
-      this.longPressProgress = Math.min(elapsed / this.LONG_PRESS_DURATION, 1);
-
-      if (this.longPressProgress >= 1) {
-        this.handleLongPressComplete(userId);
-      }
-    }, 16); // ~60fps
-  };
-
-  private handlePointerMove = (ev: PointerEvent) => {
-    if (!this.longPressStartPos || !this.longPressTimer) return;
-
-    const dx = ev.clientX - this.longPressStartPos.x;
-    const dy = ev.clientY - this.longPressStartPos.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance > this.MOVEMENT_THRESHOLD) {
-      this.cancelLongPress();
-    }
-  };
-
-  private handlePointerUp = (ev: PointerEvent) => {
-    ev.stopPropagation();
-    this.cancelLongPress();
-  };
-
-  private cancelLongPress() {
-    if (this.longPressTimer) {
-      window.clearInterval(this.longPressTimer);
-      this.longPressTimer = null;
-    }
-    this.longPressUserId = null;
-    this.longPressProgress = 0;
-    this.longPressStartPos = null;
-  }
-
-  private handleLongPressComplete(userId: string) {
-    this.cancelLongPress();
-    this.deleteUser(userId);
+    this.cancelDeleteHold();
   }
 
   private deleteUser(userId: string) {
@@ -379,26 +395,34 @@ export class SpOrgChart {
     return parts.map(p => p.charAt(0)).join('').toUpperCase();
   }
 
-  private renderCountdownRing() {
+  private renderDeleteCountdown() {
+    if (!this.deleteCountdownPos) return null;
+
     const circumference = 2 * Math.PI * 20;
-    const offset = circumference * (1 - this.longPressProgress);
+    const offset = circumference * (1 - this.deleteHoldProgress);
+    const seconds = Math.ceil((1 - this.deleteHoldProgress) * 4);
 
     return (
-      <svg class="countdown-ring" width="50" height="50">
-        <circle
-          class="countdown-ring__circle"
-          stroke="var(--dwc-color-danger, #dc3545)"
-          stroke-width="3"
-          fill="transparent"
-          r="20"
-          cx="25"
-          cy="25"
-          style={{
-            strokeDasharray: `${circumference} ${circumference}`,
-            strokeDashoffset: `${offset}`,
-          }}
-        />
-      </svg>
+      <div class="countdown-overlay" style={{
+        left: `${this.deleteCountdownPos.x}px`,
+        top: `${this.deleteCountdownPos.y - 60}px`,
+      }}>
+        <svg width="50" height="50" viewBox="0 0 50 50">
+          <circle cx="25" cy="25" r="20" fill="rgba(0,0,0,0.7)" />
+          <circle
+            class="countdown-ring__circle"
+            cx="25" cy="25" r="20"
+            fill="transparent"
+            stroke="var(--dwc-color-danger, #dc3545)"
+            stroke-width="3"
+            style={{
+              strokeDasharray: `${circumference} ${circumference}`,
+              strokeDashoffset: `${offset}`,
+            }}
+          />
+          <text x="25" y="30" text-anchor="middle" fill="white" font-size="16" font-weight="bold">{seconds}</text>
+        </svg>
+      </div>
     );
   }
 
@@ -408,7 +432,6 @@ export class SpOrgChart {
     const isDimmed = this.shouldDimNode(node);
     const isHidden = this.shouldHideNode(node);
     const isDragOver = this.dropTargetId === node.id;
-    const isLongPressing = this.longPressUserId === node.id;
     const branchEntity = isBranch(node);
 
     if (isHidden) return null;
@@ -435,9 +458,6 @@ export class SpOrgChart {
           onDragLeave={this.editable ? ev => this.handleDragLeave(ev) : undefined}
           onDrop={this.editable ? ev => this.handleDrop(ev, node.id) : undefined}
           onDragEnd={this.editable ? ev => this.handleDragEnd(ev) : undefined}
-          onPointerDown={this.editable ? ev => this.handlePointerDown(ev, node.id) : undefined}
-          onPointerMove={this.editable ? ev => this.handlePointerMove(ev) : undefined}
-          onPointerUp={this.editable ? ev => this.handlePointerUp(ev) : undefined}
         >
           {/* Avatar — circular for users, square for branches */}
           <div class={{ 'user-avatar': true, 'branch-avatar': branchEntity }}>
@@ -458,8 +478,6 @@ export class SpOrgChart {
               <div class="user-branch-badge">{node.branchName}</div>
             )}
           </div>
-
-          {isLongPressing && this.renderCountdownRing()}
         </div>
 
         {/* Children indented below */}
@@ -476,7 +494,7 @@ export class SpOrgChart {
     if (!this.showDropZones) return null;
 
     return (
-      <div class="drop-zones">
+      <div class="drop-zone-container">
         <div
           class="drop-zone drop-zone--unlink"
           part="drop-zone"
@@ -484,19 +502,24 @@ export class SpOrgChart {
           onDrop={ev => this.handleDrop(ev, null)}
           onDragLeave={ev => this.handleDragLeave(ev)}
         >
-          <span class="drop-zone__icon">&#x1F517;</span>
+          <svg class="drop-zone__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
           <span class="drop-zone__label">Unlink</span>
         </div>
 
         <div
-          class="drop-zone drop-zone--delete"
+          class={{ 'drop-zone': true, 'drop-zone--delete': true, 'delete-holding': this.deleteHoldActive }}
           part="drop-zone"
-          onDragOver={ev => this.handleDragOver(ev)}
-          onDrop={ev => this.handleDeleteDrop(ev)}
-          onDragLeave={ev => this.handleDragLeave(ev)}
+          onDragOver={ev => this.handleDeleteZoneDragOver(ev)}
+          onDrop={ev => this.handleDeleteZoneRelease(ev)}
+          onDragLeave={ev => this.handleDeleteZoneDragLeave(ev)}
         >
-          <span class="drop-zone__icon">&#x1F5D1;</span>
+          <svg class="drop-zone__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+          </svg>
           <span class="drop-zone__label">Delete</span>
+          {this.deleteHoldActive && this.renderDeleteCountdown()}
         </div>
       </div>
     );
@@ -523,6 +546,23 @@ export class SpOrgChart {
         )}
 
         {this.editable && this.renderDropZones()}
+
+        {/* Floating drag preview — renders outside shadow scroll */}
+        {this.draggedUser && this.dragPreviewPos && (
+          <div class="drag-preview" style={{
+            left: `${this.dragPreviewPos.x + 12}px`,
+            top: `${this.dragPreviewPos.y + 12}px`,
+          }}>
+            <div class="drag-preview__avatar">
+              {this.draggedUser.avatar ? (
+                <img src={this.draggedUser.avatar} alt="" class="avatar-img" />
+              ) : (
+                <div class="avatar-initials">{this.getUserInitials(this.draggedUser as unknown as TreeNode)}</div>
+              )}
+            </div>
+            <div class="drag-preview__name">{getDisplayName(this.draggedUser)}</div>
+          </div>
+        )}
       </Host>
     );
   }

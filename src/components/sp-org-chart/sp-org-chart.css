@@ -11,7 +11,6 @@
    * @prop --dwc-font-size-sm: Small font size for role labels and secondary text
    * @prop --dwc-font-size-xs: Extra-small font size for branch badge
    * @prop --dwc-font-size-lg: Large font size for avatar initials and empty-state message
-   * @prop --dwc-font-size-xl: Extra-large font size for drop zone icons
    * @prop --dwc-font-weight-semibold: Semibold weight for user names
    * @prop --dwc-font-weight-medium: Medium weight for labels and badges
    * @prop --dwc-line-height-normal: Normal line height for body text
@@ -30,13 +29,13 @@
    * @prop --dwc-border-radius-full: Full (circular) border radius for user avatars
    * @prop --dwc-border-radius-lg: Large border radius for the floating drop zones container
    * @prop --dwc-shadow-sm: Small box shadow on resting user tiles
-   * @prop --dwc-shadow-md: Medium box shadow on hovered user tiles
+   * @prop --dwc-shadow-md: Medium box shadow on hovered user tiles and drag preview
    * @prop --dwc-shadow-xl: Extra-large box shadow on the floating drop zones container
    * @prop --dwc-transition-fast: Fast transition duration for hover and drag states
    * @prop --dwc-spacing-xs: Extra-small spacing (4px default)
    * @prop --dwc-spacing-sm: Small spacing (8px default)
    * @prop --dwc-spacing-md: Medium spacing for tile padding and container padding (12px default)
-   * @prop --dwc-spacing-lg: Large spacing for drop zone gaps (16px default)
+   * @prop --dwc-spacing-lg: Large spacing for drop zone gaps (20px default)
    * @prop --dwc-spacing-xl: Extra-large spacing for children indentation (32px default)
    * @prop --dwc-spacing-2xl: Double extra-large spacing for empty-state padding
    */
@@ -237,37 +236,51 @@
   white-space: nowrap;
 }
 
-/* === Long-Press Countdown Ring === */
+/* === Custom Floating Drag Preview === */
 
-.countdown-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 10;
-}
-
-.countdown-ring__circle {
-  transform: rotate(-90deg);
-  transform-origin: 50% 50%;
-  transition: stroke-dashoffset 16ms linear;
-}
-
-/* === Drop Zones === */
-
-.drop-zones {
+.drag-preview {
   position: fixed;
-  bottom: var(--dwc-spacing-xl, 32px);
-  left: 50%;
-  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1000;
   display: flex;
-  gap: var(--dwc-spacing-lg, 16px);
-  z-index: 100;
-  padding: var(--dwc-spacing-md, 12px);
+  align-items: center;
+  gap: var(--dwc-spacing-sm, 8px);
+  padding: var(--dwc-spacing-xs, 4px) var(--dwc-spacing-sm, 8px);
   background: var(--dwc-color-surface, #ffffff);
-  border-radius: var(--dwc-border-radius-lg, 12px);
-  box-shadow: var(--dwc-shadow-xl, 0 8px 24px rgba(0, 0, 0, 0.15));
+  border: 1px solid var(--dwc-color-primary, #0066cc);
+  border-radius: var(--dwc-border-radius, 6px);
+  box-shadow: var(--dwc-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.15));
+  opacity: 0.9;
+}
+
+.drag-preview__avatar {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: var(--dwc-border-radius-full, 50%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drag-preview__name {
+  font-size: var(--dwc-font-size-sm, 12px);
+  font-weight: var(--dwc-font-weight-medium, 500);
+  color: var(--dwc-color-text, #1a1a1a);
+  white-space: nowrap;
+}
+
+/* === Drop Zones (bottom-right positioned) === */
+
+.drop-zone-container {
+  position: fixed;
+  bottom: var(--dwc-spacing-lg, 20px);
+  right: var(--dwc-spacing-lg, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dwc-spacing-sm, 8px);
+  z-index: 100;
 }
 
 .drop-zone {
@@ -276,34 +289,64 @@
   align-items: center;
   justify-content: center;
   gap: var(--dwc-spacing-sm, 8px);
-  min-width: 120px;
-  padding: var(--dwc-spacing-lg, 16px);
+  min-width: 80px;
+  padding: var(--dwc-spacing-md, 12px);
   border: 2px dashed var(--dwc-color-border, #e0e0e0);
   border-radius: var(--dwc-border-radius, 6px);
   background: var(--dwc-color-surface, #ffffff);
   cursor: pointer;
   transition: all var(--dwc-transition-fast, 150ms) ease;
+  box-shadow: var(--dwc-shadow-xl, 0 8px 24px rgba(0, 0, 0, 0.15));
+  position: relative;
 }
 
-.drop-zone:hover {
+.drop-zone:hover,
+.drop-zone:focus-within {
   border-color: var(--dwc-color-primary, #0066cc);
   background: rgba(0, 102, 204, 0.05);
   transform: scale(1.05);
 }
 
-.drop-zone--delete:hover {
+.drop-zone--delete:hover,
+.drop-zone--delete:focus-within {
   border-color: var(--dwc-color-danger, #dc3545);
   background: rgba(220, 53, 69, 0.05);
 }
 
+.drop-zone--delete.delete-holding {
+  border-color: var(--dwc-color-danger, #dc3545);
+  background: rgba(220, 53, 69, 0.08);
+}
+
 .drop-zone__icon {
-  font-size: var(--dwc-font-size-xl, 20px);
+  width: 24px;
+  height: 24px;
+  color: var(--dwc-color-text-secondary, #666666);
+}
+
+.drop-zone--delete .drop-zone__icon {
+  color: var(--dwc-color-danger, #dc3545);
 }
 
 .drop-zone__label {
   font-size: var(--dwc-font-size-sm, 12px);
   font-weight: var(--dwc-font-weight-medium, 500);
   color: var(--dwc-color-text, #1a1a1a);
+}
+
+/* === Countdown Overlay (cursor-following) === */
+
+.countdown-overlay {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1001;
+  transform: translate(-25px, 0);
+}
+
+.countdown-ring__circle {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 16ms linear;
 }
 
 /* === Theme Overrides === */
@@ -364,26 +407,31 @@
   color: #0066cc;
 }
 
-:host(.theme-light) .drop-zones {
-  background: #ffffff;
-}
-
-:host(.theme-light) .drop-zone {
+:host(.theme-light) .drop-zone-container .drop-zone {
   background: #ffffff;
   border-color: #e0e0e0;
 }
 
-:host(.theme-light) .drop-zone:hover {
+:host(.theme-light) .drop-zone-container .drop-zone:hover {
   border-color: #0066cc;
   background: rgba(0, 102, 204, 0.05);
 }
 
-:host(.theme-light) .drop-zone--delete:hover {
+:host(.theme-light) .drop-zone-container .drop-zone--delete:hover {
   border-color: #dc3545;
   background: rgba(220, 53, 69, 0.05);
 }
 
 :host(.theme-light) .drop-zone__label {
+  color: #1a1a1a;
+}
+
+:host(.theme-light) .drag-preview {
+  background: #ffffff;
+  border-color: #0066cc;
+}
+
+:host(.theme-light) .drag-preview__name {
   color: #1a1a1a;
 }
 
@@ -443,25 +491,30 @@
   color: #4da6ff;
 }
 
-:host(.theme-dark) .drop-zones {
-  background: #2a2a3a;
-}
-
-:host(.theme-dark) .drop-zone {
+:host(.theme-dark) .drop-zone-container .drop-zone {
   background: #2a2a3a;
   border-color: #3a3a4a;
 }
 
-:host(.theme-dark) .drop-zone:hover {
+:host(.theme-dark) .drop-zone-container .drop-zone:hover {
   border-color: #4da6ff;
   background: rgba(77, 166, 255, 0.1);
 }
 
-:host(.theme-dark) .drop-zone--delete:hover {
+:host(.theme-dark) .drop-zone-container .drop-zone--delete:hover {
   border-color: #ff6b6b;
   background: rgba(255, 107, 107, 0.1);
 }
 
 :host(.theme-dark) .drop-zone__label {
+  color: #e0e0e0;
+}
+
+:host(.theme-dark) .drag-preview {
+  background: #2a2a3a;
+  border-color: #4da6ff;
+}
+
+:host(.theme-dark) .drag-preview__name {
   color: #e0e0e0;
 }
