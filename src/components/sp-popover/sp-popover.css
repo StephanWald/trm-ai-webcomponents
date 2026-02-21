@@ -1,0 +1,60 @@
+/**
+ * sp-popover component styles
+ * Viewport-aware positioning utility with DWC tokens and fade+slide animation (POPV-05)
+ */
+
+:host {
+  display: contents;
+}
+
+/* Hidden by default — positioned wrapper using fixed positioning for viewport-relative coords */
+.popover-container {
+  position: fixed;
+  z-index: var(--dwc-z-dropdown);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Open state — visible with animation */
+.popover-container.open {
+  pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+  animation: sp-popover-enter var(--dwc-transition-base) ease forwards;
+}
+
+/* Fade + slide enter animation (POPV-05) */
+@keyframes sp-popover-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* The visual panel */
+.popover-content {
+  background: var(--dwc-color-surface);
+  border: 1px solid var(--dwc-color-border);
+  border-radius: var(--dwc-border-radius);
+  box-shadow: var(--dwc-shadow-lg);
+  overflow: auto;
+}
+
+/* Theme overrides — following the :host(.theme-light) / :host(.theme-dark) pattern */
+
+:host(.theme-light) .popover-content {
+  background: #ffffff;
+  border-color: #e0e0e0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+:host(.theme-dark) .popover-content {
+  background: #1e1e2e;
+  border-color: #3a3a4a;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
