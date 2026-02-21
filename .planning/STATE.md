@@ -10,24 +10,24 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 7 of 12 (Org Chart Parity)
-Plan: 1 of 5 in current phase (07-01 complete)
+Plan: 2 of 5 in current phase (07-02 complete)
 Status: In progress
-Last activity: 2026-02-21 — Completed 07-01-PLAN.md: data model expansion and tree utilities
+Last activity: 2026-02-21 — Completed 07-02-PLAN.md: component TSX/CSS rewrite for vertical list layout
 
-Progress: [█░░░░░░░░░] 5% (v1.1)
+Progress: [██░░░░░░░░] 10% (v1.1)
 
 ## Performance Metrics
 
 **Velocity (v1.1):**
-- Total plans completed: 1
-- Average duration: 4m
-- Total execution time: 4m
+- Total plans completed: 2
+- Average duration: 5.5m
+- Total execution time: 11m
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 07-org-chart-parity | 1 | 4m | 4m |
+| 07-org-chart-parity | 2 | 11m | 5.5m |
 
 *Updated after each plan completion*
 
@@ -44,6 +44,9 @@ v1.1 key decisions:
 - [Phase 07-01]: Branch entities are users without lastName; isBranch() type guard is the canonical check
 - [Phase 07-01]: filterByBranch mode (highlight/isolate) is a component concern; filter logic is identical for both modes
 - [Phase 07-01]: getDisplayName() centralises firstName+lastName display name formatting across all utilities
+- [Phase 07-02]: Filter input removed entirely — branch filtering via filterMode/filterBranchId props only
+- [Phase 07-02]: editable defaults to true to match prototype drag-and-drop-on behavior
+- [Phase 07-02]: applyBranchFilter() consumed at render layer (shouldDimNode/shouldHideNode) for highlight vs isolate
 
 ### Pending Todos
 
@@ -62,5 +65,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 07-01-PLAN.md (data model expansion and tree utilities)
+Stopped at: Completed 07-02-PLAN.md (component TSX/CSS rewrite for vertical list layout and expanded tiles)
 Resume file: None

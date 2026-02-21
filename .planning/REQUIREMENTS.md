@@ -9,18 +9,18 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 
 ### Org Chart Parity (ORGC)
 
-- [ ] **ORGC-01**: Org chart renders as vertical indented list (subordinates nested below/right with left-margin indent and CSS border connectors), matching original layout
+- [x] **ORGC-01**: Org chart renders as vertical indented list (subordinates nested below/right with left-margin indent and CSS border connectors), matching original layout
 - [x] **ORGC-02**: User data model supports firstName, lastName, email, phone, branchId, branchName, branchLogo, avatar, role, reportsTo fields
-- [ ] **ORGC-03**: User tile displays horizontally (avatar left, info right) with name, role, email, phone, and branch badge
+- [x] **ORGC-03**: User tile displays horizontally (avatar left, info right) with name, role, email, phone, and branch badge
 - [x] **ORGC-04**: Branch entities (no lastName) render with square logo avatar and branch-specific styling
 - [ ] **ORGC-05**: Branch filtering via filterMode and filterBranchId props dims non-matching users and hides unrelated branches
 - [ ] **ORGC-06**: Drag-and-drop shows custom floating preview (avatar + name) following cursor, hiding native drag image
 - [ ] **ORGC-07**: Drop zones appear bottom-right with SVG icons for Unlink and Delete actions
 - [ ] **ORGC-08**: Delete drop zone requires 4-second timed hold with circular progress countdown overlay following cursor
-- [ ] **ORGC-09**: Editable prop defaults to true; when false, drag and delete are disabled
-- [ ] **ORGC-10**: Component emits user-click, user-dblclick, hierarchy-change, and user-delete events with original event detail shapes
-- [ ] **ORGC-11**: highlightUser, scrollToUser, clearHighlight, and getSelected public methods work correctly
-- [ ] **ORGC-12**: All colors/fonts use DWC CSS custom properties with sensible fallback defaults
+- [x] **ORGC-09**: Editable prop defaults to true; when false, drag and delete are disabled
+- [x] **ORGC-10**: Component emits user-click, user-dblclick, hierarchy-change, and user-delete events with original event detail shapes
+- [x] **ORGC-11**: highlightUser, scrollToUser, clearHighlight, and getSelected public methods work correctly
+- [x] **ORGC-12**: All colors/fonts use DWC CSS custom properties with sensible fallback defaults
 
 ### Walkthrough Parity (WALK)
 
@@ -127,18 +127,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ORGC-01 | Phase 7 | Pending |
+| ORGC-01 | Phase 7 | Complete |
 | ORGC-02 | Phase 7 | Complete |
-| ORGC-03 | Phase 7 | Pending |
+| ORGC-03 | Phase 7 | Complete |
 | ORGC-04 | Phase 7 | Complete |
 | ORGC-05 | Phase 7 | Pending |
 | ORGC-06 | Phase 7 | Pending |
 | ORGC-07 | Phase 7 | Pending |
 | ORGC-08 | Phase 7 | Pending |
-| ORGC-09 | Phase 7 | Pending |
-| ORGC-10 | Phase 7 | Pending |
-| ORGC-11 | Phase 7 | Pending |
-| ORGC-12 | Phase 7 | Pending |
+| ORGC-09 | Phase 7 | Complete |
+| ORGC-10 | Phase 7 | Complete |
+| ORGC-11 | Phase 7 | Complete |
+| ORGC-12 | Phase 7 | Complete |
 | WALK-01 | Phase 8 | Pending |
 | WALK-02 | Phase 8 | Pending |
 | WALK-03 | Phase 8 | Pending |
