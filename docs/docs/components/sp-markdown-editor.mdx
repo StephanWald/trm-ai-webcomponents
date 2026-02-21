@@ -1,0 +1,135 @@
+---
+title: sp-markdown-editor
+description: Full-featured markdown editor with WYSIWYG, split view, syntax highlighting, voice dictation, import/export, and auto-save.
+sidebar_position: 3
+---
+
+import docsData from '@site/../docs.json';
+import LiveExample from '@site/src/components/LiveExample';
+import ApiReference from '@site/src/components/ApiReference';
+
+export const componentDocs = docsData.components.find(c => c.tag === 'sp-markdown-editor');
+
+# sp-markdown-editor
+
+Full-featured markdown editor web component with source, WYSIWYG, and split view modes. Includes a formatting toolbar, syntax highlighting (via Prism.js), voice dictation, file import/export, undo/redo history, and auto-save support.
+
+## Peer Dependencies
+
+Full WYSIWYG and preview mode functionality requires the following peer dependencies to be loaded before the component:
+
+```html
+<!-- Markdown parsing -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<!-- HTML sanitization -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+<!-- Syntax highlighting -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+```
+
+Without these, the editor works fully in **source mode** but WYSIWYG/preview rendering will be limited.
+
+## Installation
+
+```bash
+npm install @skillspilot/webcomponents marked dompurify prismjs
+```
+
+Or load from CDN:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@skillspilot/webcomponents/dist/skillspilot/skillspilot.esm.js"></script>
+```
+
+## Examples
+
+### Basic Editor
+
+A minimal markdown editor with default configuration. Starts in source mode with the formatting toolbar.
+
+<LiveExample height="320px" code={`
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"><\/script>
+<sp-markdown-editor id="editor1" placeholder="Start typing markdown here..."></sp-markdown-editor>
+`} />
+
+### With Initial Content
+
+Use the `value` property to set initial markdown content. The editor renders the content in source mode on load.
+
+<LiveExample height="360px" code={`
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"><\/script>
+<sp-markdown-editor id="editor2"></sp-markdown-editor>
+<script>
+  document.getElementById('editor2').value =
+    '# Hello World\n\nThis is **bold** and _italic_ text.\n\n- Item one\n- Item two\n- Item three\n\n> A blockquote example.';
+<\/script>
+`} />
+
+### Toolbar and Split View
+
+The editor's toolbar includes formatting buttons (B, I, S, H1-H3, lists, blockquote, code, link, image). Switch between Source, Split, and WYSIWYG modes using the mode tabs at the right end of the toolbar.
+
+<LiveExample height="380px" code={`
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"><\/script>
+<sp-markdown-editor id="editor3" mode="split"></sp-markdown-editor>
+<script>
+  document.getElementById('editor3').value =
+    '## Markdown Formatting\n\nTry the **toolbar** buttons or type *markdown* syntax directly.\n\n### List\n\n1. First item\n2. Second item\n3. Third item';
+<\/script>
+`} />
+
+### Event Handling
+
+Listen to `contentChange`, `save`, `modeChange`, `importFile`, and `exportFile` events.
+
+<LiveExample height="420px" code={`
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"><\/script>
+<sp-markdown-editor id="editor4" auto-save="true" auto-save-delay="3000"></sp-markdown-editor>
+<div id="evtlog" style="margin-top:8px;padding:8px;background:#f5f5f5;border-radius:4px;font-family:monospace;font-size:0.75rem;min-height:60px;"></div>
+<script>
+  const editor = document.getElementById('editor4');
+  const log = document.getElementById('evtlog');
+
+  function addLog(msg) {
+    const p = document.createElement('p');
+    p.style.margin = '2px 0';
+    p.textContent = new Date().toLocaleTimeString() + ' - ' + msg;
+    log.prepend(p);
+    if (log.children.length > 6) log.lastChild.remove();
+  }
+
+  editor.value = '# Event Demo\n\nEdit this text and watch the events below.';
+
+  editor.addEventListener('contentChange', e => addLog('contentChange: ' + (e.detail ? e.detail.length : 0) + ' chars'));
+  editor.addEventListener('save', e => addLog('save: ' + (e.detail && e.detail.content ? e.detail.content.length : 0) + ' chars'));
+  editor.addEventListener('modeChange', e => addLog('modeChange: ' + e.detail));
+<\/script>
+`} />
+
+### Dark Mode
+
+Apply the `theme-dark` class or set `theme="dark"` to use the dark color scheme with DWC design tokens.
+
+<LiveExample height="340px" code={`
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"><\/script>
+<div class="theme-dark" style="background:#1a1a2e;padding:16px;border-radius:8px">
+  <sp-markdown-editor id="editor5" theme="dark"></sp-markdown-editor>
+</div>
+<script>
+  document.getElementById('editor5').value =
+    '# Dark Mode Editor\n\nThe editor adapts to --dwc-* design tokens automatically.\n\nToggle dark mode with theme="dark" or class="theme-dark".';
+<\/script>
+`} />
+
+## API Reference
+
+<ApiReference component={componentDocs} />
