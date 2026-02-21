@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 interface LiveExampleProps {
   /** HTML code to render in the sandboxed iframe */
@@ -11,22 +12,22 @@ interface LiveExampleProps {
  * LiveExample renders HTML code in a sandboxed iframe, allowing developers to
  * see and edit live examples directly in the documentation.
  *
- * Note: Before first npm publish of @skillspilot/webcomponents, the iframe will
- * show blank content — this is expected because the CDN URL won't resolve yet.
- * Once the package is published, examples render fully.
+ * The component JS is served from the docs site itself (copied into static/wc/
+ * during the docs build), so no npm publish or external CDN is required.
  */
 export default function LiveExample({ code, height = '200px' }: LiveExampleProps): React.JSX.Element {
+  const { siteConfig } = useDocusaurusContext();
   const [source, setSource] = useState(code.trim());
 
-  // CDN URL for lazy-loaded Skillspilot web components
-  const cdnScript = 'https://cdn.jsdelivr.net/npm/@skillspilot/webcomponents/dist/skillspilot/skillspilot.esm.js';
+  // Serve components from the docs site's own static files (static/wc/)
+  const wcScript = `${siteConfig.url}${siteConfig.baseUrl}wc/skillspilot.esm.js`;
 
   const srcDoc = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script type="module" src="${cdnScript}"></script>
+  <script type="module" src="${wcScript}"></script>
   <style>
     body {
       margin: 0;

@@ -6,15 +6,19 @@ slug: /
 
 # Getting Started
 
-Skillspilot Web Components is a library of production-ready web components for the Skillspilot/TRM-AI platform. Components are distributed as an npm package and via CDN, and work in any web application without framework lock-in.
+Skillspilot Web Components is a library of production-ready web components for the Skillspilot/TRM-AI platform. Components are distributed via GitHub Releases and work in any web application without framework lock-in.
 
 ## Installation
 
-### npm
+### GitHub Release (recommended)
+
+Install directly from a GitHub Release tarball:
 
 ```bash
-npm install @skillspilot/webcomponents
+npm install https://github.com/StephanWald/trm-ai-webcomponents/releases/download/v0.0.1/skillspilot-webcomponents-0.0.1.tgz
 ```
+
+Replace `0.0.1` with the version you want. Check the [Releases page](https://github.com/StephanWald/trm-ai-webcomponents/releases) for all available versions.
 
 **ES module import (lazy-loading, recommended):**
 
@@ -31,22 +35,22 @@ defineCustomElements();
 import '@skillspilot/webcomponents/dist/components';
 ```
 
-### CDN (Script Tag)
+### Script Tag
 
 Add this script tag to your HTML `<head>`. It auto-registers all components immediately:
 
 ```html
 <script
   type="module"
-  src="https://cdn.jsdelivr.net/npm/@skillspilot/webcomponents/dist/skillspilot/skillspilot.esm.js"
+  src="https://stephanwald.github.io/trm-ai-webcomponents/wc/skillspilot.esm.js"
 ></script>
 ```
 
-No `import` or `defineCustomElements` call is needed — the CDN bundle auto-registers all `sp-*` elements.
+No `import` or `defineCustomElements` call is needed — the script auto-registers all `sp-*` elements.
 
 ## Quick Start
 
-Once installed (or the CDN script is included), use components directly in HTML:
+Once installed (or the script tag is included), use components directly in HTML:
 
 ```html
 <!DOCTYPE html>
@@ -54,7 +58,7 @@ Once installed (or the CDN script is included), use components directly in HTML:
 <head>
   <script
     type="module"
-    src="https://cdn.jsdelivr.net/npm/@skillspilot/webcomponents/dist/skillspilot/skillspilot.esm.js"
+    src="https://stephanwald.github.io/trm-ai-webcomponents/wc/skillspilot.esm.js"
   ></script>
 </head>
 <body>

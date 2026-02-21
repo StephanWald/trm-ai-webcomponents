@@ -18,14 +18,14 @@ npm install https://github.com/StephanWald/trm-ai-webcomponents/releases/downloa
 
 Replace `0.0.1` with the version you want. Check the [Releases page](https://github.com/StephanWald/trm-ai-webcomponents/releases) for all available versions.
 
-### CDN (Script Tag)
+### Script Tag
 
-Add to your HTML `<head>` — no build step required:
+Load directly from the docs site — no build step required:
 
 ```html
 <script
   type="module"
-  src="https://cdn.jsdelivr.net/npm/@skillspilot/webcomponents/dist/skillspilot/skillspilot.esm.js"
+  src="https://stephanwald.github.io/trm-ai-webcomponents/wc/skillspilot.esm.js"
 ></script>
 ```
 
@@ -49,7 +49,7 @@ defineCustomElements(); // auto-registers all sp-* components
 <head>
   <script
     type="module"
-    src="https://cdn.jsdelivr.net/npm/@skillspilot/webcomponents/dist/skillspilot/skillspilot.esm.js"
+    src="https://stephanwald.github.io/trm-ai-webcomponents/wc/skillspilot.esm.js"
   ></script>
 </head>
 <body>

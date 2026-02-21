@@ -34,6 +34,9 @@ jobs:
       - name: Build Stencil (generates docs.json)
         run: npm run build
 
+      - name: Copy component dist into Docusaurus static
+        run: cp -r dist/skillspilot docs/static/wc
+
       - name: Install Docusaurus deps
         run: npm ci
         working-directory: docs
