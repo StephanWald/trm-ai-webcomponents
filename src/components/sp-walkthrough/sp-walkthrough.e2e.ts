@@ -36,7 +36,7 @@ test.describe('sp-walkthrough E2E', () => {
     expect(panelVisible).toBe(true);
   });
 
-  test('panel displays title and close button', async ({ page }) => {
+  test('panel displays title and close button in single-row controls', async ({ page }) => {
     await page.goto('http://localhost:3333');
 
     await page.evaluate(() => {
@@ -52,14 +52,21 @@ test.describe('sp-walkthrough E2E', () => {
       const el = document.querySelector('sp-walkthrough');
       const title = el?.shadowRoot?.querySelector('.panel-title')?.textContent;
       const closeBtn = el?.shadowRoot?.querySelector('.close-btn');
+      const controlsRow = el?.shadowRoot?.querySelector('.controls-row');
+      // There should be no separate panel-header
+      const panelHeader = el?.shadowRoot?.querySelector('.panel-header');
       return {
         title: title || '',
         hasCloseBtn: !!closeBtn,
+        hasControlsRow: !!controlsRow,
+        hasPanelHeader: !!panelHeader,
       };
     });
 
     expect(panelContent.title).toContain('Walkthrough');
     expect(panelContent.hasCloseBtn).toBe(true);
+    expect(panelContent.hasControlsRow).toBe(true);
+    expect(panelContent.hasPanelHeader).toBe(false);
   });
 
   test('renders video container for standard video source', async ({ page }) => {
@@ -148,6 +155,111 @@ test.describe('sp-walkthrough E2E', () => {
     expect(counter).toContain('1 / 3');
   });
 
+  test('skip back and skip forward buttons are present when video source exists', async ({ page }) => {
+    await page.goto('http://localhost:3333');
+
+    await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      if (el) {
+        el.setAttribute('video-src', '/test-video.mp4');
+        (el as any).show();
+      }
+    });
+
+    await page.waitForTimeout(300);
+
+    const buttons = await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      const skipBack = el?.shadowRoot?.querySelector('[aria-label="Skip back 10 seconds"]');
+      const skipForward = el?.shadowRoot?.querySelector('[aria-label="Skip forward 10 seconds"]');
+      const restart = el?.shadowRoot?.querySelector('[aria-label="Restart"]');
+      return {
+        hasSkipBack: !!skipBack,
+        hasSkipForward: !!skipForward,
+        hasRestart: !!restart,
+      };
+    });
+
+    expect(buttons.hasSkipBack).toBe(true);
+    expect(buttons.hasSkipForward).toBe(true);
+    expect(buttons.hasRestart).toBe(true);
+  });
+
+  test('progress bar is visible when video source exists', async ({ page }) => {
+    await page.goto('http://localhost:3333');
+
+    await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      if (el) {
+        el.setAttribute('video-src', '/test-video.mp4');
+        (el as any).show();
+      }
+    });
+
+    await page.waitForTimeout(300);
+
+    const hasProgressBar = await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      const bar = el?.shadowRoot?.querySelector('.progress-bar');
+      const fill = el?.shadowRoot?.querySelector('.progress-bar__fill');
+      return { hasBar: !!bar, hasFill: !!fill };
+    });
+
+    expect(hasProgressBar.hasBar).toBe(true);
+    expect(hasProgressBar.hasFill).toBe(true);
+  });
+
+  test('progress bar does not appear when no video source', async ({ page }) => {
+    await page.goto('http://localhost:3333');
+
+    await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      if (el) {
+        (el as any).show();
+      }
+    });
+
+    await page.waitForTimeout(300);
+
+    const hasProgressBar = await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      return !!el?.shadowRoot?.querySelector('.progress-bar');
+    });
+
+    expect(hasProgressBar).toBe(false);
+  });
+
+  test('all control buttons contain SVG icons instead of emoji', async ({ page }) => {
+    await page.goto('http://localhost:3333');
+
+    await page.evaluate((scenes) => {
+      const el = document.querySelector('sp-walkthrough');
+      if (el) {
+        (el as any).scenes = scenes;
+        (el as any).show();
+      }
+    }, sampleScenes);
+
+    await page.waitForTimeout(300);
+
+    const iconCheck = await page.evaluate(() => {
+      const el = document.querySelector('sp-walkthrough');
+      const buttons = el?.shadowRoot?.querySelectorAll('.control-btn');
+      const results = Array.from(buttons || []).map(btn => ({
+        label: btn.getAttribute('aria-label'),
+        hasSvg: !!btn.querySelector('svg'),
+        // Verify no raw emoji text (check textContent length vs svg presence)
+        textContent: btn.textContent || '',
+      }));
+      return results;
+    });
+
+    // All buttons should have SVG icons
+    iconCheck.forEach(btn => {
+      expect(btn.hasSvg).toBe(true);
+    });
+  });
+
   test('next button advances to next scene', async ({ page }) => {
     await page.goto('http://localhost:3333');
 
@@ -165,7 +277,7 @@ test.describe('sp-walkthrough E2E', () => {
     await page.evaluate(() => {
       const el = document.querySelector('sp-walkthrough');
       const buttons = el?.shadowRoot?.querySelectorAll('.control-btn');
-      // Next button should be third (after play/pause and previous)
+      // Find the Next button by aria-label
       const nextBtn = Array.from(buttons || []).find(btn => btn.getAttribute('aria-label')?.includes('Next'));
       (nextBtn as HTMLElement)?.click();
     });

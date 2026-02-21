@@ -35,7 +35,7 @@ describe('sp-walkthrough', () => {
       expect(panel).toBeTruthy();
     });
 
-    it('displays panel title', async () => {
+    it('displays panel title in controls row', async () => {
       const page = await newSpecPage({
         components: [SpWalkthrough],
         html: '<sp-walkthrough></sp-walkthrough>',
@@ -72,6 +72,20 @@ describe('sp-walkthrough', () => {
 
       const closeBtn = page.root?.shadowRoot?.querySelector('.close-btn');
       expect(closeBtn).toBeTruthy();
+    });
+
+    it('close button contains SVG icon', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const closeBtn = page.root?.shadowRoot?.querySelector('.close-btn');
+      const svg = closeBtn?.querySelector('svg');
+      expect(svg).toBeTruthy();
     });
 
     it('renders manual mode placeholder when no video source', async () => {
@@ -133,7 +147,7 @@ describe('sp-walkthrough', () => {
       expect(description?.textContent).toBe('First scene');
     });
 
-    it('renders controls bar', async () => {
+    it('renders controls row (single-row layout)', async () => {
       const page = await newSpecPage({
         components: [SpWalkthrough],
         html: '<sp-walkthrough></sp-walkthrough>',
@@ -142,11 +156,24 @@ describe('sp-walkthrough', () => {
       await page.rootInstance.show();
       await page.waitForChanges();
 
-      const controlsBar = page.root?.shadowRoot?.querySelector('.controls-bar');
-      expect(controlsBar).toBeTruthy();
+      const controlsRow = page.root?.shadowRoot?.querySelector('.controls-row');
+      expect(controlsRow).toBeTruthy();
     });
 
-    it('renders previous and next buttons', async () => {
+    it('does not render a separate panel-header element', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const panelHeader = page.root?.shadowRoot?.querySelector('.panel-header');
+      expect(panelHeader).toBeFalsy();
+    });
+
+    it('renders previous and next scene buttons with SVG icons', async () => {
       const page = await newSpecPage({
         components: [SpWalkthrough],
         html: '<sp-walkthrough></sp-walkthrough>',
@@ -158,6 +185,55 @@ describe('sp-walkthrough', () => {
 
       const buttons = page.root?.shadowRoot?.querySelectorAll('.control-btn');
       expect(buttons!.length).toBeGreaterThanOrEqual(2);
+
+      // All control buttons should contain SVG icons
+      buttons?.forEach(btn => {
+        const svg = btn.querySelector('svg');
+        expect(svg).toBeTruthy();
+      });
+    });
+
+    it('renders skip back and skip forward buttons when video source exists', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const skipBackBtn = page.root?.shadowRoot?.querySelector('[aria-label="Skip back 10 seconds"]');
+      const skipForwardBtn = page.root?.shadowRoot?.querySelector('[aria-label="Skip forward 10 seconds"]');
+      expect(skipBackBtn).toBeTruthy();
+      expect(skipForwardBtn).toBeTruthy();
+    });
+
+    it('renders restart button', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const restartBtn = page.root?.shadowRoot?.querySelector('[aria-label="Restart"]');
+      expect(restartBtn).toBeTruthy();
+    });
+
+    it('renders play/pause button with SVG icon when video source exists', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const playBtn = page.root?.shadowRoot?.querySelector('[aria-label="Play"]');
+      expect(playBtn).toBeTruthy();
+      const svg = playBtn?.querySelector('svg');
+      expect(svg).toBeTruthy();
     });
 
     it('renders scene selector dropdown when scenes exist', async () => {
@@ -189,6 +265,49 @@ describe('sp-walkthrough', () => {
 
       const counter = page.root?.shadowRoot?.querySelector('.scene-counter');
       expect(counter?.textContent).toContain('1 / 3');
+    });
+
+    it('renders progress bar when video source exists', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const progressBar = page.root?.shadowRoot?.querySelector('.progress-bar');
+      expect(progressBar).toBeTruthy();
+
+      const fill = page.root?.shadowRoot?.querySelector('.progress-bar__fill');
+      expect(fill).toBeTruthy();
+    });
+
+    it('does not render progress bar when no video source', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      page.rootInstance.scenes = sampleScenes;
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const progressBar = page.root?.shadowRoot?.querySelector('.progress-bar');
+      expect(progressBar).toBeFalsy();
+    });
+
+    it('renders time display when video source exists', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const timeDisplay = page.root?.shadowRoot?.querySelector('.time-display');
+      expect(timeDisplay).toBeTruthy();
     });
 
     it('renders volume controls when video source exists', async () => {
@@ -547,6 +666,20 @@ describe('sp-walkthrough', () => {
       const volumeSlider = page.root?.shadowRoot?.querySelector('.volume-slider');
       expect(volumeSlider?.getAttribute('aria-label')).toBeTruthy();
     });
+
+    it('progress bar has role slider and aria attributes', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const progressBar = page.root?.shadowRoot?.querySelector('.progress-bar');
+      expect(progressBar?.getAttribute('role')).toBe('slider');
+      expect(progressBar?.getAttribute('aria-label')).toBeTruthy();
+    });
   });
 
   describe('navigation methods', () => {
@@ -837,6 +970,281 @@ describe('sp-walkthrough', () => {
 
       expect(page.rootInstance['isPlaying']).toBe(false);
       expect(mockVideoElement.pause).toHaveBeenCalled();
+    });
+  });
+
+  describe('skip controls', () => {
+    it('handleSkipBack seeks to currentTime - 10', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const mockVideoElement = {
+        currentTime: 30,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      };
+      page.rootInstance['videoElement'] = mockVideoElement as any;
+      page.rootInstance['currentTime'] = 30;
+
+      page.rootInstance['handleSkipBack']();
+      await page.waitForChanges();
+
+      expect(mockVideoElement.currentTime).toBe(20);
+      expect(page.rootInstance['currentTime']).toBe(20);
+    });
+
+    it('handleSkipBack clamps to 0 when currentTime < 10', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const mockVideoElement = {
+        currentTime: 5,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      };
+      page.rootInstance['videoElement'] = mockVideoElement as any;
+      page.rootInstance['currentTime'] = 5;
+
+      page.rootInstance['handleSkipBack']();
+      await page.waitForChanges();
+
+      expect(mockVideoElement.currentTime).toBe(0);
+      expect(page.rootInstance['currentTime']).toBe(0);
+    });
+
+    it('handleSkipForward seeks to currentTime + 10', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const mockVideoElement = {
+        currentTime: 20,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      };
+      page.rootInstance['videoElement'] = mockVideoElement as any;
+      page.rootInstance['currentTime'] = 20;
+      page.rootInstance['duration'] = 120;
+
+      page.rootInstance['handleSkipForward']();
+      await page.waitForChanges();
+
+      expect(mockVideoElement.currentTime).toBe(30);
+      expect(page.rootInstance['currentTime']).toBe(30);
+    });
+
+    it('handleSkipForward clamps to duration', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const mockVideoElement = {
+        currentTime: 115,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      };
+      page.rootInstance['videoElement'] = mockVideoElement as any;
+      page.rootInstance['currentTime'] = 115;
+      page.rootInstance['duration'] = 120;
+
+      page.rootInstance['handleSkipForward']();
+      await page.waitForChanges();
+
+      expect(mockVideoElement.currentTime).toBe(120);
+      expect(page.rootInstance['currentTime']).toBe(120);
+    });
+
+    it('skip back button is present in controls row', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const skipBackBtn = page.root?.shadowRoot?.querySelector('[aria-label="Skip back 10 seconds"]');
+      expect(skipBackBtn).toBeTruthy();
+    });
+
+    it('skip forward button is present in controls row', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const skipForwardBtn = page.root?.shadowRoot?.querySelector('[aria-label="Skip forward 10 seconds"]');
+      expect(skipForwardBtn).toBeTruthy();
+    });
+  });
+
+  describe('progress bar', () => {
+    it('handleProgressClick seeks to correct time based on click position', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const mockVideoElement = {
+        currentTime: 0,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      };
+      page.rootInstance['videoElement'] = mockVideoElement as any;
+      page.rootInstance['duration'] = 100;
+
+      // Simulate a click event at 50% of a 200px-wide bar
+      const mockBar = { getBoundingClientRect: () => ({ left: 0, width: 200 }) } as HTMLElement;
+      const clickEvent = new MouseEvent('click', { clientX: 100 });
+      Object.defineProperty(clickEvent, 'currentTarget', {
+        value: mockBar,
+        writable: false,
+      });
+
+      page.rootInstance['handleProgressClick'](clickEvent);
+      await page.waitForChanges();
+
+      // 50% of 100s = 50s
+      expect(mockVideoElement.currentTime).toBe(50);
+      expect(page.rootInstance['currentTime']).toBe(50);
+    });
+
+    it('handleProgressClick does nothing when duration is 0', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      const mockVideoElement = {
+        currentTime: 0,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      };
+      page.rootInstance['videoElement'] = mockVideoElement as any;
+      page.rootInstance['duration'] = 0;
+
+      const clickEvent = new MouseEvent('click', { clientX: 100 });
+      page.rootInstance['handleProgressClick'](clickEvent);
+      await page.waitForChanges();
+
+      // Should remain unchanged
+      expect(mockVideoElement.currentTime).toBe(0);
+    });
+
+    it('progress bar fill width reflects currentTime / duration', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['currentTime'] = 50;
+      page.rootInstance['duration'] = 100;
+      await page.waitForChanges();
+
+      const fill = page.root?.shadowRoot?.querySelector('.progress-bar__fill') as HTMLElement;
+      expect(fill).toBeTruthy();
+      // fill width style should be set to 50%
+      expect(fill?.style?.width).toBe('50%');
+    });
+  });
+
+  describe('formatTime utility', () => {
+    it('formatTime returns "0:00" for 0 seconds', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      expect(page.rootInstance['formatTime'](0)).toBe('0:00');
+    });
+
+    it('formatTime returns "1:05" for 65 seconds', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      expect(page.rootInstance['formatTime'](65)).toBe('1:05');
+    });
+
+    it('formatTime returns "61:01" for 3661 seconds', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      // 3661 = 1h 1m 1s → "1:01:01"
+      expect(page.rootInstance['formatTime'](3661)).toBe('1:01:01');
+    });
+
+    it('formatTime returns "0:00" for NaN', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      expect(page.rootInstance['formatTime'](NaN)).toBe('0:00');
+    });
+
+    it('formatTime returns "0:30" for 30 seconds', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      expect(page.rootInstance['formatTime'](30)).toBe('0:30');
+    });
+  });
+
+  describe('restart button', () => {
+    it('restart button calls restart() and resets to scene 0', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough></sp-walkthrough>',
+      });
+
+      page.rootInstance.scenes = sampleScenes;
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['currentSceneIndex'] = 2;
+      await page.waitForChanges();
+
+      // Call restart directly (using rootInstance, not button.click(), per Stencil test patterns)
+      await page.rootInstance.restart();
+      await page.waitForChanges();
+
+      expect(page.rootInstance['currentSceneIndex']).toBe(0);
     });
   });
 
@@ -1132,6 +1540,23 @@ describe('sp-walkthrough', () => {
       const prevBtn = page.root?.shadowRoot?.querySelector('[aria-label="Previous scene"]') as HTMLButtonElement;
       // In mock-doc, disabled is set as attribute
       expect(prevBtn?.getAttribute('disabled')).not.toBeNull();
+    });
+
+    it('play button shows pause icon when playing', async () => {
+      const page = await newSpecPage({
+        components: [SpWalkthrough],
+        html: '<sp-walkthrough video-src="/video.mp4"></sp-walkthrough>',
+      });
+
+      await page.rootInstance.show();
+      await page.waitForChanges();
+
+      page.rootInstance['isPlaying'] = true;
+      await page.waitForChanges();
+
+      const pauseBtn = page.root?.shadowRoot?.querySelector('[aria-label="Pause"]');
+      expect(pauseBtn).toBeTruthy();
+      expect(pauseBtn?.querySelector('svg')).toBeTruthy();
     });
   });
 
@@ -1617,8 +2042,8 @@ describe('sp-walkthrough', () => {
       await page.rootInstance.show();
       await page.waitForChanges();
 
-      const controlsBar = page.root?.shadowRoot?.querySelector('.controls-bar');
-      expect(controlsBar).toBeTruthy();
+      const controlsRow = page.root?.shadowRoot?.querySelector('.controls-row');
+      expect(controlsRow).toBeTruthy();
 
       const prevBtn = page.root?.shadowRoot?.querySelector('[aria-label="Previous scene"]');
       const nextBtn = page.root?.shadowRoot?.querySelector('[aria-label="Next scene"]');
