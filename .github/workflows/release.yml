@@ -8,7 +8,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  id-token: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -24,7 +23,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24.x'
-          registry-url: 'https://registry.npmjs.org'
 
       - run: npm ci
       - run: npm run build
@@ -32,15 +30,26 @@ jobs:
         env:
           NODE_OPTIONS: '--max-old-space-size=8192'
 
-      - name: Create Release Pull Request or Publish
+      - name: Create Release Pull Request
+        id: changesets
         uses: changesets/action@v1
         with:
-          publish: npm run release
           version: npm run version
           title: 'chore: version packages'
           commit: 'chore: version packages'
-          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: 'true'
+
+      - name: Package and publish GitHub Release
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TARBALL="skillspilot-webcomponents-${VERSION}.tgz"
+          npm pack --pack-destination .
+          gh release create "v${VERSION}" \
+            --title "v${VERSION}" \
+            --generate-notes \
+            "./${TARBALL}#${TARBALL}" \
+            || echo "Release v${VERSION} already exists, skipping."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
