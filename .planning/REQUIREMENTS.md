@@ -24,17 +24,17 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 
 ### Walkthrough Parity (WALK)
 
-- [ ] **WALK-01**: Controls use Tabler SVG icons (play, pause, skip-back-10, skip-forward-10, restart, close, volume, volume-off, chevron-left/right, list, tool, pointer, plus, check, pencil, trash, subtitles, copy)
-- [ ] **WALK-02**: Visual progress bar displays in controls row showing current playback position with click-to-seek
-- [ ] **WALK-03**: Skip backward 10s and skip forward 10s buttons present and functional
-- [ ] **WALK-04**: Restart button returns playback to beginning
+- [x] **WALK-01**: Controls use Tabler SVG icons (play, pause, skip-back-10, skip-forward-10, restart, close, volume, volume-off, chevron-left/right, list, tool, pointer, plus, check, pencil, trash, subtitles, copy)
+- [x] **WALK-02**: Visual progress bar displays in controls row showing current playback position with click-to-seek
+- [x] **WALK-03**: Skip backward 10s and skip forward 10s buttons present and functional
+- [x] **WALK-04**: Restart button returns playback to beginning
 - [ ] **WALK-05**: Scene list displays as custom popup (not native select dropdown) with title and timestamp per scene
 - [ ] **WALK-06**: Volume control renders as vertical popup slider (rotated 90deg) with custom thumb/track styling
 - [ ] **WALK-07**: Custom caption rendering with styled overlay (dark background, white text, text shadow) instead of native browser captions
 - [ ] **WALK-08**: Scene description supports markdown rendering in text bubble (h1-h3, p, ul, ol, code, pre)
 - [ ] **WALK-09**: Highlight animations match original: reddish-brown border with dual glow, green active state, breathing animation (1.5s ease-in-out)
-- [ ] **WALK-10**: Controls layout matches original single-row design without separate panel header
-- [ ] **WALK-11**: All colors/fonts use DWC CSS custom properties with sensible fallback defaults
+- [x] **WALK-10**: Controls layout matches original single-row design without separate panel header
+- [x] **WALK-11**: All colors/fonts use DWC CSS custom properties with sensible fallback defaults
 
 ### Language Selector (LANG)
 
@@ -139,17 +139,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ORGC-10 | Phase 7 | Complete |
 | ORGC-11 | Phase 7 | Complete |
 | ORGC-12 | Phase 7 | Complete |
-| WALK-01 | Phase 8 | Pending |
-| WALK-02 | Phase 8 | Pending |
-| WALK-03 | Phase 8 | Pending |
-| WALK-04 | Phase 8 | Pending |
+| WALK-01 | Phase 8 | Complete |
+| WALK-02 | Phase 8 | Complete |
+| WALK-03 | Phase 8 | Complete |
+| WALK-04 | Phase 8 | Complete |
 | WALK-05 | Phase 8 | Pending |
 | WALK-06 | Phase 8 | Pending |
 | WALK-07 | Phase 8 | Pending |
 | WALK-08 | Phase 8 | Pending |
 | WALK-09 | Phase 8 | Pending |
-| WALK-10 | Phase 8 | Pending |
-| WALK-11 | Phase 8 | Pending |
+| WALK-10 | Phase 8 | Complete |
+| WALK-11 | Phase 8 | Complete |
 | LANG-01 | Phase 10 | Pending |
 | LANG-02 | Phase 10 | Pending |
 | LANG-03 | Phase 10 | Pending |

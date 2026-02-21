@@ -5,29 +5,30 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Developers can add a single script tag or npm install and immediately use production-ready, self-contained Skillspilot UI components that look and behave consistently — without framework lock-in.
-**Current focus:** v1.1 — Phase 7: Org Chart Parity
+**Current focus:** v1.1 — Phase 8: Walkthrough Parity
 
 ## Current Position
 
-Phase: 7 of 12 (Org Chart Parity)
-Plan: 3 of 5 in current phase (07-03 complete)
+Phase: 8 of 12 (Walkthrough Parity)
+Plan: 1 of 2 in current phase (08-01 complete)
 Status: In progress
-Last activity: 2026-02-21 — Completed 07-03-PLAN.md: custom drag preview, SVG drop zones, timed delete, branch filtering
+Last activity: 2026-02-21 — Completed 08-01-PLAN.md: Tabler SVG icons, single-row controls, progress bar, skip/restart
 
-Progress: [███░░░░░░░] 15% (v1.1)
+Progress: [████░░░░░░] 18% (v1.1)
 
 ## Performance Metrics
 
 **Velocity (v1.1):**
-- Total plans completed: 3
-- Average duration: 17.7m
-- Total execution time: 52m
+- Total plans completed: 4
+- Average duration: 15.5m
+- Total execution time: 61m
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 07-org-chart-parity | 3 | 52m | 17.3m |
+| 08-walkthrough-parity | 1 | 9m | 9m |
 
 *Updated after each plan completion*
 
@@ -51,6 +52,9 @@ v1.1 key decisions:
 - [Phase 07-03]: document-level dragover listener attached in handleDragStart and detached in cleanupDragState for floating preview cursor tracking
 - [Phase 07-03]: typeof Image guard in componentWillLoad needed for JSDOM spec test compatibility
 - [Phase 07-03]: jest.useFakeTimers() must never precede await page.waitForChanges() in Stencil spec tests (blocks async resolution)
+- [Phase 08-01]: Single-row controls-row replaces panel-header — acts as both drag handle and controls container
+- [Phase 08-01]: Previous/next scene buttons kept alongside skip-back/forward — skip only works with video, prev/next needed for manual mode
+- [Phase 08-01]: SVG icon helpers are private TSX methods returning JSX — same pattern as sp-org-chart inline icons
 
 ### Pending Todos
 
@@ -69,5 +73,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 07-03-PLAN.md (custom drag preview, SVG drop zones, timed delete, branch filtering)
+Stopped at: Completed 08-01-PLAN.md (Tabler SVG icons, single-row controls, progress bar, skip/restart)
 Resume file: None
