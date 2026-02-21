@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-21T08:33:18",
+  "timestamp": "2026-02-21T16:43:16",
   "compiler": {
     "name": "@stencil/core",
     "version": "4.41.3",
@@ -819,10 +819,6 @@
       "docsTags": [
         {
           "name": "part",
-          "text": "filter-input - Filter input field"
-        },
-        {
-          "name": "part",
           "text": "no-data - No data message container"
         },
         {
@@ -855,13 +851,87 @@
           "docsTags": [
             {
               "name": "default",
-              "text": "false"
+              "text": "true"
             }
           ],
-          "default": "false",
+          "default": "true",
           "values": [
             {
               "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "filterBranchId",
+          "type": "string",
+          "complexType": {
+            "original": "string",
+            "resolved": "string",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "filter-branch-id",
+          "reflectToAttr": false,
+          "docs": "Branch ID to filter by when filterMode is not 'none'",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "''"
+            }
+          ],
+          "default": "''",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "filterMode",
+          "type": "\"highlight\" | \"isolate\" | \"none\"",
+          "complexType": {
+            "original": "BranchFilterMode",
+            "resolved": "\"highlight\" | \"isolate\" | \"none\"",
+            "references": {
+              "BranchFilterMode": {
+                "location": "import",
+                "path": "./types/org-chart.types",
+                "id": "src/components/sp-org-chart/types/org-chart.types.ts::BranchFilterMode",
+                "referenceLocation": "BranchFilterMode"
+              }
+            }
+          },
+          "mutable": false,
+          "attr": "filter-mode",
+          "reflectToAttr": false,
+          "docs": "Branch filter mode — 'none' shows all, 'highlight' dims non-matching, 'isolate' hides unrelated branches",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'none'"
+            }
+          ],
+          "default": "'none'",
+          "values": [
+            {
+              "value": "highlight",
+              "type": "string"
+            },
+            {
+              "value": "isolate",
+              "type": "string"
+            },
+            {
+              "value": "none",
+              "type": "string"
             }
           ],
           "optional": false,
@@ -1183,7 +1253,7 @@
         {
           "name": "--dwc-border-radius",
           "annotation": "prop",
-          "docs": "Border radius for user tiles, filter input, and drop zones"
+          "docs": "Border radius for user tiles and drop zones"
         },
         {
           "name": "--dwc-border-radius-full",
@@ -1196,19 +1266,29 @@
           "docs": "Large border radius for the floating drop zones container"
         },
         {
+          "name": "--dwc-border-radius-sm",
+          "annotation": "prop",
+          "docs": "Small border radius for branch badge"
+        },
+        {
           "name": "--dwc-color-border",
           "annotation": "prop",
-          "docs": "Border color for user tiles, toolbar, drop zones, and tree connectors"
+          "docs": "Border color for tiles, children connector, and drop zones"
         },
         {
           "name": "--dwc-color-danger",
           "annotation": "prop",
-          "docs": "Danger color for the delete drop zone border on hover"
+          "docs": "Danger color for countdown ring and delete drop zone"
         },
         {
           "name": "--dwc-color-primary",
           "annotation": "prop",
-          "docs": "Accent color for selected tile border, avatar initials background, and drag-over state"
+          "docs": "Accent color for selected tile, avatar initials background, branch tile border"
+        },
+        {
+          "name": "--dwc-color-primary-surface",
+          "annotation": "prop",
+          "docs": "Light primary surface for branch badge background"
         },
         {
           "name": "--dwc-color-primary-text",
@@ -1218,22 +1298,27 @@
         {
           "name": "--dwc-color-surface",
           "annotation": "prop",
-          "docs": "Background color for user tiles, toolbar, and drop zones"
+          "docs": "Background color for user tiles and drop zones"
+        },
+        {
+          "name": "--dwc-color-surface-alt",
+          "annotation": "prop",
+          "docs": "Alternate surface for branch tiles"
         },
         {
           "name": "--dwc-color-text",
           "annotation": "prop",
-          "docs": "Primary text color for user names and drop zone labels"
+          "docs": "Primary text color for user names"
         },
         {
           "name": "--dwc-color-text-secondary",
           "annotation": "prop",
-          "docs": "Secondary text color for role labels and empty-state message"
+          "docs": "Secondary text color for role/email/phone labels"
         },
         {
           "name": "--dwc-color-warning",
           "annotation": "prop",
-          "docs": "Warning color for highlighted tile border (search match)"
+          "docs": "Warning color for highlighted tile border"
         },
         {
           "name": "--dwc-font-family",
@@ -1256,19 +1341,19 @@
           "docs": "Small font size for role labels and secondary text"
         },
         {
-          "name": "--dwc-font-size-xl",
+          "name": "--dwc-font-size-xs",
           "annotation": "prop",
-          "docs": "Extra-large font size for drop zone icons"
+          "docs": "Extra-small font size for branch badge"
         },
         {
           "name": "--dwc-font-weight-medium",
           "annotation": "prop",
-          "docs": "Medium weight for labels"
+          "docs": "Medium weight for labels and badges"
         },
         {
           "name": "--dwc-font-weight-semibold",
           "annotation": "prop",
-          "docs": "Semibold weight for user names and drop zone labels"
+          "docs": "Semibold weight for user names"
         },
         {
           "name": "--dwc-line-height-normal",
@@ -1278,7 +1363,7 @@
         {
           "name": "--dwc-shadow-md",
           "annotation": "prop",
-          "docs": "Medium box shadow on hovered user tiles"
+          "docs": "Medium box shadow on hovered user tiles and drag preview"
         },
         {
           "name": "--dwc-shadow-sm",
@@ -1293,32 +1378,32 @@
         {
           "name": "--dwc-spacing-2xl",
           "annotation": "prop",
-          "docs": "Double extra-large spacing for the empty-state message padding"
+          "docs": "Double extra-large spacing for empty-state padding"
         },
         {
           "name": "--dwc-spacing-lg",
           "annotation": "prop",
-          "docs": "Large spacing for horizontal gap between tree siblings"
+          "docs": "Large spacing for drop zone gaps (20px default)"
         },
         {
           "name": "--dwc-spacing-md",
           "annotation": "prop",
-          "docs": "Medium spacing for toolbar padding and tile internal padding"
+          "docs": "Medium spacing for tile padding and container padding (12px default)"
         },
         {
           "name": "--dwc-spacing-sm",
           "annotation": "prop",
-          "docs": "Small spacing for filter input padding and tree children gap"
+          "docs": "Small spacing (8px default)"
         },
         {
           "name": "--dwc-spacing-xl",
           "annotation": "prop",
-          "docs": "Extra-large spacing for vertical connector height and tree padding"
+          "docs": "Extra-large spacing for children indentation (32px default)"
         },
         {
           "name": "--dwc-spacing-xs",
           "annotation": "prop",
-          "docs": "Extra-small spacing for minor gaps (avatar margin, name margin)"
+          "docs": "Extra-small spacing (4px default)"
         },
         {
           "name": "--dwc-transition-fast",
@@ -1333,10 +1418,6 @@
           "docs": "Drop zone for drag-and-drop"
         },
         {
-          "name": "filter-input",
-          "docs": "Filter input field"
-        },
-        {
           "name": "no-data",
           "docs": "No data message container"
         },
@@ -1347,6 +1428,388 @@
         {
           "name": "user-tile",
           "docs": "Individual user tile"
+        }
+      ],
+      "dependents": [],
+      "dependencies": [],
+      "dependencyGraph": {}
+    },
+    {
+      "filePath": "src/components/sp-popover/sp-popover.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-popover",
+      "docs": "",
+      "docsTags": [
+        {
+          "name": "part",
+          "text": "container - Positioned wrapper div (position: fixed)"
+        },
+        {
+          "name": "part",
+          "text": "content - Visual panel with background, border, shadow"
+        }
+      ],
+      "usage": {},
+      "props": [
+        {
+          "name": "anchor",
+          "type": "HTMLElement | string",
+          "complexType": {
+            "original": "string | HTMLElement",
+            "resolved": "HTMLElement | string",
+            "references": {
+              "HTMLElement": {
+                "location": "global",
+                "id": "global::HTMLElement"
+              }
+            }
+          },
+          "mutable": false,
+          "attr": "anchor",
+          "reflectToAttr": false,
+          "docs": "Anchor element reference. Can be:\n- A CSS selector string (resolved via document.querySelector)\n- A direct HTMLElement reference\n- null/omitted: uses the previous sibling element",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "null"
+            }
+          ],
+          "default": "null",
+          "values": [
+            {
+              "type": "HTMLElement"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "closeOnClick",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "close-on-click",
+          "reflectToAttr": false,
+          "docs": "Close the popover when clicking outside it and its anchor (POPV-03).",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "true"
+            }
+          ],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "closeOnEscape",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "close-on-escape",
+          "reflectToAttr": false,
+          "docs": "Close the popover when pressing the Escape key (POPV-03).",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "true"
+            }
+          ],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": true,
+          "attr": "open",
+          "reflectToAttr": true,
+          "docs": "Controls visibility. Can be bound via prop or toggled via methods.\nReflects to attribute.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "placement",
+          "type": "\"bottom-end\" | \"bottom-start\" | \"left-start\" | \"right-start\" | \"top-end\" | \"top-start\"",
+          "complexType": {
+            "original": "Placement",
+            "resolved": "\"bottom-end\" | \"bottom-start\" | \"left-start\" | \"right-start\" | \"top-end\" | \"top-start\"",
+            "references": {
+              "Placement": {
+                "location": "import",
+                "path": "./types",
+                "id": "src/components/sp-popover/types.ts::Placement",
+                "referenceLocation": "Placement"
+              }
+            }
+          },
+          "mutable": false,
+          "attr": "placement",
+          "reflectToAttr": false,
+          "docs": "Preferred placement of the popover relative to its anchor (POPV-01).\nWill auto-flip if it overflows the viewport (POPV-02).",
+          "docsTags": [
+            {
+              "name": "type",
+              "text": "{'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start'}"
+            },
+            {
+              "name": "default",
+              "text": "'bottom-start'"
+            }
+          ],
+          "default": "'bottom-start'",
+          "values": [
+            {
+              "value": "bottom-end",
+              "type": "string"
+            },
+            {
+              "value": "bottom-start",
+              "type": "string"
+            },
+            {
+              "value": "left-start",
+              "type": "string"
+            },
+            {
+              "value": "right-start",
+              "type": "string"
+            },
+            {
+              "value": "top-end",
+              "type": "string"
+            },
+            {
+              "value": "top-start",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"auto\" | \"dark\" | \"light\"",
+          "complexType": {
+            "original": "'light' | 'dark' | 'auto'",
+            "resolved": "\"auto\" | \"dark\" | \"light\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Theme override for standalone usage.",
+          "docsTags": [
+            {
+              "name": "type",
+              "text": "{'light' | 'dark' | 'auto'}"
+            },
+            {
+              "name": "default",
+              "text": "'auto'"
+            }
+          ],
+          "default": "'auto'",
+          "values": [
+            {
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "hidePopover",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "hidePopover() => Promise<void>",
+          "parameters": [],
+          "docs": "Close the popover and emit popover-close (POPV-04)",
+          "docsTags": []
+        },
+        {
+          "name": "showPopover",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "showPopover() => Promise<void>",
+          "parameters": [],
+          "docs": "Open the popover, calculate position, and emit popover-open (POPV-04)",
+          "docsTags": []
+        },
+        {
+          "name": "togglePopover",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "togglePopover() => Promise<void>",
+          "parameters": [],
+          "docs": "Toggle between open and closed states (POPV-04)",
+          "docsTags": []
+        },
+        {
+          "name": "updatePosition",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "updatePosition() => Promise<void>",
+          "parameters": [],
+          "docs": "Recalculate position without changing open state.\nUseful after scroll/resize events (POPV-04).",
+          "docsTags": []
+        }
+      ],
+      "events": [
+        {
+          "event": "popoverClose",
+          "detail": "void",
+          "bubbles": true,
+          "complexType": {
+            "original": "void",
+            "resolved": "void",
+            "references": {}
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the popover closes (POPV-06)",
+          "docsTags": []
+        },
+        {
+          "event": "popoverOpen",
+          "detail": "void",
+          "bubbles": true,
+          "complexType": {
+            "original": "void",
+            "resolved": "void",
+            "references": {}
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the popover opens (POPV-06)",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [
+        {
+          "name": "container",
+          "docs": "Positioned wrapper div (position: fixed)"
+        },
+        {
+          "name": "content",
+          "docs": "Visual panel with background, border, shadow"
         }
       ],
       "dependents": [],
@@ -1774,7 +2237,7 @@
         {
           "name": "--dwc-color-border",
           "annotation": "prop",
-          "docs": "Border color for the panel, control buttons, scene selector, and author UI dividers"
+          "docs": "Border color for the panel, control buttons, and scene selector"
         },
         {
           "name": "--dwc-color-border-hover",
@@ -1794,7 +2257,7 @@
         {
           "name": "--dwc-color-info-bg",
           "annotation": "prop",
-          "docs": "Info background for scene editor panel (distinguishes edit form)"
+          "docs": "Info background for scene editor panel"
         },
         {
           "name": "--dwc-color-info-border",
@@ -1804,17 +2267,17 @@
         {
           "name": "--dwc-color-primary",
           "annotation": "prop",
-          "docs": "Primary brand color for panel header background, author buttons, scene selector focus ring, and form focus borders"
+          "docs": "Primary brand color for controls row background, focus rings"
         },
         {
           "name": "--dwc-color-primary-dark",
           "annotation": "prop",
-          "docs": "Darker primary shade for author button hover state"
+          "docs": "Darker primary shade for author button hover"
         },
         {
           "name": "--dwc-color-primary-text",
           "annotation": "prop",
-          "docs": "Text color on primary-colored surfaces (panel header, close button, author buttons)"
+          "docs": "Text color on primary-colored surfaces (controls row)"
         },
         {
           "name": "--dwc-color-success",
@@ -1829,7 +2292,7 @@
         {
           "name": "--dwc-color-surface-secondary",
           "annotation": "prop",
-          "docs": "Secondary surface color for control buttons, manual mode placeholder, and scene list items"
+          "docs": "Secondary surface color for control buttons and scene list items"
         },
         {
           "name": "--dwc-color-text",
@@ -1839,7 +2302,7 @@
         {
           "name": "--dwc-color-text-secondary",
           "annotation": "prop",
-          "docs": "Secondary text color for scene descriptions, scene counter, and placeholder text"
+          "docs": "Secondary text color for scene descriptions and counter"
         },
         {
           "name": "--dwc-color-warning",
@@ -1849,7 +2312,7 @@
         {
           "name": "--dwc-color-warning-bg",
           "annotation": "prop",
-          "docs": "Warning background for author toolbar (distinguishes edit mode)"
+          "docs": "Warning background for author toolbar"
         },
         {
           "name": "--dwc-color-warning-border",
@@ -1864,12 +2327,7 @@
         {
           "name": "--dwc-font-size-base",
           "annotation": "prop",
-          "docs": "Base font size for scene titles, panel title, and controls"
-        },
-        {
-          "name": "--dwc-font-size-lg",
-          "annotation": "prop",
-          "docs": "Large font size for close button icon"
+          "docs": "Base font size for scene titles and controls"
         },
         {
           "name": "--dwc-font-size-sm",
@@ -1897,11 +2355,6 @@
           "docs": "Extra-large shadow for the floating walkthrough panel"
         },
         {
-          "name": "--dwc-spacing-lg",
-          "annotation": "prop",
-          "docs": "Large spacing for author scene list gap"
-        },
-        {
           "name": "--dwc-spacing-md",
           "annotation": "prop",
           "docs": "Medium spacing for panel content padding and section margins"
@@ -1909,12 +2362,12 @@
         {
           "name": "--dwc-spacing-sm",
           "annotation": "prop",
-          "docs": "Small spacing for control bar gaps and author toolbar padding"
+          "docs": "Small spacing for control bar gaps"
         },
         {
           "name": "--dwc-spacing-xs",
           "annotation": "prop",
-          "docs": "Extra-small spacing for tight gaps in controls and volume area"
+          "docs": "Extra-small spacing for tight gaps in controls"
         },
         {
           "name": "--dwc-transition-base",
@@ -1976,8 +2429,13 @@
       "path": "src/components/sp-markdown-editor/types/editor.types.ts"
     },
     "src/components/sp-org-chart/types/org-chart.types.ts::User": {
-      "declaration": "export interface User {\n  id: string;\n  name: string;\n  role: string;\n  reportsTo?: string;\n  avatar?: string;\n}",
-      "docstring": "User data structure with reporting relationships",
+      "declaration": "export interface User {\n  id: string;\n  firstName: string;\n  lastName?: string;       // Absent for branch entities\n  email?: string;\n  phone?: string;\n  role: string;\n  avatar?: string;\n  reportsTo?: string;\n  branchId?: string;\n  branchName?: string;\n  branchLogo?: string;     // URL for branch square logo\n}",
+      "docstring": "User data structure with reporting relationships and branch information.\nBranch entities are users without a lastName field.",
+      "path": "src/components/sp-org-chart/types/org-chart.types.ts"
+    },
+    "src/components/sp-org-chart/types/org-chart.types.ts::BranchFilterMode": {
+      "declaration": "export type BranchFilterMode = 'none' | 'highlight' | 'isolate';",
+      "docstring": "",
       "path": "src/components/sp-org-chart/types/org-chart.types.ts"
     },
     "src/components/sp-org-chart/types/org-chart.types.ts::UserEventDetail": {
@@ -1989,6 +2447,11 @@
       "declaration": "export interface HierarchyChangeDetail {\n  userId: string;\n  oldManagerId: string | null;\n  newManagerId: string | null;\n}",
       "docstring": "Event detail for hierarchy change events (drag-and-drop)",
       "path": "src/components/sp-org-chart/types/org-chart.types.ts"
+    },
+    "src/components/sp-popover/types.ts::Placement": {
+      "declaration": "export type Placement =\n  | 'bottom-start'\n  | 'bottom-end'\n  | 'top-start'\n  | 'top-end'\n  | 'right-start'\n  | 'left-start';",
+      "docstring": "",
+      "path": "src/components/sp-popover/types.ts"
     },
     "src/components/sp-walkthrough/types/walkthrough.types.ts::Scene": {
       "declaration": "export interface Scene {\n  /** Unique identifier for this scene */\n  id: string;\n\n  /** Display title for the scene */\n  title: string;\n\n  /** Optional description/instructions for the scene */\n  description?: string;\n\n  /** Timestamp in seconds when this scene should activate (for video-synced walkthroughs) */\n  timestamp: number;\n\n  /** CSS selector for the DOM element to highlight during this scene */\n  highlightSelector?: string;\n\n  /** Duration in seconds for manual mode auto-advance (optional) */\n  duration?: number;\n}",

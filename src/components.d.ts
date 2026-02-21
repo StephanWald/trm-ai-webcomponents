@@ -7,9 +7,11 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ContentChangeEvent, EditorMode, ExportEvent, ImagePasteEvent, ImportEvent, ModeChangeEvent, SaveEvent } from "./components/sp-markdown-editor/types/editor.types";
 import { BranchFilterMode, HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
+import { Placement } from "./components/sp-popover/types";
 import { Scene, SceneChangeDetail, TimelineUpdateDetail } from "./components/sp-walkthrough/types/walkthrough.types";
 export { ContentChangeEvent, EditorMode, ExportEvent, ImagePasteEvent, ImportEvent, ModeChangeEvent, SaveEvent } from "./components/sp-markdown-editor/types/editor.types";
 export { BranchFilterMode, HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
+export { Placement } from "./components/sp-popover/types";
 export { Scene, SceneChangeDetail, TimelineUpdateDetail } from "./components/sp-walkthrough/types/walkthrough.types";
 export namespace Components {
     interface SpExample {
@@ -110,6 +112,56 @@ export namespace Components {
          */
         "users": User[];
     }
+    interface SpPopover {
+        /**
+          * Anchor element reference. Can be: - A CSS selector string (resolved via document.querySelector) - A direct HTMLElement reference - null/omitted: uses the previous sibling element
+          * @default null
+         */
+        "anchor": string | HTMLElement;
+        /**
+          * Close the popover when clicking outside it and its anchor (POPV-03).
+          * @default true
+         */
+        "closeOnClick": boolean;
+        /**
+          * Close the popover when pressing the Escape key (POPV-03).
+          * @default true
+         */
+        "closeOnEscape": boolean;
+        /**
+          * Close the popover and emit popover-close (POPV-04)
+         */
+        "hidePopover": () => Promise<void>;
+        /**
+          * Controls visibility. Can be bound via prop or toggled via methods. Reflects to attribute.
+          * @default false
+         */
+        "open": boolean;
+        /**
+          * Preferred placement of the popover relative to its anchor (POPV-01). Will auto-flip if it overflows the viewport (POPV-02).
+          * @type {'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start'}
+          * @default 'bottom-start'
+         */
+        "placement": Placement;
+        /**
+          * Open the popover, calculate position, and emit popover-open (POPV-04)
+         */
+        "showPopover": () => Promise<void>;
+        /**
+          * Theme override for standalone usage.
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme": 'light' | 'dark' | 'auto';
+        /**
+          * Toggle between open and closed states (POPV-04)
+         */
+        "togglePopover": () => Promise<void>;
+        /**
+          * Recalculate position without changing open state. Useful after scroll/resize events (POPV-04).
+         */
+        "updatePosition": () => Promise<void>;
+    }
     /**
      * Interactive walkthrough component with video playback and DOM element highlighting.
      * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.
@@ -184,6 +236,10 @@ export interface SpOrgChartCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSpOrgChartElement;
 }
+export interface SpPopoverCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpPopoverElement;
+}
 export interface SpWalkthroughCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSpWalkthroughElement;
@@ -252,6 +308,36 @@ declare global {
         prototype: HTMLSpOrgChartElement;
         new (): HTMLSpOrgChartElement;
     };
+    interface HTMLSpPopoverElementEventMap {
+        "popoverOpen": void;
+        "popoverClose": void;
+    }
+    interface HTMLSpPopoverElement extends Omit<Components.SpPopover, "showPopover" | "hidePopover" | "togglePopover">, HTMLStencilElement {
+        /**
+          * Open the popover, calculate position, and emit popover-open (POPV-04)
+         */
+        "showPopover": () => Promise<void>;
+        /**
+          * Close the popover and emit popover-close (POPV-04)
+         */
+        "hidePopover": () => Promise<void>;
+        /**
+          * Toggle between open and closed states (POPV-04)
+         */
+        "togglePopover": () => Promise<void>;
+        addEventListener<K extends keyof HTMLSpPopoverElementEventMap>(type: K, listener: (this: HTMLSpPopoverElement, ev: SpPopoverCustomEvent<HTMLSpPopoverElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpPopoverElementEventMap>(type: K, listener: (this: HTMLSpPopoverElement, ev: SpPopoverCustomEvent<HTMLSpPopoverElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpPopoverElement: {
+        prototype: HTMLSpPopoverElement;
+        new (): HTMLSpPopoverElement;
+    };
     interface HTMLSpWalkthroughElementEventMap {
         "walkthroughShown": void;
         "walkthroughHidden": void;
@@ -284,6 +370,7 @@ declare global {
         "sp-example": HTMLSpExampleElement;
         "sp-markdown-editor": HTMLSpMarkdownEditorElement;
         "sp-org-chart": HTMLSpOrgChartElement;
+        "sp-popover": HTMLSpPopoverElement;
         "sp-walkthrough": HTMLSpWalkthroughElement;
     }
 }
@@ -389,6 +476,48 @@ declare namespace LocalJSX {
          */
         "users"?: User[];
     }
+    interface SpPopover {
+        /**
+          * Anchor element reference. Can be: - A CSS selector string (resolved via document.querySelector) - A direct HTMLElement reference - null/omitted: uses the previous sibling element
+          * @default null
+         */
+        "anchor"?: string | HTMLElement;
+        /**
+          * Close the popover when clicking outside it and its anchor (POPV-03).
+          * @default true
+         */
+        "closeOnClick"?: boolean;
+        /**
+          * Close the popover when pressing the Escape key (POPV-03).
+          * @default true
+         */
+        "closeOnEscape"?: boolean;
+        /**
+          * Emitted when the popover closes (POPV-06)
+         */
+        "onPopoverClose"?: (event: SpPopoverCustomEvent<void>) => void;
+        /**
+          * Emitted when the popover opens (POPV-06)
+         */
+        "onPopoverOpen"?: (event: SpPopoverCustomEvent<void>) => void;
+        /**
+          * Controls visibility. Can be bound via prop or toggled via methods. Reflects to attribute.
+          * @default false
+         */
+        "open"?: boolean;
+        /**
+          * Preferred placement of the popover relative to its anchor (POPV-01). Will auto-flip if it overflows the viewport (POPV-02).
+          * @type {'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start'}
+          * @default 'bottom-start'
+         */
+        "placement"?: Placement;
+        /**
+          * Theme override for standalone usage.
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme"?: 'light' | 'dark' | 'auto';
+    }
     /**
      * Interactive walkthrough component with video playback and DOM element highlighting.
      * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.
@@ -450,6 +579,7 @@ declare namespace LocalJSX {
         "sp-example": SpExample;
         "sp-markdown-editor": SpMarkdownEditor;
         "sp-org-chart": SpOrgChart;
+        "sp-popover": SpPopover;
         "sp-walkthrough": SpWalkthrough;
     }
 }
@@ -464,6 +594,7 @@ declare module "@stencil/core" {
              */
             "sp-markdown-editor": LocalJSX.SpMarkdownEditor & JSXBase.HTMLAttributes<HTMLSpMarkdownEditorElement>;
             "sp-org-chart": LocalJSX.SpOrgChart & JSXBase.HTMLAttributes<HTMLSpOrgChartElement>;
+            "sp-popover": LocalJSX.SpPopover & JSXBase.HTMLAttributes<HTMLSpPopoverElement>;
             /**
              * Interactive walkthrough component with video playback and DOM element highlighting.
              * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.
