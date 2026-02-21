@@ -74,7 +74,10 @@ Plans:
   2. When a popover would overflow the viewport, it auto-repositions to stay within a 10px margin
   3. Close-on-outside-click and close-on-escape behaviors can be toggled independently via props
   4. showPopover, hidePopover, togglePopover, and updatePosition methods work correctly; the component emits popover-open and popover-close events; content enters with a fade+slide animation
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 09-01-PLAN.md — Core component: types, positioning engine, CSS animation, and full component implementation
+- [ ] 09-02-PLAN.md — Tests: positioning utility unit tests, component spec tests, and E2E tests
 
 ### Phase 10: Language & Voice
 **Goal**: sp-language-selector, sp-language-list, and sp-voice-input-button are fully ported from the vanilla JS originals with correct visual states, animations, events, and DWC theming
@@ -121,7 +124,7 @@ Plans:
 | 6. Documentation & Publishing | v1.0 | 5/5 | Complete | 2026-02-21 |
 | 7. Org Chart Parity | 3/3 | Complete   | 2026-02-21 | - |
 | 8. Walkthrough Parity | 2/2 | Complete   | 2026-02-21 | - |
-| 9. Popover Utility | v1.1 | 0/TBD | Not started | - |
+| 9. Popover Utility | v1.1 | 0/2 | Not started | - |
 | 10. Language & Voice | v1.1 | 0/TBD | Not started | - |
 | 11. Communication & Splash | v1.1 | 0/TBD | Not started | - |
 | 12. Docs & Tests | v1.1 | 0/TBD | Not started | - |
