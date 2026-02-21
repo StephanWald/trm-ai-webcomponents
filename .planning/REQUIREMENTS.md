@@ -13,7 +13,7 @@
 - [x] **INFRA-04**: Components loadable via CDN script tag from unpkg/jsdelivr and auto-register custom elements
 - [x] **INFRA-05**: Heavy libraries (marked, DOMPurify, Prism.js, Turndown) configured as peer dependencies, not bundled
 - [x] **INFRA-06**: GitHub Actions CI pipeline runs build, lint, and tests on every push/PR
-- [ ] **INFRA-07**: GitHub Actions CD pipeline publishes to npm on release with provenance
+- [x] **INFRA-07**: GitHub Actions CD pipeline publishes to npm on release with provenance
 - [x] **INFRA-08**: Changesets configured for version management and automated changelog generation
 
 ### Theming
@@ -87,7 +87,7 @@
 
 ### Documentation
 
-- [ ] **DOCS-01**: Docusaurus site builds and deploys to GitHub Pages via GitHub Actions
+- [x] **DOCS-01**: Docusaurus site builds and deploys to GitHub Pages via GitHub Actions
 - [ ] **DOCS-02**: Each component has auto-generated API reference (props, events, methods, CSS custom properties, CSS parts)
 - [ ] **DOCS-03**: Each component has interactive live examples with editable code
 - [ ] **DOCS-04**: Getting started guide covers npm install, CDN script tag, and basic component usage
@@ -137,7 +137,7 @@
 | INFRA-04 | Phase 1 | Complete |
 | INFRA-05 | Phase 1 | Complete |
 | INFRA-06 | Phase 1 | Complete |
-| INFRA-07 | Phase 6 | Pending |
+| INFRA-07 | Phase 6 | Complete |
 | INFRA-08 | Phase 1 | Complete |
 | THEME-01 | Phase 1 | Complete |
 | THEME-02 | Phase 1 | Complete |
@@ -193,7 +193,7 @@
 | TEST-02 | Phase 2, 3, 4 | Complete |
 | TEST-03 | Phase 5 | Pending |
 | TEST-04 | Phase 5 | Pending |
-| DOCS-01 | Phase 6 | Pending |
+| DOCS-01 | Phase 6 | Complete |
 | DOCS-02 | Phase 6 | Pending |
 | DOCS-03 | Phase 6 | Pending |
 | DOCS-04 | Phase 6 | Pending |

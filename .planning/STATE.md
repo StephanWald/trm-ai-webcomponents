@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-30)
 
 **Core value:** Developers can add a single script tag or npm install and immediately use production-ready, self-contained Skillspilot UI components that look and behave consistently — without framework lock-in.
-**Current focus:** Phase 5: Testing & Quality
+**Current focus:** Phase 6: Documentation & Publishing
 
 ## Current Position
 
-Phase: 5 of 6 (Testing & Quality)
-Plan: 3 of 3 in current phase
-Status: Complete
-Last activity: 2026-02-20 — Plan 05-03 complete, sp-markdown-editor coverage gap tests added (83.75% coverage)
+Phase: 6 of 6 (Documentation & Publishing)
+Plan: 2 of 5 in current phase
+Status: In Progress
+Last activity: 2026-02-21 — Plan 06-02 complete, CI/CD workflows for npm provenance and GitHub Pages deployment created
 
-Progress: [█████████░] 92%
+Progress: [█████████░] 95%
 
 ## Performance Metrics
 
@@ -31,7 +31,8 @@ Progress: [█████████░] 92%
 | 02-orgchart-component | 2/2 | 10.0min | 5.0min |
 | 03-walkthrough-component | 3/3 | 15.5min | 5.2min |
 | 04-markdown-editor-component | 4/4 | 31.3min | 7.8min |
-| 05-testing-quality | 2/3 | ~70min (running) | ~35min |
+| 05-testing-quality | 3/3 | ~70min | ~23min |
+| 06-documentation-publishing | 2/5 | ~2min (running) | ~1min |
 
 **Recent Trend:**
 - Last 5 plans: 04-01 (4.1min), 04-02 (3.0min), 04-03 (5.2min), 04-04 (19.0min)
@@ -39,6 +40,7 @@ Progress: [█████████░] 92%
 
 *Updated after each plan completion*
 | Phase 05-testing-quality P01 | 87 | 2 tasks | 3 files |
+| Phase 06-documentation-publishing P02 | 1 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -101,6 +103,9 @@ Recent decisions affecting current work:
 - [Phase 05-03]: jest.spyOn(document.createElement) MUST be set AFTER createPage() — spying before page creation intercepts Stencil render causing massive spy accumulation and OOM
 - [Phase 05-03]: newSpecPage JSDOM OOM limit: ~4-5 complex pages per worker process (not 8); complex tests with mocks use more memory than simple render tests
 - [Phase 05-03]: ToolbarActions static methods: use ClassName.method() not this.method() to preserve context when passed as function references
+- [Phase 06-02]: NPM_CONFIG_PROVENANCE env var on changesets action step (not npm publish flag) for OIDC-based provenance attestation
+- [Phase 06-02]: docs-deploy.yml must build Stencil before Docusaurus — docs.json must exist before Docusaurus imports it
+- [Phase 06-02]: GitHub Pages native deploy: actions/upload-pages-artifact@v3 + actions/deploy-pages@v4 (no gh-pages branch needed)
 
 ### Pending Todos
 
@@ -112,28 +117,21 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-20 (phase execution)
-Stopped at: Completed 05-03-PLAN.md — sp-markdown-editor coverage gap tests added (83.75% coverage)
+Last session: 2026-02-21 (phase execution)
+Stopped at: Completed 06-02-PLAN.md — CI/CD workflows for npm provenance and GitHub Pages deployment created
 Resume file: None
 
 ## Next Steps
 
-**Phase 5 Complete - All 3 plans executed**:
+**Phase 6 In Progress - 2 of 5 plans executed**:
 
-Plan 05-01 complete:
-- Jest coverage thresholds (70% min) and CI workflow updated
+Plan 06-01 complete:
+- Phase plans created
 
-Plan 05-02 complete:
-- draggable-mixin.spec.ts created (100% statement coverage)
-- youtube-wrapper.spec.ts expanded (98.95% statement coverage)
-- overlay-manager.spec.ts expanded (91.07% statement coverage)
-- sp-walkthrough.spec.ts expanded with 80+ new tests, fallback rendering describe block
+Plan 06-02 complete:
+- release.yml updated with NPM_CONFIG_PROVENANCE and createGithubReleases
+- docs-deploy.yml created for GitHub Pages deployment (build: Stencil then Docusaurus; deploy: native actions/deploy-pages@v4)
 
-Plan 05-03 complete:
-- sp-markdown-editor.tsx coverage: 40.43% → 83.75% (29 new tests in 5 parallel spec files)
-- Fixed ToolbarActions class context bug (this → ToolbarActions.xxx)
-- Key patterns: MockWindow isolation, createElement spy ordering, OOM avoidance
-
-**Ready for Phase 6** (final phase)
+**Ready for Plan 06-03**: Docusaurus site scaffolding
 
 **No blockers or concerns**
