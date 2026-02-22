@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 10 of 12 (language-voice) — COMPLETE
-Plan: 2 of 2 in current phase (both complete)
-Status: Phase 10 complete — sp-language-selector, sp-language-list, and sp-voice-input-button delivered
-Last activity: 2026-02-22 — Completed 10-02-PLAN.md: sp-voice-input-button (44px mic button, hover cue, red pulse, shake animation, mode indicator)
+Plan: 3 of 3 in current phase (all complete)
+Status: Phase 10 complete — all 3 plans done: sp-language-selector, sp-language-list, sp-voice-input-button, and full test suite
+Last activity: 2026-02-22 — Completed 10-03-PLAN.md: full test suite (6 test files, 754 spec tests + 14 E2E tests, 89% coverage)
 
-Progress: [█████░░░░░] 40% (v1.1)
+Progress: [█████░░░░░] 42% (v1.1)
 
 ## Performance Metrics
 
 **Velocity (v1.1):**
-- Total plans completed: 9
-- Average duration: 9.9m
-- Total execution time: 90m
+- Total plans completed: 10
+- Average duration: 15.3m
+- Total execution time: 153m
 
 **By Phase:**
 
@@ -30,7 +30,7 @@ Progress: [█████░░░░░] 40% (v1.1)
 | 07-org-chart-parity | 3 | 52m | 17.3m |
 | 08-walkthrough-parity | 2 | 16m | 8m |
 | 09-popover-utility | 2 | 16m | 8m |
-| 10-language-voice | 2 | 6m | 3m |
+| 10-language-voice | 3 | 69m | 23m |
 
 *Updated after each plan completion*
 
@@ -75,6 +75,9 @@ v1.1 key decisions:
 - [Phase 10-02]: Hover progress uses setInterval at 50ms steps for simplicity over requestAnimationFrame
 - [Phase 10-02]: Error auto-clear via setTimeout 3000ms; clearErrorTimer() called in disconnectedCallback
 - [Phase 10-02]: renderRobotIcon added to shared icons.tsx (not inline in voice button) — follows icons.tsx pattern
+- [Phase 10-03]: jest.useFakeTimers() must not precede await page.waitForChanges() — confirmed by Phase 07-03 decision; test timer state directly on rootInstance without waitForChanges
+- [Phase 10-03]: Props tested via HTML attributes in newSpecPage (not rootInstance mutation) to avoid @Prop immutability warnings
+- [Phase 10-03]: E2E test for languageChange cross-shadow propagation uses direct prop assignment (el.selectedLanguage='fr') — native event name conflict may prevent onLanguageChange handler from firing in browser mode
 
 ### Pending Todos
 
@@ -93,5 +96,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 10-02-PLAN.md (sp-voice-input-button — Phase 10 complete, both plans done)
+Stopped at: Completed 10-03-PLAN.md (full test suite — Phase 10 complete, all 3 plans done)
 Resume file: None
