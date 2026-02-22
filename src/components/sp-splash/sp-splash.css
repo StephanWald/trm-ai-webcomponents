@@ -1,0 +1,144 @@
+/* ─── Host ─────────────────────────────────────────────────────────────────── */
+
+:host {
+  display: contents;
+}
+
+/* ─── Overlay ────────────────────────────────────────────────────────────────── */
+
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--dwc-z-index-modal, 1000);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  animation: splashFadeIn var(--dwc-transition-medium, 0.25s ease);
+}
+
+.splash-overlay.open {
+  display: flex;
+}
+
+@keyframes splashFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ─── Container ──────────────────────────────────────────────────────────────── */
+
+.splash-container {
+  position: relative;
+  width: min(90vw, 560px);
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: var(--dwc-border-radius-lg, 12px);
+  background: var(--dwc-color-surface, #fff);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: splashSlideIn var(--dwc-transition-medium, 0.25s ease);
+}
+
+@keyframes splashSlideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Close button ───────────────────────────────────────────────────────────── */
+
+.close-button {
+  position: absolute;
+  top: var(--dwc-spacing-sm, 8px);
+  right: var(--dwc-spacing-sm, 8px);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--dwc-border-radius, 4px);
+  background: transparent;
+  color: var(--dwc-color-text-secondary, #888);
+  cursor: pointer;
+  transition: background var(--dwc-transition-fast, 0.15s ease);
+}
+
+.close-button:hover {
+  background: var(--dwc-color-surface-secondary, #f5f5f5);
+  color: var(--dwc-color-text, #1a1a1a);
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────────── */
+
+.splash-header {
+  padding: var(--dwc-spacing-xl, 32px) var(--dwc-spacing-xl, 32px) var(--dwc-spacing-lg, 24px);
+  background: linear-gradient(135deg, var(--dwc-color-primary, #1976d2), var(--dwc-color-primary-light, #42a5f5));
+  color: #fff;
+  text-align: center;
+}
+
+.splash-logo {
+  margin-bottom: var(--dwc-spacing-sm, 8px);
+}
+
+.splash-title {
+  font-size: var(--dwc-font-size-xl, 1.5rem);
+  font-weight: var(--dwc-font-weight-bold, 700);
+  line-height: 1.2;
+}
+
+.splash-subtitle {
+  margin-top: var(--dwc-spacing-xs, 4px);
+  font-size: var(--dwc-font-size-sm, 0.875rem);
+  opacity: 0.85;
+}
+
+/* ─── Body ────────────────────────────────────────────────────────────────────── */
+
+.splash-body {
+  padding: var(--dwc-spacing-lg, 24px) var(--dwc-spacing-xl, 32px);
+  color: var(--dwc-color-text, #1a1a1a);
+}
+
+/* ─── Footer ─────────────────────────────────────────────────────────────────── */
+
+.splash-footer {
+  padding: var(--dwc-spacing-md, 16px) var(--dwc-spacing-xl, 32px) var(--dwc-spacing-xl, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dwc-spacing-sm, 8px);
+}
+
+/* ─── Theme: light ───────────────────────────────────────────────────────────── */
+
+:host(.theme-light) .splash-container {
+  background: #fff;
+  color: #1a1a1a;
+}
+
+:host(.theme-light) .close-button:hover {
+  background: #f5f5f5;
+  color: #1a1a1a;
+}
+
+/* ─── Theme: dark ────────────────────────────────────────────────────────────── */
+
+:host(.theme-dark) .splash-container {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+:host(.theme-dark) .close-button {
+  color: #aaa;
+}
+
+:host(.theme-dark) .close-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+:host(.theme-dark) .splash-body {
+  color: #e0e0e0;
+}
