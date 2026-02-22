@@ -1,0 +1,75 @@
+---
+title: sp-language-selector
+description: Inline language selector button with dropdown list. Shows globe icon, uppercase language code, and chevron. Clicking opens an animated dropdown with browser-preferred languages and alphabetically sorted others.
+sidebar_position: 5
+---
+
+import docsData from '@site/../docs.json';
+import LiveExample from '@site/src/components/LiveExample';
+import ApiReference from '@site/src/components/ApiReference';
+
+export const componentDocs = docsData.components.find(c => c.tag === 'sp-language-selector');
+
+# sp-language-selector
+
+Inline language selector web component that renders a button with a globe icon, uppercase language code, and chevron. Clicking opens an animated dropdown populated with browser-preferred languages at the top and all remaining languages alphabetically sorted below. The component embeds `sp-popover` and `sp-language-list` internally — only a single tag is required.
+
+## Installation
+
+Install from a [GitHub Release](https://github.com/StephanWald/trm-ai-webcomponents/releases):
+
+```bash
+npm install https://github.com/StephanWald/trm-ai-webcomponents/releases/download/v0.0.1/skillspilot-webcomponents-0.0.1.tgz
+```
+
+Or load via script tag:
+
+```html
+<script type="module" src="https://stephanwald.github.io/trm-ai-webcomponents/wc/skillspilot.esm.js"></script>
+```
+
+## Examples
+
+### Basic Language Selector
+
+The default language selector button with `selectedLanguage="en"`. Click the button to open the dropdown and select a language.
+
+<LiveExample height="320px" code={`
+<sp-language-selector selected-language="en"></sp-language-selector>
+`} />
+
+### With Language Change Handler
+
+Listen to the `languageChange` event to respond when the user selects a language. The event detail includes `code` and `label` properties.
+
+<LiveExample height="340px" code={`
+<sp-language-selector id="langSel" selected-language="en"></sp-language-selector>
+<div id="output" style="margin-top:12px;font-family:monospace;font-size:0.85rem;color:#555;"></div>
+<script>
+  document.getElementById('langSel').addEventListener('languageChange', function(e) {
+    document.getElementById('output').textContent = 'Selected: ' + e.detail.label + ' (' + e.detail.code + ')';
+  });
+<\/script>
+`} />
+
+### Compact Mode
+
+Use `compact="true"` for a smaller button footprint — useful in toolbars or constrained layouts.
+
+<LiveExample height="200px" code={`
+<sp-language-selector selected-language="en" compact="true"></sp-language-selector>
+`} />
+
+### Dark Mode
+
+Set `theme="dark"` to render with the DWC dark color scheme.
+
+<LiveExample height="320px" code={`
+<div class="theme-dark" style="background:#1a1a2e;padding:16px;border-radius:8px;display:inline-block;">
+  <sp-language-selector selected-language="en" theme="dark"></sp-language-selector>
+</div>
+`} />
+
+## API Reference
+
+<ApiReference component={componentDocs} />

@@ -1,0 +1,121 @@
+---
+title: sp-splash
+description: Full-screen modal splash overlay with backdrop blur, gradient header, and dismissable via close button, Escape key, or backdrop click. Content areas customizable via named slots.
+sidebar_position: 8
+---
+
+import docsData from '@site/../docs.json';
+import LiveExample from '@site/src/components/LiveExample';
+import ApiReference from '@site/src/components/ApiReference';
+
+export const componentDocs = docsData.components.find(c => c.tag === 'sp-splash');
+
+# sp-splash
+
+Full-screen modal overlay web component with backdrop blur, a gradient header, and smooth fade/slide animations. Content is placed using named slots: `logo`, `title`, `subtitle`, `body`, and `footer`. The splash can be dismissed via the close button, pressing Escape, or clicking the backdrop. Use `show()` and `hide()` methods for programmatic control, or set the `open` attribute directly.
+
+:::info
+`sp-splash` renders as a full-screen overlay that covers the entire viewport. The examples below use a button to trigger `show()` so you can see the component appear interactively.
+:::
+
+## Installation
+
+Install from a [GitHub Release](https://github.com/StephanWald/trm-ai-webcomponents/releases):
+
+```bash
+npm install https://github.com/StephanWald/trm-ai-webcomponents/releases/download/v0.0.1/skillspilot-webcomponents-0.0.1.tgz
+```
+
+Or load via script tag:
+
+```html
+<script type="module" src="https://stephanwald.github.io/trm-ai-webcomponents/wc/skillspilot.esm.js"></script>
+```
+
+## Examples
+
+### Basic Splash
+
+Click the button to display the splash overlay. The logo, title, subtitle, body, and footer slots are all populated. Dismiss via the X button, Escape key, or clicking outside the card.
+
+<LiveExample height="420px" code={`
+<button id="showBtn" style="padding:8px 16px;cursor:pointer;">Show Splash</button>
+
+<sp-splash id="splash1">
+  <span slot="logo" style="font-size:2.5rem;">🚀</span>
+  <span slot="title">Welcome to Skillspilot</span>
+  <span slot="subtitle">Your AI-powered training platform</span>
+  <div slot="body" style="padding:16px 0;">
+    <p>Get started by exploring the components and features available in your workspace.</p>
+  </div>
+  <div slot="footer" style="display:flex;gap:8px;justify-content:center;">
+    <button id="getStartedBtn" style="padding:8px 20px;background:#6c63ff;color:#fff;border:none;border-radius:6px;cursor:pointer;">
+      Get Started
+    </button>
+  </div>
+</sp-splash>
+
+<script>
+  document.getElementById('showBtn').addEventListener('click', function() {
+    document.getElementById('splash1').show();
+  });
+  document.getElementById('getStartedBtn').addEventListener('click', function() {
+    document.getElementById('splash1').hide();
+  });
+<\/script>
+`} />
+
+### Programmatic Control
+
+Use `show()` and `hide()` methods to control the splash from external buttons or application logic.
+
+<LiveExample height="420px" code={`
+<div style="display:flex;gap:8px;">
+  <button id="openBtn" style="padding:8px 16px;cursor:pointer;">Open</button>
+  <button id="closeBtn" style="padding:8px 16px;cursor:pointer;">Close</button>
+</div>
+
+<sp-splash id="splash2">
+  <span slot="title">Programmatic Control</span>
+  <span slot="subtitle">Controlled via show() and hide() methods</span>
+  <div slot="body" style="padding:16px 0;">
+    <p>This splash was opened via the <code>show()</code> method and can be closed programmatically via <code>hide()</code> or using the dismiss controls.</p>
+  </div>
+</sp-splash>
+
+<script>
+  const splash = document.getElementById('splash2');
+  document.getElementById('openBtn').addEventListener('click', function() { splash.show(); });
+  document.getElementById('closeBtn').addEventListener('click', function() { splash.hide(); });
+<\/script>
+`} />
+
+### Event Handling
+
+Listen to the `splashClose` event to know when the splash is dismissed and why (`button`, `escape`, or `backdrop`).
+
+<LiveExample height="420px" code={`
+<button id="showBtn3" style="padding:8px 16px;cursor:pointer;">Show Splash</button>
+<div id="closeLog" style="margin-top:12px;font-family:monospace;font-size:0.85rem;color:#555;"></div>
+
+<sp-splash id="splash3">
+  <span slot="title">Event Handling Demo</span>
+  <span slot="subtitle">Dismiss via X button, Escape, or backdrop click</span>
+  <div slot="body" style="padding:16px 0;">
+    <p>Try dismissing using the X button, pressing Escape, or clicking outside the card. The close reason will appear below.</p>
+  </div>
+</sp-splash>
+
+<script>
+  document.getElementById('showBtn3').addEventListener('click', function() {
+    document.getElementById('splash3').show();
+  });
+  document.getElementById('splash3').addEventListener('splashClose', function(e) {
+    document.getElementById('closeLog').textContent = 'Closed via: ' + e.detail.reason;
+  });
+<\/script>
+`} />
+
+## API Reference
+
+<ApiReference component={componentDocs} />

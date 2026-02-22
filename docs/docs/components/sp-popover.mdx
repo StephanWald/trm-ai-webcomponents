@@ -1,0 +1,88 @@
+---
+title: sp-popover
+description: Viewport-aware popover positioning utility. Anchors to any element with automatic placement flipping when near viewport edges. Used internally by sp-language-selector, sp-voice-input-button, and sp-communication-preferences.
+sidebar_position: 4
+---
+
+import docsData from '@site/../docs.json';
+import LiveExample from '@site/src/components/LiveExample';
+import ApiReference from '@site/src/components/ApiReference';
+
+export const componentDocs = docsData.components.find(c => c.tag === 'sp-popover');
+
+# sp-popover
+
+Viewport-aware popover positioning utility web component. Anchors to a sibling element (or any element via `anchor` prop) and automatically flips placement when the preferred position would overflow the viewport. Supports outside-click and Escape-key dismissal. Used internally by `sp-language-selector`, `sp-voice-input-button`, and `sp-communication-preferences`.
+
+## Installation
+
+Install from a [GitHub Release](https://github.com/StephanWald/trm-ai-webcomponents/releases):
+
+```bash
+npm install https://github.com/StephanWald/trm-ai-webcomponents/releases/download/v0.0.1/skillspilot-webcomponents-0.0.1.tgz
+```
+
+Or load via script tag:
+
+```html
+<script type="module" src="https://stephanwald.github.io/trm-ai-webcomponents/wc/skillspilot.esm.js"></script>
+```
+
+## Examples
+
+### Basic Popover
+
+By default `sp-popover` anchors to its previous sibling element. Click the button to toggle the popover open and closed.
+
+<LiveExample height="200px" code={`
+<button id="popBtn" style="padding:8px 16px;cursor:pointer;">Toggle Popover</button>
+<sp-popover id="pop1">
+  <div style="padding:12px;">
+    <strong>Hello from sp-popover!</strong>
+    <p style="margin:8px 0 0;">This content is positioned relative to the button above.</p>
+  </div>
+</sp-popover>
+<script>
+  document.getElementById('popBtn').addEventListener('click', function() {
+    document.getElementById('pop1').togglePopover();
+  });
+<\/script>
+`} />
+
+### Placement Options
+
+Use the `placement` prop to control which side the popover appears on. It will auto-flip when there is not enough space in the viewport.
+
+<LiveExample height="200px" code={`
+<button id="popBtn2" style="padding:8px 16px;cursor:pointer;">Open (top-start)</button>
+<sp-popover id="pop2" placement="top-start">
+  <div style="padding:12px;">Positioned above the button</div>
+</sp-popover>
+<script>
+  document.getElementById('popBtn2').addEventListener('click', function() {
+    document.getElementById('pop2').togglePopover();
+  });
+<\/script>
+`} />
+
+### With Event Handlers
+
+Listen to `popoverOpen` and `popoverClose` events.
+
+<LiveExample height="200px" code={`
+<button id="popBtn3" style="padding:8px 16px;cursor:pointer;">Toggle Popover</button>
+<sp-popover id="pop3">
+  <div style="padding:12px;">Popover content</div>
+</sp-popover>
+<div id="evtLog" style="margin-top:8px;font-family:monospace;font-size:0.8rem;color:#555;"></div>
+<script>
+  const pop = document.getElementById('pop3');
+  document.getElementById('popBtn3').addEventListener('click', function() { pop.togglePopover(); });
+  pop.addEventListener('popoverOpen', function() { document.getElementById('evtLog').textContent = 'popoverOpen fired'; });
+  pop.addEventListener('popoverClose', function() { document.getElementById('evtLog').textContent = 'popoverClose fired'; });
+<\/script>
+`} />
+
+## API Reference
+
+<ApiReference component={componentDocs} />

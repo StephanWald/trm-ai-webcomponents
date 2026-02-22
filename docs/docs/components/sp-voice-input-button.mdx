@@ -1,0 +1,81 @@
+---
+title: sp-voice-input-button
+description: Circular microphone button for voice input. Shows a 2-second hover progress cue before opening language selection. When listening, turns red with pulse animation and blinking recording indicator. Supports browser and AI transcription modes.
+sidebar_position: 6
+---
+
+import docsData from '@site/../docs.json';
+import LiveExample from '@site/src/components/LiveExample';
+import ApiReference from '@site/src/components/ApiReference';
+
+export const componentDocs = docsData.components.find(c => c.tag === 'sp-voice-input-button');
+
+# sp-voice-input-button
+
+Circular 44px microphone button web component for voice input. Hovering the button starts a 2-second progress bar cue, after which a language dropdown appears. Clicking while in idle or language-select state begins listening — the button turns red with a pulse animation and a blinking recording indicator. Clicking while listening stops recording. The component supports two modes: `browser` (Web Speech API) and `ai` (custom AI transcription service).
+
+:::info
+Voice input examples show visual states only. Actual speech recognition requires browser SpeechRecognition API support and user microphone permission.
+:::
+
+## Installation
+
+Install from a [GitHub Release](https://github.com/StephanWald/trm-ai-webcomponents/releases):
+
+```bash
+npm install https://github.com/StephanWald/trm-ai-webcomponents/releases/download/v0.0.1/skillspilot-webcomponents-0.0.1.tgz
+```
+
+Or load via script tag:
+
+```html
+<script type="module" src="https://stephanwald.github.io/trm-ai-webcomponents/wc/skillspilot.esm.js"></script>
+```
+
+## Examples
+
+### Basic Voice Button
+
+The default voice input button in browser mode. Hover to see the progress cue, then click to start listening.
+
+<LiveExample height="160px" code={`
+<sp-voice-input-button></sp-voice-input-button>
+`} />
+
+### With Event Handlers
+
+Listen to `voiceStart`, `voiceStop`, `voiceError`, and `transcriptionUpdate` events. Use the public `startListening()`, `stopListening()`, and `setError()` methods to drive the state machine programmatically.
+
+<LiveExample height="240px" code={`
+<sp-voice-input-button id="voiceBtn"></sp-voice-input-button>
+<div id="evtlog" style="margin-top:12px;font-family:monospace;font-size:0.8rem;color:#555;min-height:40px;"></div>
+<script>
+  const btn = document.getElementById('voiceBtn');
+  const log = document.getElementById('evtlog');
+
+  btn.addEventListener('voiceStart', e => { log.textContent = 'voiceStart: lang=' + e.detail.language + ' mode=' + e.detail.mode; });
+  btn.addEventListener('voiceStop', e => { log.textContent = 'voiceStop: lang=' + e.detail.language; });
+  btn.addEventListener('voiceError', e => { log.textContent = 'voiceError: ' + e.detail.message; });
+  btn.addEventListener('transcriptionUpdate', e => { log.textContent = 'transcription: ' + e.detail.text + ' (final=' + e.detail.isFinal + ')'; });
+<\/script>
+`} />
+
+### AI Mode
+
+Set `mode="ai"` to display the robot icon badge, indicating that an AI transcription service (not the browser Web Speech API) will handle speech recognition.
+
+<LiveExample height="160px" code={`
+<sp-voice-input-button mode="ai"></sp-voice-input-button>
+`} />
+
+### Disabled State
+
+Set `disabled="true"` to prevent all interaction with the button.
+
+<LiveExample height="160px" code={`
+<sp-voice-input-button disabled="true"></sp-voice-input-button>
+`} />
+
+## API Reference
+
+<ApiReference component={componentDocs} />

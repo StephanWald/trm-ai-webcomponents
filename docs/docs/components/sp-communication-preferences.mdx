@@ -1,0 +1,75 @@
+---
+title: sp-communication-preferences
+description: Communication channel preference selector. Shows current channel icon as a button; clicking opens a dropdown of 6 channels (Application, Email, WhatsApp, Phone, MS Teams, Google Chat) with icons and labels.
+sidebar_position: 7
+---
+
+import docsData from '@site/../docs.json';
+import LiveExample from '@site/src/components/LiveExample';
+import ApiReference from '@site/src/components/ApiReference';
+
+export const componentDocs = docsData.components.find(c => c.tag === 'sp-communication-preferences');
+
+# sp-communication-preferences
+
+Communication channel preference selector web component. Renders an inline button showing the current channel icon and label. Clicking opens a dropdown listing all 6 supported communication channels — Application, Email, WhatsApp, Phone, MS Teams, and Google Chat — each with a distinct icon. The component embeds `sp-popover` and `sp-communication-list` internally.
+
+## Installation
+
+Install from a [GitHub Release](https://github.com/StephanWald/trm-ai-webcomponents/releases):
+
+```bash
+npm install https://github.com/StephanWald/trm-ai-webcomponents/releases/download/v0.0.1/skillspilot-webcomponents-0.0.1.tgz
+```
+
+Or load via script tag:
+
+```html
+<script type="module" src="https://stephanwald.github.io/trm-ai-webcomponents/wc/skillspilot.esm.js"></script>
+```
+
+## Examples
+
+### Basic Communication Preferences
+
+The default selector with `selectedChannel="EMAIL"`. Click the button to open the channel dropdown.
+
+<LiveExample height="280px" code={`
+<sp-communication-preferences selected-channel="EMAIL"></sp-communication-preferences>
+`} />
+
+### With Preference Change Handler
+
+Listen to the `preferenceChange` event to respond when the user selects a channel. The event detail includes `channel` (type) and `label` (display name).
+
+<LiveExample height="300px" code={`
+<sp-communication-preferences id="commPref" selected-channel="EMAIL"></sp-communication-preferences>
+<div id="output" style="margin-top:12px;font-family:monospace;font-size:0.85rem;color:#555;"></div>
+<script>
+  document.getElementById('commPref').addEventListener('preferenceChange', function(e) {
+    document.getElementById('output').textContent = 'Selected: ' + e.detail.label + ' (' + e.detail.channel + ')';
+  });
+<\/script>
+`} />
+
+### Compact Mode
+
+Use `compact="true"` for a smaller button footprint — useful in toolbars or constrained layouts.
+
+<LiveExample height="200px" code={`
+<sp-communication-preferences selected-channel="APPLICATION" compact="true"></sp-communication-preferences>
+`} />
+
+### Dark Mode
+
+Set `theme="dark"` to render with the DWC dark color scheme.
+
+<LiveExample height="280px" code={`
+<div class="theme-dark" style="background:#1a1a2e;padding:16px;border-radius:8px;display:inline-block;">
+  <sp-communication-preferences selected-channel="EMAIL" theme="dark"></sp-communication-preferences>
+</div>
+`} />
+
+## API Reference
+
+<ApiReference component={componentDocs} />
