@@ -5,15 +5,75 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ChannelInfo, CommunicationChannel, PreferenceChangeEventDetail } from "./components/sp-communication-preferences/types";
+import { LanguageChangeEventDetail, LanguageInfo } from "./components/sp-language-selector/types";
 import { ContentChangeEvent, EditorMode, ExportEvent, ImagePasteEvent, ImportEvent, ModeChangeEvent, SaveEvent } from "./components/sp-markdown-editor/types/editor.types";
 import { BranchFilterMode, HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
 import { Placement } from "./components/sp-popover/types";
+import { SplashCloseEventDetail } from "./components/sp-splash/types";
+import { TranscriptionUpdateEventDetail, VoiceErrorEventDetail, VoiceInputMode, VoiceStartEventDetail, VoiceStopEventDetail } from "./components/sp-voice-input-button/types";
 import { Scene, SceneChangeDetail, TimelineUpdateDetail } from "./components/sp-walkthrough/types/walkthrough.types";
+export { ChannelInfo, CommunicationChannel, PreferenceChangeEventDetail } from "./components/sp-communication-preferences/types";
+export { LanguageChangeEventDetail, LanguageInfo } from "./components/sp-language-selector/types";
 export { ContentChangeEvent, EditorMode, ExportEvent, ImagePasteEvent, ImportEvent, ModeChangeEvent, SaveEvent } from "./components/sp-markdown-editor/types/editor.types";
 export { BranchFilterMode, HierarchyChangeDetail, User, UserEventDetail } from "./components/sp-org-chart/types/org-chart.types";
 export { Placement } from "./components/sp-popover/types";
+export { SplashCloseEventDetail } from "./components/sp-splash/types";
+export { TranscriptionUpdateEventDetail, VoiceErrorEventDetail, VoiceInputMode, VoiceStartEventDetail, VoiceStopEventDetail } from "./components/sp-voice-input-button/types";
 export { Scene, SceneChangeDetail, TimelineUpdateDetail } from "./components/sp-walkthrough/types/walkthrough.types";
 export namespace Components {
+    /**
+     * Dropdown panel displaying the 6 available communication channels.
+     */
+    interface SpCommunicationList {
+        /**
+          * Full list of channels to display. Defaults to the bundled CHANNELS array.
+          * @default CHANNELS
+         */
+        "channels": ChannelInfo[];
+        /**
+          * Compact display mode — smaller padding and font (COMM-05).
+          * @default false
+         */
+        "compact": boolean;
+        /**
+          * Currently selected channel type (COMM-04). The matching item shows a checkmark and highlight.
+          * @default 'APPLICATION'
+         */
+        "selectedChannel": CommunicationChannel;
+        /**
+          * Theme override for standalone usage (COMM-05).
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme": 'light' | 'dark' | 'auto';
+    }
+    /**
+     * Inline trigger button that opens a communication channel selection dropdown via sp-popover.
+     */
+    interface SpCommunicationPreferences {
+        /**
+          * Compact display mode — smaller padding and font (COMM-05).
+          * @default false
+         */
+        "compact": boolean;
+        /**
+          * Disables the button — prevents opening the dropdown (COMM-05).
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Currently selected communication channel (COMM-01). Mutable so parent can update via prop.
+          * @default 'APPLICATION'
+         */
+        "selectedChannel": CommunicationChannel;
+        /**
+          * Theme override for standalone usage (COMM-05).
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme": 'light' | 'dark' | 'auto';
+    }
     interface SpExample {
         /**
           * Heading text to display
@@ -22,6 +82,68 @@ export namespace Components {
         "heading": string;
         /**
           * Theme override for standalone usage
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme": 'light' | 'dark' | 'auto';
+    }
+    /**
+     * Dropdown panel displaying available languages, grouped by browser preference.
+     */
+    interface SpLanguageList {
+        /**
+          * Compact mode — smaller font size and padding.
+          * @default false
+         */
+        "compact": boolean;
+        /**
+          * Full list of available languages to display. Defaults to the bundled LANGUAGES array.
+          * @default LANGUAGES
+         */
+        "languages": LanguageInfo[];
+        /**
+          * Browser-preferred language codes in order of preference. When non-empty, renders a "Preferred" section at the top.
+          * @default []
+         */
+        "preferredLanguages": string[];
+        /**
+          * Currently selected language code (LANG-04). The matching item shows a checkmark.
+          * @default 'en'
+         */
+        "selectedLanguage": string;
+        /**
+          * Theme override for standalone usage.
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme": 'light' | 'dark' | 'auto';
+    }
+    /**
+     * Inline trigger button that opens a language selection dropdown via sp-popover.
+     */
+    interface SpLanguageSelector {
+        /**
+          * Milliseconds before dropdown auto-hides after mouse leaves (LANG-05).
+          * @default 3000
+         */
+        "autoHideDelay": number;
+        /**
+          * Compact display mode — smaller padding and font (LANG-06).
+          * @default false
+         */
+        "compact": boolean;
+        /**
+          * Disables the button — prevents opening the dropdown (LANG-06).
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Currently selected language code (LANG-04). Displayed uppercase in the button. Mutable so parent can update via prop.
+          * @default 'en'
+         */
+        "selectedLanguage": string;
+        /**
+          * Theme override for standalone usage (LANG-06).
           * @type {'light' | 'dark' | 'auto'}
           * @default 'auto'
          */
@@ -163,6 +285,98 @@ export namespace Components {
         "updatePosition": () => Promise<void>;
     }
     /**
+     * sp-splash — Full-screen modal overlay with backdrop blur, gradient header,
+     * named slots for all content areas, multiple dismiss mechanisms, and fade/slide animations.
+     */
+    interface SpSplash {
+        /**
+          * Whether clicking the backdrop overlay dismisses the splash. (SPLS-03)
+          * @default true
+         */
+        "closeOnBackdrop": boolean;
+        /**
+          * Whether pressing the Escape key dismisses the splash. (SPLS-03)
+          * @default true
+         */
+        "closeOnEscape": boolean;
+        /**
+          * Hide the splash (SPLS-04)
+         */
+        "hide": () => Promise<void>;
+        /**
+          * Controls visibility of the splash screen. Reflects to attribute. (SPLS-04)
+          * @default false
+         */
+        "open": boolean;
+        /**
+          * Show the splash (SPLS-04)
+         */
+        "show": () => Promise<void>;
+        /**
+          * Theme override for standalone usage.
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme": 'light' | 'dark' | 'auto';
+    }
+    /**
+     * A circular 44px microphone button that triggers voice input.
+     * Hovering starts a 2-second progress bar cue then opens a language dropdown.
+     * Listening state shows a red pulse animation and a blinking recording indicator.
+     * Error state triggers a shake animation with an error message display.
+     * A mode indicator badge shows globe (browser) or robot (AI) icon.
+     */
+    interface SpVoiceInputButton {
+        /**
+          * Compact display mode — smaller button size.
+          * @default false
+         */
+        "compact": boolean;
+        /**
+          * Disables the button — prevents all interaction.
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Emit a transcription result event (called by parent during active listening).
+         */
+        "emitTranscription": (text: string, isFinal: boolean) => Promise<void>;
+        /**
+          * Milliseconds for the hover progress bar before the language dropdown appears (VOIC-02).
+          * @default 2000
+         */
+        "hoverCueDuration": number;
+        /**
+          * Controls whether speech recognition uses the browser Web Speech API or an AI service (VOIC-06).
+          * @type {'browser' | 'ai'}
+          * @default 'browser'
+         */
+        "mode": VoiceInputMode;
+        /**
+          * ISO 639-1 language code for voice input (VOIC-02). Mutable so the component can update it after language selection.
+          * @default 'en'
+         */
+        "selectedLanguage": string;
+        /**
+          * Transition to error state with a message and emit voiceError. Automatically clears back to idle after 3 seconds (VOIC-05).
+         */
+        "setError": (message: string) => Promise<void>;
+        /**
+          * Transition to listening state and emit voiceStart (VOIC-03).
+         */
+        "startListening": () => Promise<void>;
+        /**
+          * Transition to idle state and emit voiceStop.
+         */
+        "stopListening": () => Promise<void>;
+        /**
+          * Theme override for standalone usage.
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme": 'light' | 'dark' | 'auto';
+    }
+    /**
      * Interactive walkthrough component with video playback and DOM element highlighting.
      * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.
      * Note: sp-walkthrough does not expose CSS parts. The panel is a self-contained overlay UI and
@@ -224,9 +438,25 @@ export namespace Components {
         "videoSrc"?: string;
     }
 }
+export interface SpCommunicationListCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpCommunicationListElement;
+}
+export interface SpCommunicationPreferencesCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpCommunicationPreferencesElement;
+}
 export interface SpExampleCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSpExampleElement;
+}
+export interface SpLanguageListCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpLanguageListElement;
+}
+export interface SpLanguageSelectorCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpLanguageSelectorElement;
 }
 export interface SpMarkdownEditorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -240,11 +470,59 @@ export interface SpPopoverCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSpPopoverElement;
 }
+export interface SpSplashCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpSplashElement;
+}
+export interface SpVoiceInputButtonCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSpVoiceInputButtonElement;
+}
 export interface SpWalkthroughCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLSpWalkthroughElement;
 }
 declare global {
+    interface HTMLSpCommunicationListElementEventMap {
+        "preferenceChange": PreferenceChangeEventDetail;
+    }
+    /**
+     * Dropdown panel displaying the 6 available communication channels.
+     */
+    interface HTMLSpCommunicationListElement extends Components.SpCommunicationList, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpCommunicationListElementEventMap>(type: K, listener: (this: HTMLSpCommunicationListElement, ev: SpCommunicationListCustomEvent<HTMLSpCommunicationListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpCommunicationListElementEventMap>(type: K, listener: (this: HTMLSpCommunicationListElement, ev: SpCommunicationListCustomEvent<HTMLSpCommunicationListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpCommunicationListElement: {
+        prototype: HTMLSpCommunicationListElement;
+        new (): HTMLSpCommunicationListElement;
+    };
+    interface HTMLSpCommunicationPreferencesElementEventMap {
+        "preferenceChange": PreferenceChangeEventDetail;
+    }
+    /**
+     * Inline trigger button that opens a communication channel selection dropdown via sp-popover.
+     */
+    interface HTMLSpCommunicationPreferencesElement extends Components.SpCommunicationPreferences, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpCommunicationPreferencesElementEventMap>(type: K, listener: (this: HTMLSpCommunicationPreferencesElement, ev: SpCommunicationPreferencesCustomEvent<HTMLSpCommunicationPreferencesElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpCommunicationPreferencesElementEventMap>(type: K, listener: (this: HTMLSpCommunicationPreferencesElement, ev: SpCommunicationPreferencesCustomEvent<HTMLSpCommunicationPreferencesElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpCommunicationPreferencesElement: {
+        prototype: HTMLSpCommunicationPreferencesElement;
+        new (): HTMLSpCommunicationPreferencesElement;
+    };
     interface HTMLSpExampleElementEventMap {
         "spExampleClick": void;
     }
@@ -261,6 +539,46 @@ declare global {
     var HTMLSpExampleElement: {
         prototype: HTMLSpExampleElement;
         new (): HTMLSpExampleElement;
+    };
+    interface HTMLSpLanguageListElementEventMap {
+        "languageChange": LanguageChangeEventDetail;
+    }
+    /**
+     * Dropdown panel displaying available languages, grouped by browser preference.
+     */
+    interface HTMLSpLanguageListElement extends Components.SpLanguageList, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpLanguageListElementEventMap>(type: K, listener: (this: HTMLSpLanguageListElement, ev: SpLanguageListCustomEvent<HTMLSpLanguageListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpLanguageListElementEventMap>(type: K, listener: (this: HTMLSpLanguageListElement, ev: SpLanguageListCustomEvent<HTMLSpLanguageListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpLanguageListElement: {
+        prototype: HTMLSpLanguageListElement;
+        new (): HTMLSpLanguageListElement;
+    };
+    interface HTMLSpLanguageSelectorElementEventMap {
+        "languageChange": LanguageChangeEventDetail;
+    }
+    /**
+     * Inline trigger button that opens a language selection dropdown via sp-popover.
+     */
+    interface HTMLSpLanguageSelectorElement extends Components.SpLanguageSelector, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpLanguageSelectorElementEventMap>(type: K, listener: (this: HTMLSpLanguageSelectorElement, ev: SpLanguageSelectorCustomEvent<HTMLSpLanguageSelectorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpLanguageSelectorElementEventMap>(type: K, listener: (this: HTMLSpLanguageSelectorElement, ev: SpLanguageSelectorCustomEvent<HTMLSpLanguageSelectorElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpLanguageSelectorElement: {
+        prototype: HTMLSpLanguageSelectorElement;
+        new (): HTMLSpLanguageSelectorElement;
     };
     interface HTMLSpMarkdownEditorElementEventMap {
         "contentChange": ContentChangeEvent;
@@ -338,6 +656,55 @@ declare global {
         prototype: HTMLSpPopoverElement;
         new (): HTMLSpPopoverElement;
     };
+    interface HTMLSpSplashElementEventMap {
+        "splashClose": SplashCloseEventDetail;
+    }
+    /**
+     * sp-splash — Full-screen modal overlay with backdrop blur, gradient header,
+     * named slots for all content areas, multiple dismiss mechanisms, and fade/slide animations.
+     */
+    interface HTMLSpSplashElement extends Components.SpSplash, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpSplashElementEventMap>(type: K, listener: (this: HTMLSpSplashElement, ev: SpSplashCustomEvent<HTMLSpSplashElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpSplashElementEventMap>(type: K, listener: (this: HTMLSpSplashElement, ev: SpSplashCustomEvent<HTMLSpSplashElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpSplashElement: {
+        prototype: HTMLSpSplashElement;
+        new (): HTMLSpSplashElement;
+    };
+    interface HTMLSpVoiceInputButtonElementEventMap {
+        "voiceStart": VoiceStartEventDetail;
+        "voiceStop": VoiceStopEventDetail;
+        "voiceError": VoiceErrorEventDetail;
+        "transcriptionUpdate": TranscriptionUpdateEventDetail;
+        "languageChange": LanguageChangeEventDetail;
+    }
+    /**
+     * A circular 44px microphone button that triggers voice input.
+     * Hovering starts a 2-second progress bar cue then opens a language dropdown.
+     * Listening state shows a red pulse animation and a blinking recording indicator.
+     * Error state triggers a shake animation with an error message display.
+     * A mode indicator badge shows globe (browser) or robot (AI) icon.
+     */
+    interface HTMLSpVoiceInputButtonElement extends Components.SpVoiceInputButton, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSpVoiceInputButtonElementEventMap>(type: K, listener: (this: HTMLSpVoiceInputButtonElement, ev: SpVoiceInputButtonCustomEvent<HTMLSpVoiceInputButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSpVoiceInputButtonElementEventMap>(type: K, listener: (this: HTMLSpVoiceInputButtonElement, ev: SpVoiceInputButtonCustomEvent<HTMLSpVoiceInputButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSpVoiceInputButtonElement: {
+        prototype: HTMLSpVoiceInputButtonElement;
+        new (): HTMLSpVoiceInputButtonElement;
+    };
     interface HTMLSpWalkthroughElementEventMap {
         "walkthroughShown": void;
         "walkthroughHidden": void;
@@ -367,14 +734,80 @@ declare global {
         new (): HTMLSpWalkthroughElement;
     };
     interface HTMLElementTagNameMap {
+        "sp-communication-list": HTMLSpCommunicationListElement;
+        "sp-communication-preferences": HTMLSpCommunicationPreferencesElement;
         "sp-example": HTMLSpExampleElement;
+        "sp-language-list": HTMLSpLanguageListElement;
+        "sp-language-selector": HTMLSpLanguageSelectorElement;
         "sp-markdown-editor": HTMLSpMarkdownEditorElement;
         "sp-org-chart": HTMLSpOrgChartElement;
         "sp-popover": HTMLSpPopoverElement;
+        "sp-splash": HTMLSpSplashElement;
+        "sp-voice-input-button": HTMLSpVoiceInputButtonElement;
         "sp-walkthrough": HTMLSpWalkthroughElement;
     }
 }
 declare namespace LocalJSX {
+    /**
+     * Dropdown panel displaying the 6 available communication channels.
+     */
+    interface SpCommunicationList {
+        /**
+          * Full list of channels to display. Defaults to the bundled CHANNELS array.
+          * @default CHANNELS
+         */
+        "channels"?: ChannelInfo[];
+        /**
+          * Compact display mode — smaller padding and font (COMM-05).
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
+          * Emitted when the user selects a channel (COMM-03).
+         */
+        "onPreferenceChange"?: (event: SpCommunicationListCustomEvent<PreferenceChangeEventDetail>) => void;
+        /**
+          * Currently selected channel type (COMM-04). The matching item shows a checkmark and highlight.
+          * @default 'APPLICATION'
+         */
+        "selectedChannel"?: CommunicationChannel;
+        /**
+          * Theme override for standalone usage (COMM-05).
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme"?: 'light' | 'dark' | 'auto';
+    }
+    /**
+     * Inline trigger button that opens a communication channel selection dropdown via sp-popover.
+     */
+    interface SpCommunicationPreferences {
+        /**
+          * Compact display mode — smaller padding and font (COMM-05).
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
+          * Disables the button — prevents opening the dropdown (COMM-05).
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Emitted when the user selects a channel (COMM-03). Re-emitted from sp-communication-list.
+         */
+        "onPreferenceChange"?: (event: SpCommunicationPreferencesCustomEvent<PreferenceChangeEventDetail>) => void;
+        /**
+          * Currently selected communication channel (COMM-01). Mutable so parent can update via prop.
+          * @default 'APPLICATION'
+         */
+        "selectedChannel"?: CommunicationChannel;
+        /**
+          * Theme override for standalone usage (COMM-05).
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme"?: 'light' | 'dark' | 'auto';
+    }
     interface SpExample {
         /**
           * Heading text to display
@@ -387,6 +820,76 @@ declare namespace LocalJSX {
         "onSpExampleClick"?: (event: SpExampleCustomEvent<void>) => void;
         /**
           * Theme override for standalone usage
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme"?: 'light' | 'dark' | 'auto';
+    }
+    /**
+     * Dropdown panel displaying available languages, grouped by browser preference.
+     */
+    interface SpLanguageList {
+        /**
+          * Compact mode — smaller font size and padding.
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
+          * Full list of available languages to display. Defaults to the bundled LANGUAGES array.
+          * @default LANGUAGES
+         */
+        "languages"?: LanguageInfo[];
+        /**
+          * Emitted when the user selects a language (LANG-03).
+         */
+        "onLanguageChange"?: (event: SpLanguageListCustomEvent<LanguageChangeEventDetail>) => void;
+        /**
+          * Browser-preferred language codes in order of preference. When non-empty, renders a "Preferred" section at the top.
+          * @default []
+         */
+        "preferredLanguages"?: string[];
+        /**
+          * Currently selected language code (LANG-04). The matching item shows a checkmark.
+          * @default 'en'
+         */
+        "selectedLanguage"?: string;
+        /**
+          * Theme override for standalone usage.
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme"?: 'light' | 'dark' | 'auto';
+    }
+    /**
+     * Inline trigger button that opens a language selection dropdown via sp-popover.
+     */
+    interface SpLanguageSelector {
+        /**
+          * Milliseconds before dropdown auto-hides after mouse leaves (LANG-05).
+          * @default 3000
+         */
+        "autoHideDelay"?: number;
+        /**
+          * Compact display mode — smaller padding and font (LANG-06).
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
+          * Disables the button — prevents opening the dropdown (LANG-06).
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Emitted when the user selects a language (LANG-03). Bubbles up from sp-language-list.
+         */
+        "onLanguageChange"?: (event: SpLanguageSelectorCustomEvent<LanguageChangeEventDetail>) => void;
+        /**
+          * Currently selected language code (LANG-04). Displayed uppercase in the button. Mutable so parent can update via prop.
+          * @default 'en'
+         */
+        "selectedLanguage"?: string;
+        /**
+          * Theme override for standalone usage (LANG-06).
           * @type {'light' | 'dark' | 'auto'}
           * @default 'auto'
          */
@@ -519,6 +1022,98 @@ declare namespace LocalJSX {
         "theme"?: 'light' | 'dark' | 'auto';
     }
     /**
+     * sp-splash — Full-screen modal overlay with backdrop blur, gradient header,
+     * named slots for all content areas, multiple dismiss mechanisms, and fade/slide animations.
+     */
+    interface SpSplash {
+        /**
+          * Whether clicking the backdrop overlay dismisses the splash. (SPLS-03)
+          * @default true
+         */
+        "closeOnBackdrop"?: boolean;
+        /**
+          * Whether pressing the Escape key dismisses the splash. (SPLS-03)
+          * @default true
+         */
+        "closeOnEscape"?: boolean;
+        /**
+          * Emitted when the splash is dismissed by any mechanism (SPLS-05)
+         */
+        "onSplashClose"?: (event: SpSplashCustomEvent<SplashCloseEventDetail>) => void;
+        /**
+          * Controls visibility of the splash screen. Reflects to attribute. (SPLS-04)
+          * @default false
+         */
+        "open"?: boolean;
+        /**
+          * Theme override for standalone usage.
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme"?: 'light' | 'dark' | 'auto';
+    }
+    /**
+     * A circular 44px microphone button that triggers voice input.
+     * Hovering starts a 2-second progress bar cue then opens a language dropdown.
+     * Listening state shows a red pulse animation and a blinking recording indicator.
+     * Error state triggers a shake animation with an error message display.
+     * A mode indicator badge shows globe (browser) or robot (AI) icon.
+     */
+    interface SpVoiceInputButton {
+        /**
+          * Compact display mode — smaller button size.
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
+          * Disables the button — prevents all interaction.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Milliseconds for the hover progress bar before the language dropdown appears (VOIC-02).
+          * @default 2000
+         */
+        "hoverCueDuration"?: number;
+        /**
+          * Controls whether speech recognition uses the browser Web Speech API or an AI service (VOIC-06).
+          * @type {'browser' | 'ai'}
+          * @default 'browser'
+         */
+        "mode"?: VoiceInputMode;
+        /**
+          * Emitted when the user selects a language from the dropdown
+         */
+        "onLanguageChange"?: (event: SpVoiceInputButtonCustomEvent<LanguageChangeEventDetail>) => void;
+        /**
+          * Emitted when speech recognition produces a result
+         */
+        "onTranscriptionUpdate"?: (event: SpVoiceInputButtonCustomEvent<TranscriptionUpdateEventDetail>) => void;
+        /**
+          * Emitted when a voice input error occurs
+         */
+        "onVoiceError"?: (event: SpVoiceInputButtonCustomEvent<VoiceErrorEventDetail>) => void;
+        /**
+          * Emitted when listening begins
+         */
+        "onVoiceStart"?: (event: SpVoiceInputButtonCustomEvent<VoiceStartEventDetail>) => void;
+        /**
+          * Emitted when listening ends
+         */
+        "onVoiceStop"?: (event: SpVoiceInputButtonCustomEvent<VoiceStopEventDetail>) => void;
+        /**
+          * ISO 639-1 language code for voice input (VOIC-02). Mutable so the component can update it after language selection.
+          * @default 'en'
+         */
+        "selectedLanguage"?: string;
+        /**
+          * Theme override for standalone usage.
+          * @type {'light' | 'dark' | 'auto'}
+          * @default 'auto'
+         */
+        "theme"?: 'light' | 'dark' | 'auto';
+    }
+    /**
      * Interactive walkthrough component with video playback and DOM element highlighting.
      * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.
      * Note: sp-walkthrough does not expose CSS parts. The panel is a self-contained overlay UI and
@@ -576,10 +1171,16 @@ declare namespace LocalJSX {
         "videoSrc"?: string;
     }
     interface IntrinsicElements {
+        "sp-communication-list": SpCommunicationList;
+        "sp-communication-preferences": SpCommunicationPreferences;
         "sp-example": SpExample;
+        "sp-language-list": SpLanguageList;
+        "sp-language-selector": SpLanguageSelector;
         "sp-markdown-editor": SpMarkdownEditor;
         "sp-org-chart": SpOrgChart;
         "sp-popover": SpPopover;
+        "sp-splash": SpSplash;
+        "sp-voice-input-button": SpVoiceInputButton;
         "sp-walkthrough": SpWalkthrough;
     }
 }
@@ -587,7 +1188,23 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * Dropdown panel displaying the 6 available communication channels.
+             */
+            "sp-communication-list": LocalJSX.SpCommunicationList & JSXBase.HTMLAttributes<HTMLSpCommunicationListElement>;
+            /**
+             * Inline trigger button that opens a communication channel selection dropdown via sp-popover.
+             */
+            "sp-communication-preferences": LocalJSX.SpCommunicationPreferences & JSXBase.HTMLAttributes<HTMLSpCommunicationPreferencesElement>;
             "sp-example": LocalJSX.SpExample & JSXBase.HTMLAttributes<HTMLSpExampleElement>;
+            /**
+             * Dropdown panel displaying available languages, grouped by browser preference.
+             */
+            "sp-language-list": LocalJSX.SpLanguageList & JSXBase.HTMLAttributes<HTMLSpLanguageListElement>;
+            /**
+             * Inline trigger button that opens a language selection dropdown via sp-popover.
+             */
+            "sp-language-selector": LocalJSX.SpLanguageSelector & JSXBase.HTMLAttributes<HTMLSpLanguageSelectorElement>;
             /**
              * Rich markdown editor component with source, WYSIWYG, and split editing modes.
              * Supports voice dictation, undo/redo history, auto-save, file import/export, and print.
@@ -595,6 +1212,19 @@ declare module "@stencil/core" {
             "sp-markdown-editor": LocalJSX.SpMarkdownEditor & JSXBase.HTMLAttributes<HTMLSpMarkdownEditorElement>;
             "sp-org-chart": LocalJSX.SpOrgChart & JSXBase.HTMLAttributes<HTMLSpOrgChartElement>;
             "sp-popover": LocalJSX.SpPopover & JSXBase.HTMLAttributes<HTMLSpPopoverElement>;
+            /**
+             * sp-splash — Full-screen modal overlay with backdrop blur, gradient header,
+             * named slots for all content areas, multiple dismiss mechanisms, and fade/slide animations.
+             */
+            "sp-splash": LocalJSX.SpSplash & JSXBase.HTMLAttributes<HTMLSpSplashElement>;
+            /**
+             * A circular 44px microphone button that triggers voice input.
+             * Hovering starts a 2-second progress bar cue then opens a language dropdown.
+             * Listening state shows a red pulse animation and a blinking recording indicator.
+             * Error state triggers a shake animation with an error message display.
+             * A mode indicator badge shows globe (browser) or robot (AI) icon.
+             */
+            "sp-voice-input-button": LocalJSX.SpVoiceInputButton & JSXBase.HTMLAttributes<HTMLSpVoiceInputButtonElement>;
             /**
              * Interactive walkthrough component with video playback and DOM element highlighting.
              * Renders a draggable floating panel with scene navigation, video controls, and author mode for scene creation.

@@ -1,11 +1,455 @@
 {
-  "timestamp": "2026-02-21T16:43:16",
+  "timestamp": "2026-02-22T08:15:16",
   "compiler": {
     "name": "@stencil/core",
     "version": "4.41.3",
     "typescriptVersion": "5.8.3"
   },
   "components": [
+    {
+      "filePath": "src/components/sp-communication-list/sp-communication-list.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-communication-list",
+      "docs": "Dropdown panel displaying the 6 available communication channels.",
+      "docsTags": [
+        {
+          "name": "part",
+          "text": "container - Root listbox container"
+        },
+        {
+          "name": "part",
+          "text": "channel-item - Individual channel row"
+        }
+      ],
+      "usage": {},
+      "props": [
+        {
+          "name": "channels",
+          "type": "ChannelInfo[]",
+          "complexType": {
+            "original": "ChannelInfo[]",
+            "resolved": "ChannelInfo[]",
+            "references": {
+              "ChannelInfo": {
+                "location": "import",
+                "path": "../sp-communication-preferences/types",
+                "id": "src/components/sp-communication-preferences/types.ts::ChannelInfo",
+                "referenceLocation": "ChannelInfo"
+              }
+            }
+          },
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "Full list of channels to display.\nDefaults to the bundled CHANNELS array.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "CHANNELS"
+            }
+          ],
+          "default": "CHANNELS",
+          "values": [
+            {
+              "type": "ChannelInfo[]"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "compact",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "compact",
+          "reflectToAttr": false,
+          "docs": "Compact display mode — smaller padding and font (COMM-05).",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "selectedChannel",
+          "type": "\"APPLICATION\" | \"EMAIL\" | \"GOOGLE_CHAT\" | \"MS_TEAMS\" | \"PHONE\" | \"WHATSAPP\"",
+          "complexType": {
+            "original": "CommunicationChannel",
+            "resolved": "\"APPLICATION\" | \"EMAIL\" | \"GOOGLE_CHAT\" | \"MS_TEAMS\" | \"PHONE\" | \"WHATSAPP\"",
+            "references": {
+              "CommunicationChannel": {
+                "location": "import",
+                "path": "../sp-communication-preferences/types",
+                "id": "src/components/sp-communication-preferences/types.ts::CommunicationChannel",
+                "referenceLocation": "CommunicationChannel"
+              }
+            }
+          },
+          "mutable": false,
+          "attr": "selected-channel",
+          "reflectToAttr": false,
+          "docs": "Currently selected channel type (COMM-04).\nThe matching item shows a checkmark and highlight.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'APPLICATION'"
+            }
+          ],
+          "default": "'APPLICATION'",
+          "values": [
+            {
+              "value": "APPLICATION",
+              "type": "string"
+            },
+            {
+              "value": "EMAIL",
+              "type": "string"
+            },
+            {
+              "value": "GOOGLE_CHAT",
+              "type": "string"
+            },
+            {
+              "value": "MS_TEAMS",
+              "type": "string"
+            },
+            {
+              "value": "PHONE",
+              "type": "string"
+            },
+            {
+              "value": "WHATSAPP",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"auto\" | \"dark\" | \"light\"",
+          "complexType": {
+            "original": "'light' | 'dark' | 'auto'",
+            "resolved": "\"auto\" | \"dark\" | \"light\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Theme override for standalone usage (COMM-05).",
+          "docsTags": [
+            {
+              "name": "type",
+              "text": "{'light' | 'dark' | 'auto'}"
+            },
+            {
+              "name": "default",
+              "text": "'auto'"
+            }
+          ],
+          "default": "'auto'",
+          "values": [
+            {
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "preferenceChange",
+          "detail": "PreferenceChangeEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "PreferenceChangeEventDetail",
+            "resolved": "PreferenceChangeEventDetail",
+            "references": {
+              "PreferenceChangeEventDetail": {
+                "location": "import",
+                "path": "../sp-communication-preferences/types",
+                "id": "src/components/sp-communication-preferences/types.ts::PreferenceChangeEventDetail",
+                "referenceLocation": "PreferenceChangeEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the user selects a channel (COMM-03).",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [
+        {
+          "name": "channel-item",
+          "docs": "Individual channel row"
+        },
+        {
+          "name": "container",
+          "docs": "Root listbox container"
+        }
+      ],
+      "dependents": [
+        "sp-communication-preferences"
+      ],
+      "dependencies": [],
+      "dependencyGraph": {
+        "sp-communication-preferences": [
+          "sp-communication-list"
+        ]
+      }
+    },
+    {
+      "filePath": "src/components/sp-communication-preferences/sp-communication-preferences.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-communication-preferences",
+      "docs": "Inline trigger button that opens a communication channel selection dropdown via sp-popover.",
+      "docsTags": [
+        {
+          "name": "part",
+          "text": "trigger - The button element"
+        }
+      ],
+      "usage": {},
+      "props": [
+        {
+          "name": "compact",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "compact",
+          "reflectToAttr": false,
+          "docs": "Compact display mode — smaller padding and font (COMM-05).",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "disabled",
+          "reflectToAttr": false,
+          "docs": "Disables the button — prevents opening the dropdown (COMM-05).",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "selectedChannel",
+          "type": "\"APPLICATION\" | \"EMAIL\" | \"GOOGLE_CHAT\" | \"MS_TEAMS\" | \"PHONE\" | \"WHATSAPP\"",
+          "complexType": {
+            "original": "CommunicationChannel",
+            "resolved": "\"APPLICATION\" | \"EMAIL\" | \"GOOGLE_CHAT\" | \"MS_TEAMS\" | \"PHONE\" | \"WHATSAPP\"",
+            "references": {
+              "CommunicationChannel": {
+                "location": "import",
+                "path": "./types",
+                "id": "src/components/sp-communication-preferences/types.ts::CommunicationChannel",
+                "referenceLocation": "CommunicationChannel"
+              }
+            }
+          },
+          "mutable": true,
+          "attr": "selected-channel",
+          "reflectToAttr": true,
+          "docs": "Currently selected communication channel (COMM-01).\nMutable so parent can update via prop.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'APPLICATION'"
+            }
+          ],
+          "default": "'APPLICATION'",
+          "values": [
+            {
+              "value": "APPLICATION",
+              "type": "string"
+            },
+            {
+              "value": "EMAIL",
+              "type": "string"
+            },
+            {
+              "value": "GOOGLE_CHAT",
+              "type": "string"
+            },
+            {
+              "value": "MS_TEAMS",
+              "type": "string"
+            },
+            {
+              "value": "PHONE",
+              "type": "string"
+            },
+            {
+              "value": "WHATSAPP",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"auto\" | \"dark\" | \"light\"",
+          "complexType": {
+            "original": "'light' | 'dark' | 'auto'",
+            "resolved": "\"auto\" | \"dark\" | \"light\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Theme override for standalone usage (COMM-05).",
+          "docsTags": [
+            {
+              "name": "type",
+              "text": "{'light' | 'dark' | 'auto'}"
+            },
+            {
+              "name": "default",
+              "text": "'auto'"
+            }
+          ],
+          "default": "'auto'",
+          "values": [
+            {
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "preferenceChange",
+          "detail": "PreferenceChangeEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "PreferenceChangeEventDetail",
+            "resolved": "PreferenceChangeEventDetail",
+            "references": {
+              "PreferenceChangeEventDetail": {
+                "location": "import",
+                "path": "./types",
+                "id": "src/components/sp-communication-preferences/types.ts::PreferenceChangeEventDetail",
+                "referenceLocation": "PreferenceChangeEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the user selects a channel (COMM-03).\nRe-emitted from sp-communication-list.",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [
+        {
+          "name": "trigger",
+          "docs": "The button element"
+        }
+      ],
+      "dependents": [],
+      "dependencies": [
+        "sp-popover",
+        "sp-communication-list"
+      ],
+      "dependencyGraph": {
+        "sp-communication-preferences": [
+          "sp-popover",
+          "sp-communication-list"
+        ]
+      }
+    },
     {
       "filePath": "src/components/sp-example/sp-example.tsx",
       "encapsulation": "shadow",
@@ -144,6 +588,463 @@
       "dependents": [],
       "dependencies": [],
       "dependencyGraph": {}
+    },
+    {
+      "filePath": "src/components/sp-language-list/sp-language-list.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-language-list",
+      "docs": "Dropdown panel displaying available languages, grouped by browser preference.",
+      "docsTags": [
+        {
+          "name": "part",
+          "text": "container - Root scrollable container"
+        },
+        {
+          "name": "part",
+          "text": "section-header - Section label (\"Preferred\" / \"All Languages\")"
+        },
+        {
+          "name": "part",
+          "text": "language-item - Individual language row"
+        }
+      ],
+      "usage": {},
+      "props": [
+        {
+          "name": "compact",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "compact",
+          "reflectToAttr": false,
+          "docs": "Compact mode — smaller font size and padding.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "languages",
+          "type": "LanguageInfo[]",
+          "complexType": {
+            "original": "LanguageInfo[]",
+            "resolved": "LanguageInfo[]",
+            "references": {
+              "LanguageInfo": {
+                "location": "import",
+                "path": "../sp-language-selector/types",
+                "id": "src/components/sp-language-selector/types.ts::LanguageInfo",
+                "referenceLocation": "LanguageInfo"
+              }
+            }
+          },
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "Full list of available languages to display.\nDefaults to the bundled LANGUAGES array.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "LANGUAGES"
+            }
+          ],
+          "default": "LANGUAGES",
+          "values": [
+            {
+              "type": "LanguageInfo[]"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "preferredLanguages",
+          "type": "string[]",
+          "complexType": {
+            "original": "string[]",
+            "resolved": "string[]",
+            "references": {}
+          },
+          "mutable": false,
+          "reflectToAttr": false,
+          "docs": "Browser-preferred language codes in order of preference.\nWhen non-empty, renders a \"Preferred\" section at the top.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "[]"
+            }
+          ],
+          "default": "[]",
+          "values": [
+            {
+              "type": "string[]"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "selectedLanguage",
+          "type": "string",
+          "complexType": {
+            "original": "string",
+            "resolved": "string",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "selected-language",
+          "reflectToAttr": false,
+          "docs": "Currently selected language code (LANG-04).\nThe matching item shows a checkmark.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'en'"
+            }
+          ],
+          "default": "'en'",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"auto\" | \"dark\" | \"light\"",
+          "complexType": {
+            "original": "'light' | 'dark' | 'auto'",
+            "resolved": "\"auto\" | \"dark\" | \"light\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Theme override for standalone usage.",
+          "docsTags": [
+            {
+              "name": "type",
+              "text": "{'light' | 'dark' | 'auto'}"
+            },
+            {
+              "name": "default",
+              "text": "'auto'"
+            }
+          ],
+          "default": "'auto'",
+          "values": [
+            {
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "languageChange",
+          "detail": "LanguageChangeEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "LanguageChangeEventDetail",
+            "resolved": "LanguageChangeEventDetail",
+            "references": {
+              "LanguageChangeEventDetail": {
+                "location": "import",
+                "path": "../sp-language-selector/types",
+                "id": "src/components/sp-language-selector/types.ts::LanguageChangeEventDetail",
+                "referenceLocation": "LanguageChangeEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the user selects a language (LANG-03).",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [
+        {
+          "name": "container",
+          "docs": "Root scrollable container"
+        },
+        {
+          "name": "language-item",
+          "docs": "Individual language row"
+        },
+        {
+          "name": "section-header",
+          "docs": "Section label (\"Preferred\" / \"All Languages\")"
+        }
+      ],
+      "dependents": [
+        "sp-language-selector",
+        "sp-voice-input-button"
+      ],
+      "dependencies": [],
+      "dependencyGraph": {
+        "sp-language-selector": [
+          "sp-language-list"
+        ],
+        "sp-voice-input-button": [
+          "sp-language-list"
+        ]
+      }
+    },
+    {
+      "filePath": "src/components/sp-language-selector/sp-language-selector.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-language-selector",
+      "docs": "Inline trigger button that opens a language selection dropdown via sp-popover.",
+      "docsTags": [
+        {
+          "name": "part",
+          "text": "trigger - The button element"
+        }
+      ],
+      "usage": {},
+      "props": [
+        {
+          "name": "autoHideDelay",
+          "type": "number",
+          "complexType": {
+            "original": "number",
+            "resolved": "number",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "auto-hide-delay",
+          "reflectToAttr": false,
+          "docs": "Milliseconds before dropdown auto-hides after mouse leaves (LANG-05).",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "3000"
+            }
+          ],
+          "default": "3000",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "compact",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "compact",
+          "reflectToAttr": false,
+          "docs": "Compact display mode — smaller padding and font (LANG-06).",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "disabled",
+          "reflectToAttr": false,
+          "docs": "Disables the button — prevents opening the dropdown (LANG-06).",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "selectedLanguage",
+          "type": "string",
+          "complexType": {
+            "original": "string",
+            "resolved": "string",
+            "references": {}
+          },
+          "mutable": true,
+          "attr": "selected-language",
+          "reflectToAttr": true,
+          "docs": "Currently selected language code (LANG-04).\nDisplayed uppercase in the button. Mutable so parent can update via prop.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'en'"
+            }
+          ],
+          "default": "'en'",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"auto\" | \"dark\" | \"light\"",
+          "complexType": {
+            "original": "'light' | 'dark' | 'auto'",
+            "resolved": "\"auto\" | \"dark\" | \"light\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Theme override for standalone usage (LANG-06).",
+          "docsTags": [
+            {
+              "name": "type",
+              "text": "{'light' | 'dark' | 'auto'}"
+            },
+            {
+              "name": "default",
+              "text": "'auto'"
+            }
+          ],
+          "default": "'auto'",
+          "values": [
+            {
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "event": "languageChange",
+          "detail": "LanguageChangeEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "LanguageChangeEventDetail",
+            "resolved": "LanguageChangeEventDetail",
+            "references": {
+              "LanguageChangeEventDetail": {
+                "location": "import",
+                "path": "./types",
+                "id": "src/components/sp-language-selector/types.ts::LanguageChangeEventDetail",
+                "referenceLocation": "LanguageChangeEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the user selects a language (LANG-03).\nBubbles up from sp-language-list.",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [
+        {
+          "name": "trigger",
+          "docs": "The button element"
+        }
+      ],
+      "dependents": [],
+      "dependencies": [
+        "sp-popover",
+        "sp-language-list"
+      ],
+      "dependencyGraph": {
+        "sp-language-selector": [
+          "sp-popover",
+          "sp-language-list"
+        ]
+      }
     },
     {
       "filePath": "src/components/sp-markdown-editor/sp-markdown-editor.tsx",
@@ -1812,9 +2713,830 @@
           "docs": "Visual panel with background, border, shadow"
         }
       ],
+      "dependents": [
+        "sp-communication-preferences",
+        "sp-language-selector",
+        "sp-voice-input-button"
+      ],
+      "dependencies": [],
+      "dependencyGraph": {
+        "sp-communication-preferences": [
+          "sp-popover"
+        ],
+        "sp-language-selector": [
+          "sp-popover"
+        ],
+        "sp-voice-input-button": [
+          "sp-popover"
+        ]
+      }
+    },
+    {
+      "filePath": "src/components/sp-splash/sp-splash.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-splash",
+      "docs": "sp-splash — Full-screen modal overlay with backdrop blur, gradient header,\nnamed slots for all content areas, multiple dismiss mechanisms, and fade/slide animations.",
+      "docsTags": [
+        {
+          "name": "part",
+          "text": "overlay - The full-screen backdrop overlay element"
+        },
+        {
+          "name": "part",
+          "text": "container - The centered modal container card"
+        },
+        {
+          "name": "part",
+          "text": "close-button - The close (X) button in the top-right corner"
+        },
+        {
+          "name": "part",
+          "text": "header - The gradient header area containing logo, title, subtitle slots"
+        },
+        {
+          "name": "part",
+          "text": "body - The main content area"
+        },
+        {
+          "name": "part",
+          "text": "footer - The footer area"
+        },
+        {
+          "name": "slot",
+          "text": "logo - Optional logo/icon displayed at the top of the header"
+        },
+        {
+          "name": "slot",
+          "text": "title - Main title text in the gradient header"
+        },
+        {
+          "name": "slot",
+          "text": "subtitle - Subtitle text beneath the title in the header"
+        },
+        {
+          "name": "slot",
+          "text": "body - Main body content below the header"
+        },
+        {
+          "name": "slot",
+          "text": "footer - Footer content (calls-to-action, buttons, etc.)"
+        }
+      ],
+      "usage": {},
+      "props": [
+        {
+          "name": "closeOnBackdrop",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "close-on-backdrop",
+          "reflectToAttr": false,
+          "docs": "Whether clicking the backdrop overlay dismisses the splash. (SPLS-03)",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "true"
+            }
+          ],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "closeOnEscape",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "close-on-escape",
+          "reflectToAttr": false,
+          "docs": "Whether pressing the Escape key dismisses the splash. (SPLS-03)",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "true"
+            }
+          ],
+          "default": "true",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": true,
+          "attr": "open",
+          "reflectToAttr": true,
+          "docs": "Controls visibility of the splash screen. Reflects to attribute. (SPLS-04)",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"auto\" | \"dark\" | \"light\"",
+          "complexType": {
+            "original": "'light' | 'dark' | 'auto'",
+            "resolved": "\"auto\" | \"dark\" | \"light\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Theme override for standalone usage.",
+          "docsTags": [
+            {
+              "name": "type",
+              "text": "{'light' | 'dark' | 'auto'}"
+            },
+            {
+              "name": "default",
+              "text": "'auto'"
+            }
+          ],
+          "default": "'auto'",
+          "values": [
+            {
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "hide",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "hide() => Promise<void>",
+          "parameters": [],
+          "docs": "Hide the splash (SPLS-04)",
+          "docsTags": []
+        },
+        {
+          "name": "show",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "show() => Promise<void>",
+          "parameters": [],
+          "docs": "Show the splash (SPLS-04)",
+          "docsTags": []
+        }
+      ],
+      "events": [
+        {
+          "event": "splashClose",
+          "detail": "SplashCloseEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "SplashCloseEventDetail",
+            "resolved": "SplashCloseEventDetail",
+            "references": {
+              "SplashCloseEventDetail": {
+                "location": "import",
+                "path": "./types",
+                "id": "src/components/sp-splash/types.ts::SplashCloseEventDetail",
+                "referenceLocation": "SplashCloseEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the splash is dismissed by any mechanism (SPLS-05)",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [
+        {
+          "name": "body",
+          "docs": "Main body content below the header"
+        },
+        {
+          "name": "footer",
+          "docs": "Footer content (calls-to-action, buttons, etc.)"
+        },
+        {
+          "name": "logo",
+          "docs": "Optional logo/icon displayed at the top of the header"
+        },
+        {
+          "name": "subtitle",
+          "docs": "Subtitle text beneath the title in the header"
+        },
+        {
+          "name": "title",
+          "docs": "Main title text in the gradient header"
+        }
+      ],
+      "parts": [
+        {
+          "name": "body",
+          "docs": "The main content area"
+        },
+        {
+          "name": "close-button",
+          "docs": "The close (X) button in the top-right corner"
+        },
+        {
+          "name": "container",
+          "docs": "The centered modal container card"
+        },
+        {
+          "name": "footer",
+          "docs": "The footer area"
+        },
+        {
+          "name": "header",
+          "docs": "The gradient header area containing logo, title, subtitle slots"
+        },
+        {
+          "name": "overlay",
+          "docs": "The full-screen backdrop overlay element"
+        }
+      ],
       "dependents": [],
       "dependencies": [],
       "dependencyGraph": {}
+    },
+    {
+      "filePath": "src/components/sp-voice-input-button/sp-voice-input-button.tsx",
+      "encapsulation": "shadow",
+      "tag": "sp-voice-input-button",
+      "docs": "A circular 44px microphone button that triggers voice input.\n\nHovering starts a 2-second progress bar cue then opens a language dropdown.\nListening state shows a red pulse animation and a blinking recording indicator.\nError state triggers a shake animation with an error message display.\nA mode indicator badge shows globe (browser) or robot (AI) icon.",
+      "docsTags": [
+        {
+          "name": "part",
+          "text": "button - The main circular button element"
+        },
+        {
+          "name": "part",
+          "text": "progress-bar - The hover-cue progress bar container"
+        },
+        {
+          "name": "part",
+          "text": "recording-indicator - The blinking red dot during listening"
+        },
+        {
+          "name": "part",
+          "text": "mode-indicator - The mode badge (globe or robot)"
+        },
+        {
+          "name": "part",
+          "text": "error-message - The error message text below the button"
+        }
+      ],
+      "usage": {},
+      "props": [
+        {
+          "name": "compact",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "compact",
+          "reflectToAttr": false,
+          "docs": "Compact display mode — smaller button size.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "complexType": {
+            "original": "boolean",
+            "resolved": "boolean",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "disabled",
+          "reflectToAttr": false,
+          "docs": "Disables the button — prevents all interaction.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "false"
+            }
+          ],
+          "default": "false",
+          "values": [
+            {
+              "type": "boolean"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "hoverCueDuration",
+          "type": "number",
+          "complexType": {
+            "original": "number",
+            "resolved": "number",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "hover-cue-duration",
+          "reflectToAttr": false,
+          "docs": "Milliseconds for the hover progress bar before the language dropdown appears (VOIC-02).",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "2000"
+            }
+          ],
+          "default": "2000",
+          "values": [
+            {
+              "type": "number"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "mode",
+          "type": "\"ai\" | \"browser\"",
+          "complexType": {
+            "original": "VoiceInputMode",
+            "resolved": "\"ai\" | \"browser\"",
+            "references": {
+              "VoiceInputMode": {
+                "location": "import",
+                "path": "./types",
+                "id": "src/components/sp-voice-input-button/types.ts::VoiceInputMode",
+                "referenceLocation": "VoiceInputMode"
+              }
+            }
+          },
+          "mutable": false,
+          "attr": "mode",
+          "reflectToAttr": false,
+          "docs": "Controls whether speech recognition uses the browser Web Speech API or an AI service (VOIC-06).",
+          "docsTags": [
+            {
+              "name": "type",
+              "text": "{'browser' | 'ai'}"
+            },
+            {
+              "name": "default",
+              "text": "'browser'"
+            }
+          ],
+          "default": "'browser'",
+          "values": [
+            {
+              "value": "ai",
+              "type": "string"
+            },
+            {
+              "value": "browser",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "selectedLanguage",
+          "type": "string",
+          "complexType": {
+            "original": "string",
+            "resolved": "string",
+            "references": {}
+          },
+          "mutable": true,
+          "attr": "selected-language",
+          "reflectToAttr": true,
+          "docs": "ISO 639-1 language code for voice input (VOIC-02).\nMutable so the component can update it after language selection.",
+          "docsTags": [
+            {
+              "name": "default",
+              "text": "'en'"
+            }
+          ],
+          "default": "'en'",
+          "values": [
+            {
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        },
+        {
+          "name": "theme",
+          "type": "\"auto\" | \"dark\" | \"light\"",
+          "complexType": {
+            "original": "'light' | 'dark' | 'auto'",
+            "resolved": "\"auto\" | \"dark\" | \"light\"",
+            "references": {}
+          },
+          "mutable": false,
+          "attr": "theme",
+          "reflectToAttr": false,
+          "docs": "Theme override for standalone usage.",
+          "docsTags": [
+            {
+              "name": "type",
+              "text": "{'light' | 'dark' | 'auto'}"
+            },
+            {
+              "name": "default",
+              "text": "'auto'"
+            }
+          ],
+          "default": "'auto'",
+          "values": [
+            {
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "value": "dark",
+              "type": "string"
+            },
+            {
+              "value": "light",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "required": false,
+          "getter": false,
+          "setter": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "emitTranscription",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "(text: string, isFinal: boolean) => Promise<void>",
+            "parameters": [
+              {
+                "name": "text",
+                "type": "string",
+                "docs": ""
+              },
+              {
+                "name": "isFinal",
+                "type": "boolean",
+                "docs": ""
+              }
+            ],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "emitTranscription(text: string, isFinal: boolean) => Promise<void>",
+          "parameters": [
+            {
+              "name": "text",
+              "type": "string",
+              "docs": ""
+            },
+            {
+              "name": "isFinal",
+              "type": "boolean",
+              "docs": ""
+            }
+          ],
+          "docs": "Emit a transcription result event (called by parent during active listening).",
+          "docsTags": []
+        },
+        {
+          "name": "setError",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "(message: string) => Promise<void>",
+            "parameters": [
+              {
+                "name": "message",
+                "type": "string",
+                "docs": ""
+              }
+            ],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "setError(message: string) => Promise<void>",
+          "parameters": [
+            {
+              "name": "message",
+              "type": "string",
+              "docs": ""
+            }
+          ],
+          "docs": "Transition to error state with a message and emit voiceError.\nAutomatically clears back to idle after 3 seconds (VOIC-05).",
+          "docsTags": []
+        },
+        {
+          "name": "startListening",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "startListening() => Promise<void>",
+          "parameters": [],
+          "docs": "Transition to listening state and emit voiceStart (VOIC-03).",
+          "docsTags": []
+        },
+        {
+          "name": "stopListening",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "stopListening() => Promise<void>",
+          "parameters": [],
+          "docs": "Transition to idle state and emit voiceStop.",
+          "docsTags": []
+        }
+      ],
+      "events": [
+        {
+          "event": "languageChange",
+          "detail": "LanguageChangeEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "LanguageChangeEventDetail",
+            "resolved": "LanguageChangeEventDetail",
+            "references": {
+              "LanguageChangeEventDetail": {
+                "location": "import",
+                "path": "../sp-language-selector/types",
+                "id": "src/components/sp-language-selector/types.ts::LanguageChangeEventDetail",
+                "referenceLocation": "LanguageChangeEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the user selects a language from the dropdown",
+          "docsTags": []
+        },
+        {
+          "event": "transcriptionUpdate",
+          "detail": "TranscriptionUpdateEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "TranscriptionUpdateEventDetail",
+            "resolved": "TranscriptionUpdateEventDetail",
+            "references": {
+              "TranscriptionUpdateEventDetail": {
+                "location": "import",
+                "path": "./types",
+                "id": "src/components/sp-voice-input-button/types.ts::TranscriptionUpdateEventDetail",
+                "referenceLocation": "TranscriptionUpdateEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when speech recognition produces a result",
+          "docsTags": []
+        },
+        {
+          "event": "voiceError",
+          "detail": "VoiceErrorEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "VoiceErrorEventDetail",
+            "resolved": "VoiceErrorEventDetail",
+            "references": {
+              "VoiceErrorEventDetail": {
+                "location": "import",
+                "path": "./types",
+                "id": "src/components/sp-voice-input-button/types.ts::VoiceErrorEventDetail",
+                "referenceLocation": "VoiceErrorEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when a voice input error occurs",
+          "docsTags": []
+        },
+        {
+          "event": "voiceStart",
+          "detail": "VoiceStartEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "VoiceStartEventDetail",
+            "resolved": "VoiceStartEventDetail",
+            "references": {
+              "VoiceStartEventDetail": {
+                "location": "import",
+                "path": "./types",
+                "id": "src/components/sp-voice-input-button/types.ts::VoiceStartEventDetail",
+                "referenceLocation": "VoiceStartEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when listening begins",
+          "docsTags": []
+        },
+        {
+          "event": "voiceStop",
+          "detail": "VoiceStopEventDetail",
+          "bubbles": true,
+          "complexType": {
+            "original": "VoiceStopEventDetail",
+            "resolved": "VoiceStopEventDetail",
+            "references": {
+              "VoiceStopEventDetail": {
+                "location": "import",
+                "path": "./types",
+                "id": "src/components/sp-voice-input-button/types.ts::VoiceStopEventDetail",
+                "referenceLocation": "VoiceStopEventDetail"
+              }
+            }
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when listening ends",
+          "docsTags": []
+        }
+      ],
+      "listeners": [],
+      "styles": [],
+      "slots": [],
+      "parts": [
+        {
+          "name": "button",
+          "docs": "The main circular button element"
+        },
+        {
+          "name": "error-message",
+          "docs": "The error message text below the button"
+        },
+        {
+          "name": "mode-indicator",
+          "docs": "The mode badge (globe or robot)"
+        },
+        {
+          "name": "progress-bar",
+          "docs": "The hover-cue progress bar container"
+        },
+        {
+          "name": "recording-indicator",
+          "docs": "The blinking red dot during listening"
+        }
+      ],
+      "dependents": [],
+      "dependencies": [
+        "sp-popover",
+        "sp-language-list"
+      ],
+      "dependencyGraph": {
+        "sp-voice-input-button": [
+          "sp-popover",
+          "sp-language-list"
+        ]
+      }
     },
     {
       "filePath": "src/components/sp-walkthrough/sp-walkthrough.tsx",
@@ -2393,6 +4115,31 @@
     }
   ],
   "typeLibrary": {
+    "src/components/sp-communication-preferences/types.ts::ChannelInfo": {
+      "declaration": "export interface ChannelInfo {\n  /** Channel type identifier */\n  type: CommunicationChannel;\n  /** Human-readable display name (e.g. 'Application', 'Email') */\n  label: string;\n}",
+      "docstring": "Represents a single communication channel option.",
+      "path": "src/components/sp-communication-preferences/types.ts"
+    },
+    "src/components/sp-communication-preferences/types.ts::CommunicationChannel": {
+      "declaration": "export type CommunicationChannel = 'APPLICATION' | 'EMAIL' | 'WHATSAPP' | 'PHONE' | 'MS_TEAMS' | 'GOOGLE_CHAT';",
+      "docstring": "",
+      "path": "src/components/sp-communication-preferences/types.ts"
+    },
+    "src/components/sp-communication-preferences/types.ts::PreferenceChangeEventDetail": {
+      "declaration": "export interface PreferenceChangeEventDetail {\n  /** The selected channel type */\n  channel: CommunicationChannel;\n  /** Human-readable label of the selected channel */\n  label: string;\n}",
+      "docstring": "Event payload emitted when the user selects a channel (COMM-03).",
+      "path": "src/components/sp-communication-preferences/types.ts"
+    },
+    "src/components/sp-language-selector/types.ts::LanguageInfo": {
+      "declaration": "export interface LanguageInfo {\n  /** ISO 639-1 two-letter language code (e.g. 'en', 'de', 'fr') */\n  code: string;\n  /** English name of the language (e.g. 'German') */\n  name: string;\n  /** Native name of the language (e.g. 'Deutsch') */\n  nativeName: string;\n}",
+      "docstring": "Represents a single language option in the language selector",
+      "path": "src/components/sp-language-selector/types.ts"
+    },
+    "src/components/sp-language-selector/types.ts::LanguageChangeEventDetail": {
+      "declaration": "export interface LanguageChangeEventDetail {\n  /** ISO 639-1 language code of the selected language */\n  code: string;\n  /** English name of the selected language */\n  name: string;\n}",
+      "docstring": "Event payload emitted when user selects a language (LANG-03)",
+      "path": "src/components/sp-language-selector/types.ts"
+    },
     "src/components/sp-markdown-editor/types/editor.types.ts::EditorMode": {
       "declaration": "export type EditorMode = 'source' | 'wysiwyg' | 'split';",
       "docstring": "",
@@ -2452,6 +4199,36 @@
       "declaration": "export type Placement =\n  | 'bottom-start'\n  | 'bottom-end'\n  | 'top-start'\n  | 'top-end'\n  | 'right-start'\n  | 'left-start';",
       "docstring": "",
       "path": "src/components/sp-popover/types.ts"
+    },
+    "src/components/sp-splash/types.ts::SplashCloseEventDetail": {
+      "declaration": "export interface SplashCloseEventDetail {\n  /** How the splash was dismissed */\n  reason: 'button' | 'escape' | 'backdrop';\n}",
+      "docstring": "Detail payload for the splashClose event.\nIndicates how the splash screen was dismissed (SPLS-05).",
+      "path": "src/components/sp-splash/types.ts"
+    },
+    "src/components/sp-voice-input-button/types.ts::VoiceInputMode": {
+      "declaration": "export type VoiceInputMode = 'browser' | 'ai';",
+      "docstring": "",
+      "path": "src/components/sp-voice-input-button/types.ts"
+    },
+    "src/components/sp-voice-input-button/types.ts::VoiceStartEventDetail": {
+      "declaration": "export interface VoiceStartEventDetail {\n  /** ISO 639-1 language code for the active input language */\n  language: string;\n  /** Whether browser API or AI service is being used */\n  mode: VoiceInputMode;\n}",
+      "docstring": "Event payload emitted when voice recording begins (VOIC-04).",
+      "path": "src/components/sp-voice-input-button/types.ts"
+    },
+    "src/components/sp-voice-input-button/types.ts::VoiceStopEventDetail": {
+      "declaration": "export interface VoiceStopEventDetail {\n  /** ISO 639-1 language code for the active input language */\n  language: string;\n  /** Whether browser API or AI service was being used */\n  mode: VoiceInputMode;\n}",
+      "docstring": "Event payload emitted when voice recording ends (VOIC-04).",
+      "path": "src/components/sp-voice-input-button/types.ts"
+    },
+    "src/components/sp-voice-input-button/types.ts::VoiceErrorEventDetail": {
+      "declaration": "export interface VoiceErrorEventDetail {\n  /** Human-readable error message */\n  message: string;\n  /** ISO 639-1 language code active at time of error */\n  language: string;\n  /** Whether browser API or AI service was being used */\n  mode: VoiceInputMode;\n}",
+      "docstring": "Event payload emitted when a voice input error occurs (VOIC-04, VOIC-05).",
+      "path": "src/components/sp-voice-input-button/types.ts"
+    },
+    "src/components/sp-voice-input-button/types.ts::TranscriptionUpdateEventDetail": {
+      "declaration": "export interface TranscriptionUpdateEventDetail {\n  /** Recognized text (may be partial or final) */\n  text: string;\n  /** True when this is the final result for the utterance */\n  isFinal: boolean;\n  /** ISO 639-1 language code used for recognition */\n  language: string;\n  /** Whether browser API or AI service produced the result */\n  mode: VoiceInputMode;\n}",
+      "docstring": "Event payload emitted when speech recognition produces a result (VOIC-04).",
+      "path": "src/components/sp-voice-input-button/types.ts"
     },
     "src/components/sp-walkthrough/types/walkthrough.types.ts::Scene": {
       "declaration": "export interface Scene {\n  /** Unique identifier for this scene */\n  id: string;\n\n  /** Display title for the scene */\n  title: string;\n\n  /** Optional description/instructions for the scene */\n  description?: string;\n\n  /** Timestamp in seconds when this scene should activate (for video-synced walkthroughs) */\n  timestamp: number;\n\n  /** CSS selector for the DOM element to highlight during this scene */\n  highlightSelector?: string;\n\n  /** Duration in seconds for manual mode auto-advance (optional) */\n  duration?: number;\n}",
