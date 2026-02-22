@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 12 of 12 (docs-tests) — IN PROGRESS
-Plan: 1 of 3 complete (12-01: updated sp-org-chart and sp-walkthrough docs for v1.1 API; updated sp-popover docs with comprehensive examples)
-Status: Phase 12 Plan 01 complete — sp-org-chart v1.1 data model, branch filtering docs, sp-walkthrough v1.1 Features section, sp-popover expanded examples; docs build verified
-Last activity: 2026-02-22 — Completed 12-01-PLAN.md: updated 3 MDX doc pages (sp-org-chart v1.1 model/filtering, sp-walkthrough v1.1 features, sp-popover comprehensive examples)
+Plan: 2 of 3 complete (12-01: updated sp-org-chart, sp-walkthrough, sp-popover docs for v1.1 API; 12-02: new component docs for sp-language-selector, sp-voice-input-button, sp-communication-preferences, sp-splash)
+Status: Phase 12 Plans 01 and 02 complete — all 8 component doc pages exist, sidebar and getting-started updated, sp-org-chart/sp-walkthrough reflect v1.1 API, docs build verified
+Last activity: 2026-02-22 — Completed 12-01-PLAN.md: updated sp-org-chart/sp-walkthrough for v1.1 API and expanded sp-popover docs with comprehensive examples
 
-Progress: [██████░░░░] 50% (v1.1)
+Progress: [████████░░] 75% (v1.1)
 
 ## Performance Metrics
 
@@ -115,5 +115,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 12-01-PLAN.md (updated sp-org-chart and sp-walkthrough for v1.1 API; expanded sp-popover docs with placement/dismiss/programmatic examples; docs build verified; DOCS-01 satisfied)
+Stopped at: Completed 12-01-PLAN.md (updated sp-org-chart/sp-walkthrough for v1.1 API, expanded sp-popover docs; Plans 01 and 02 of Phase 12 complete; ready for Plan 03)
 Resume file: None
