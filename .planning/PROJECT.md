@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A Stencil.js-based library of production-ready web components (`<sp-*>`) for the Skillspilot/TRM-AI team management platform. Ships components — including `<sp-org-chart>`, `<sp-walkthrough>`, `<sp-markdown-editor>`, and communication/utility components — as standalone HTML custom elements distributed via npm and CDN, with DWC (`--dwc-*`) CSS custom property theming, comprehensive test coverage, and Docusaurus documentation.
+A Stencil.js-based library of production-ready web components (`<sp-*>`) for the Skillspilot/TRM-AI team management platform. Ships 10 components — `<sp-org-chart>`, `<sp-walkthrough>`, `<sp-markdown-editor>`, `<sp-popover>`, `<sp-language-selector>`, `<sp-language-list>`, `<sp-voice-input-button>`, `<sp-communication-preferences>`, `<sp-communication-list>`, and `<sp-splash>` — as standalone HTML custom elements distributed via npm and CDN, with DWC (`--dwc-*`) CSS custom property theming, 844 spec tests + 115 E2E tests, and Docusaurus documentation.
 
 ## Core Value
 
@@ -24,27 +24,19 @@ Developers can add a single script tag or npm install and immediately use produc
 - ✓ Docusaurus documentation site with component API docs, examples, and usage guides — v1.0
 - ✓ GitHub Pages hosting for documentation — v1.0
 - ✓ GitHub Actions CI/CD for build, test, and docs deployment — v1.0
-
-## Current Milestone: v1.1 Visual Parity & Communication
-
-**Goal:** Achieve 1:1 visual/behavioral parity with original prototypes for sp-org-chart and sp-walkthrough, and port communication UI and core utility components.
-
-**Target features:**
-- Org chart: vertical indented list layout, full data model (firstName/lastName/email/phone/branch), drag preview, timed delete, branch filtering
-- Walkthrough: Tabler SVG icons, progress bar, skip ±10s, restart, popup scene list, vertical volume, custom captions, markdown text bubble, highlight animations
-- New components: sp-language-selector, sp-language-list, sp-voice-input-button, sp-communication-preferences, sp-splash, sp-popover
+- ✓ `<sp-org-chart>` 1:1 visual parity with original prototype (vertical list, full data model, drag/drop, branch filtering) — v1.1
+- ✓ `<sp-walkthrough>` 1:1 visual parity with original prototype (Tabler icons, progress bar, scene list, volume, captions, highlights) — v1.1
+- ✓ `<sp-popover>` viewport-aware positioning component with 6 placements and configurable dismiss — v1.1
+- ✓ `<sp-language-selector>` + `<sp-language-list>` ported from vanilla JS — v1.1
+- ✓ `<sp-voice-input-button>` ported from vanilla JS with state machine and animations — v1.1
+- ✓ `<sp-communication-preferences>` + `<sp-communication-list>` ported from vanilla JS — v1.1
+- ✓ `<sp-splash>` full-screen modal overlay ported from vanilla JS — v1.1
+- ✓ Updated Docusaurus docs for all new and changed components — v1.1
+- ✓ Tests for all new and refactored components (844 spec, 115 E2E, 89.65% coverage) — v1.1
 
 ### Active
 
-- [ ] `<sp-org-chart>` 1:1 visual parity with original prototype (vertical list layout, full data model, drag/drop behaviors)
-- [ ] `<sp-walkthrough>` 1:1 visual parity with original prototype (Tabler icons, progress bar, all controls, highlight animations)
-- [ ] `<sp-language-selector>` + `<sp-language-list>` ported from vanilla JS
-- [ ] `<sp-voice-input-button>` ported from vanilla JS
-- [ ] `<sp-communication-preferences>` (selector + list) ported from vanilla JS
-- [ ] `<sp-splash>` splash screen ported from vanilla JS
-- [ ] `<sp-popover>` positioning component ported from vanilla JS
-- [ ] Updated Docusaurus docs for new and changed components
-- [ ] Tests for all new and refactored components
+(None — next milestone not yet planned)
 
 ### Future
 
@@ -67,16 +59,20 @@ Developers can add a single script tag or npm install and immediately use produc
 
 ## Context
 
-Shipped v1.0 with ~21,300 LOC TypeScript/CSS across 155 files.
+Shipped v1.1 with ~28,600 LOC TypeScript/CSS across 112 modified files (+23,805 / -2,652 lines from v1.0).
 
 **Tech stack:** Stencil.js v4, TypeScript, Jest + Playwright, Docusaurus 3, GitHub Actions
-**Components:** 3 production-ready (`sp-org-chart`, `sp-walkthrough`, `sp-markdown-editor`), 7 more being ported in v1.1
+**Components:** 10 production-ready (`sp-org-chart`, `sp-walkthrough`, `sp-markdown-editor`, `sp-popover`, `sp-language-selector`, `sp-language-list`, `sp-voice-input-button`, `sp-communication-preferences`, `sp-communication-list`, `sp-splash`)
 **Distribution:** npm package + CDN (unpkg/jsdelivr) + GitHub Releases artifacts
-**Documentation:** Docusaurus site on GitHub Pages with live examples and auto-generated API docs
-**Test coverage:** 70% minimum enforced across all metrics; components render with sensible defaults when DWC theme is not loaded
+**Documentation:** Docusaurus site on GitHub Pages with live examples and auto-generated API docs for all 10 components
+**Test coverage:** 89.65% statement coverage (70% minimum enforced); 844 spec tests + 115 E2E tests
 **Peer dependencies:** marked, DOMPurify, Prism.js, Turndown (not bundled)
 
-**10+ components total:** v1.0 covers 3. The remaining components will be ported in future milestones.
+**Known tech debt (from v1.1 audit):**
+- `src/index.html` demo uses v1.0 data model for org chart
+- `getting-started.md` Quick Start uses stale v1.0 API shape
+- `languageChange` event name conflicts with native DOM `change` event in some host setups
+- 4 files with individual branch coverage below 70% (global threshold passes)
 
 ## Constraints
 
@@ -104,8 +100,11 @@ Shipped v1.0 with ~21,300 LOC TypeScript/CSS across 155 files.
 | Custom YouTube wrapper over video.js | 0kB vs 240kB+ dependency for walkthrough video | ✓ Good — minimal footprint |
 | WYSIWYG as preview-only (not contenteditable) | Avoids contenteditable complexity; source mode is primary editor | ✓ Good — simpler, reliable |
 | GitHub Releases over npm for distribution | Avoids npm publish complexity for initial release | ✓ Good — users install from GitHub artifact |
-
-| 1:1 visual parity over creative redesign | Original prototypes are the source of truth; Stencil ports must match visually | — Pending |
+| 1:1 visual parity over creative redesign | Original prototypes are the source of truth; Stencil ports must match visually | ✓ Good — faithful reproduction, consistent UX |
+| sp-popover as shared foundation | Built before language/comm components so all use same positioning engine | ✓ Good — 3 consumers share one popover |
+| State machine for voice button | 5 states (idle, hover-cue, language-select, listening, error) drive all CSS | ✓ Good — predictable, testable |
+| Local markdown-renderer copy in walkthrough | Avoids Stencil cross-component bundling issues | ✓ Good — isolated, no import side effects |
+| Flat channel list (no sections) | Only 6 channels; preferred/all grouping not needed unlike language list | ✓ Good — simpler UX |
 
 ---
-*Last updated: 2026-02-21 after v1.1 milestone start*
+*Last updated: 2026-02-22 after v1.1 milestone completion*
