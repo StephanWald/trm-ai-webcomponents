@@ -47,12 +47,12 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 
 ### Voice Input Button (VOIC)
 
-- [ ] **VOIC-01**: sp-voice-input-button renders as circular button (44px) with microphone SVG icon
-- [ ] **VOIC-02**: Hover triggers language cue with 2-second progress bar, then language dropdown appears
-- [ ] **VOIC-03**: Listening state changes button to red with pulse animation and blinking recording indicator
-- [ ] **VOIC-04**: Component emits start, stop, error, transcriptionUpdate, and languageChange events
-- [ ] **VOIC-05**: Error state triggers shake animation with error message display
-- [ ] **VOIC-06**: Mode indicator shows browser (globe) or AI (robot) icon based on mode prop
+- [x] **VOIC-01**: sp-voice-input-button renders as circular button (44px) with microphone SVG icon
+- [x] **VOIC-02**: Hover triggers language cue with 2-second progress bar, then language dropdown appears
+- [x] **VOIC-03**: Listening state changes button to red with pulse animation and blinking recording indicator
+- [x] **VOIC-04**: Component emits start, stop, error, transcriptionUpdate, and languageChange events
+- [x] **VOIC-05**: Error state triggers shake animation with error message display
+- [x] **VOIC-06**: Mode indicator shows browser (globe) or AI (robot) icon based on mode prop
 
 ### Communication Preferences (COMM)
 
@@ -156,12 +156,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LANG-04 | Phase 10 | Complete |
 | LANG-05 | Phase 10 | Complete |
 | LANG-06 | Phase 10 | Complete |
-| VOIC-01 | Phase 10 | Pending |
-| VOIC-02 | Phase 10 | Pending |
-| VOIC-03 | Phase 10 | Pending |
-| VOIC-04 | Phase 10 | Pending |
-| VOIC-05 | Phase 10 | Pending |
-| VOIC-06 | Phase 10 | Pending |
+| VOIC-01 | Phase 10 | Complete |
+| VOIC-02 | Phase 10 | Complete |
+| VOIC-03 | Phase 10 | Complete |
+| VOIC-04 | Phase 10 | Complete |
+| VOIC-05 | Phase 10 | Complete |
+| VOIC-06 | Phase 10 | Complete |
 | COMM-01 | Phase 11 | Pending |
 | COMM-02 | Phase 11 | Pending |
 | COMM-03 | Phase 11 | Pending |

@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Developers can add a single script tag or npm install and immediately use production-ready, self-contained Skillspilot UI components that look and behave consistently — without framework lock-in.
-**Current focus:** v1.1 — Phase 10: Language & Voice
+**Current focus:** v1.1 — Phase 10: Language & Voice (complete), moving to Phase 11
 
 ## Current Position
 
-Phase: 10 of 12 (language-voice)
-Plan: 1 of 2 in current phase (10-01 complete)
-Status: Phase 10 in progress — sp-language-selector and sp-language-list built
-Last activity: 2026-02-22 — Completed 10-01-PLAN.md: sp-language-selector + sp-language-list (28 languages, browser preferred detection, auto-hide, DWC tokens)
+Phase: 10 of 12 (language-voice) — COMPLETE
+Plan: 2 of 2 in current phase (both complete)
+Status: Phase 10 complete — sp-language-selector, sp-language-list, and sp-voice-input-button delivered
+Last activity: 2026-02-22 — Completed 10-02-PLAN.md: sp-voice-input-button (44px mic button, hover cue, red pulse, shake animation, mode indicator)
 
-Progress: [█████░░░░░] 35% (v1.1)
+Progress: [█████░░░░░] 40% (v1.1)
 
 ## Performance Metrics
 
 **Velocity (v1.1):**
-- Total plans completed: 8
-- Average duration: 10.5m
-- Total execution time: 87m
+- Total plans completed: 9
+- Average duration: 9.9m
+- Total execution time: 90m
 
 **By Phase:**
 
@@ -30,7 +30,7 @@ Progress: [█████░░░░░] 35% (v1.1)
 | 07-org-chart-parity | 3 | 52m | 17.3m |
 | 08-walkthrough-parity | 2 | 16m | 8m |
 | 09-popover-utility | 2 | 16m | 8m |
-| 10-language-voice | 1 | 3m | 3m |
+| 10-language-voice | 2 | 6m | 3m |
 
 *Updated after each plan completion*
 
@@ -71,6 +71,10 @@ v1.1 key decisions:
 - [Phase 10-01]: languageChange event name kept despite Stencil warning about native DOM conflict — plan requires this name, it is functional
 - [Phase 10-01]: renderMicrophoneIcon included in icons.tsx proactively for Plan 02 voice button reuse
 - [Phase 10-01]: Icon helpers as standalone exported TSX functions in utils/icons.tsx — not class methods
+- [Phase 10-02]: State machine (5 states) drives all CSS class application — currentState is single source of truth
+- [Phase 10-02]: Hover progress uses setInterval at 50ms steps for simplicity over requestAnimationFrame
+- [Phase 10-02]: Error auto-clear via setTimeout 3000ms; clearErrorTimer() called in disconnectedCallback
+- [Phase 10-02]: renderRobotIcon added to shared icons.tsx (not inline in voice button) — follows icons.tsx pattern
 
 ### Pending Todos
 
@@ -89,5 +93,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 10-01-PLAN.md (sp-language-selector + sp-language-list — Phase 10 Plan 1 complete)
+Stopped at: Completed 10-02-PLAN.md (sp-voice-input-button — Phase 10 complete, both plans done)
 Resume file: None
