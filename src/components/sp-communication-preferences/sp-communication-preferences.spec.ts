@@ -344,6 +344,63 @@ describe('sp-communication-preferences', () => {
 
       expect(() => page.rootInstance.disconnectedCallback()).not.toThrow();
     });
+
+    it('handleButtonClick when not disabled calls popoverRef.togglePopover()', async () => {
+      const page = await newSpecPage({
+        components: [SpCommunicationPreferences],
+        html: '<sp-communication-preferences></sp-communication-preferences>',
+      });
+
+      const togglePopover = jest.fn();
+      page.rootInstance['popoverRef'] = { togglePopover } as any;
+
+      page.rootInstance['handleButtonClick']();
+      await page.waitForChanges();
+
+      expect(togglePopover).toHaveBeenCalledTimes(1);
+    });
+
+    it('handleButtonClick when popoverRef is null does not throw', async () => {
+      const page = await newSpecPage({
+        components: [SpCommunicationPreferences],
+        html: '<sp-communication-preferences></sp-communication-preferences>',
+      });
+
+      // popoverRef starts null before DOM attachment
+      page.rootInstance['popoverRef'] = null;
+
+      expect(() => page.rootInstance['handleButtonClick']()).not.toThrow();
+    });
+
+    it('handleChannelSelected when popoverRef is null does not throw', async () => {
+      const page = await newSpecPage({
+        components: [SpCommunicationPreferences],
+        html: '<sp-communication-preferences></sp-communication-preferences>',
+      });
+
+      page.rootInstance['popoverRef'] = null;
+
+      expect(() =>
+        page.rootInstance['handleChannelSelected'](
+          new CustomEvent('preferenceChange', { detail: { channel: 'PHONE', label: 'Phone' } })
+        )
+      ).not.toThrow();
+    });
+
+    it('label falls back to selectedChannel when channelInfo is undefined', async () => {
+      const page = await newSpecPage({
+        components: [SpCommunicationPreferences],
+        html: '<sp-communication-preferences></sp-communication-preferences>',
+      });
+
+      // Force an unknown channel type that getChannelByType() will not find
+      // This exercises the `channelInfo?.label ?? this.selectedChannel` branch
+      (page.rootInstance as any).selectedChannel = 'UNKNOWN_CHANNEL';
+      await page.waitForChanges();
+
+      const label = page.root?.shadowRoot?.querySelector('.channel-label');
+      expect(label?.textContent).toBe('UNKNOWN_CHANNEL');
+    });
   });
 
 });
