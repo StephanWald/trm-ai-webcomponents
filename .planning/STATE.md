@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 
 ## Current Position
 
-Phase: 11 of 12 (communication-splash) — COMPLETE
-Plan: 3 of 3 complete (11-01: sp-communication-preferences and sp-communication-list; 11-02: sp-splash; 11-03: full test suite)
-Status: Phase 11 complete — all COMM and SPLS requirements validated by spec and E2E tests; 100% coverage on all component files
-Last activity: 2026-02-22 — Completed 11-03-PLAN.md: spec and E2E tests for all Phase 11 components (COMM-01..05 and SPLS-01..06 validated)
+Phase: 12 of 12 (docs-tests) — IN PROGRESS
+Plan: 2 of 3 complete (12-01: updated sp-org-chart and sp-walkthrough docs; 12-02: new component docs for sp-language-selector, sp-voice-input-button, sp-communication-preferences, sp-splash, sp-popover)
+Status: Phase 12 Plan 02 complete — all 8 component doc pages exist, sidebar and getting-started updated, docs build verified
+Last activity: 2026-02-22 — Completed 12-02-PLAN.md: created Docusaurus pages for 5 new v1.1 components, updated sidebar (8 components) and getting-started
 
-Progress: [██████░░░░] 50% (v1.1)
+Progress: [████████░░] 75% (v1.1)
 
 ## Performance Metrics
 
@@ -92,6 +92,8 @@ v1.1 key decisions:
 - [Phase 11-03]: Only parent selector component in newSpecPage components array — sp-popover and sp-communication-list render as uninflated stubs
 - [Phase 11-03]: popoverRef null-path branches covered by explicit null-stub tests — achieves 100% branch coverage on sp-communication-preferences.tsx
 - [Phase 11-03]: handleBackdropClick backdrop dismiss tested via mock event object with matching target/currentTarget (not real browser dispatch)
+- [Phase 12-02]: sp-popover.mdx created alongside 4 new component pages — sidebar reference to components/sp-popover would cause broken link without the MDX file
+- [Phase 12-02]: sp-splash examples use show() button trigger — full-screen overlay not visible in iframe without user-initiated show() call
 
 ### Pending Todos
 
@@ -110,5 +112,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 11-03-PLAN.md (spec and E2E tests for all Phase 11 components — Phase 11 complete; ready for Phase 12)
+Stopped at: Completed 12-02-PLAN.md (new Docusaurus component pages for sp-language-selector, sp-voice-input-button, sp-communication-preferences, sp-splash, sp-popover; sidebar and getting-started updated)
 Resume file: None

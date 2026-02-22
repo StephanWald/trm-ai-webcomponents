@@ -139,7 +139,7 @@ Plans:
 | 9. Popover Utility | 2/2 | Complete   | 2026-02-21 | - |
 | 10. Language & Voice | 3/3 | Complete    | 2026-02-22 | - |
 | 11. Communication & Splash | 3/3 | Complete    | 2026-02-22 | - |
-| 12. Docs & Tests | v1.1 | 0/3 | Not started | - |
+| 12. Docs & Tests | v1.1 | 2/3 | In Progress | - |
 
 ---
 *Roadmap created: 2026-01-31*

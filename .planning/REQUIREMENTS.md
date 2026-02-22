@@ -83,7 +83,7 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 ### Documentation & Testing (DOCS)
 
 - [ ] **DOCS-01**: Docusaurus API reference pages updated for refactored sp-org-chart and sp-walkthrough
-- [ ] **DOCS-02**: Docusaurus pages created for each new component (language-selector, voice-input-button, communication-preferences, splash, popover)
+- [x] **DOCS-02**: Docusaurus pages created for each new component (language-selector, voice-input-button, communication-preferences, splash, popover)
 - [ ] **DOCS-03**: Stencil spec and e2e tests written for all new and refactored components meeting 70% coverage threshold
 
 ## v2 Requirements
@@ -180,7 +180,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | POPV-05 | Phase 9 | Complete |
 | POPV-06 | Phase 9 | Complete |
 | DOCS-01 | Phase 12 | Pending |
-| DOCS-02 | Phase 12 | Pending |
+| DOCS-02 | Phase 12 | Complete |
 | DOCS-03 | Phase 12 | Pending |
 
 **Coverage:**
