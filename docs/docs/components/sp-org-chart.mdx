@@ -1,6 +1,6 @@
 ---
 title: sp-org-chart
-description: Hierarchical org chart with drag-and-drop reorganization, search/filter, and user selection.
+description: Hierarchical org chart with vertical indented layout, drag-and-drop reorganization, branch filtering, and timed delete.
 sidebar_position: 1
 ---
 
@@ -12,7 +12,9 @@ export const componentDocs = docsData.components.find(c => c.tag === 'sp-org-cha
 
 # sp-org-chart
 
-Hierarchical org chart web component with drag-and-drop reorganization, search/filter, user selection, and full keyboard navigation support. Pass an array of user objects via the `users` property; the component builds the hierarchy automatically from `reportsTo` relationships.
+Hierarchical org chart web component that renders a vertical indented list. Pass a flat array of user objects via the `users` property — the component builds the hierarchy automatically from `reportsTo` relationships. Supports drag-and-drop reorganization (editable on by default), branch filtering with highlight and isolate modes, timed delete via drag-hold, and full keyboard navigation.
+
+Users use the `{ id, firstName, lastName, email, phone, role, reportsTo, avatar }` shape. Branch entities are users without a `lastName` and can carry a `branchLogo` URL.
 
 ## Installation
 
@@ -32,66 +34,77 @@ Or load via script tag:
 
 ### Basic Org Chart
 
-A flat user array with `reportsTo` relationships. The component builds the hierarchy automatically.
+A flat user array with `reportsTo` relationships. The component builds the hierarchy automatically and renders it as a vertical indented list.
 
 <LiveExample height="340px" code={`
 <sp-org-chart id="chart1"></sp-org-chart>
 <script>
   const chart = document.getElementById('chart1');
   chart.users = [
-    { id: '1', name: 'Alice Johnson', title: 'CEO', department: 'Executive', avatarUrl: '' },
-    { id: '2', name: 'Bob Smith', title: 'CTO', department: 'Engineering', reportsTo: '1', avatarUrl: '' },
-    { id: '3', name: 'Carol White', title: 'CFO', department: 'Finance', reportsTo: '1', avatarUrl: '' },
-    { id: '4', name: 'Dave Lee', title: 'Lead Engineer', department: 'Engineering', reportsTo: '2', avatarUrl: '' },
-    { id: '5', name: 'Eve Davis', title: 'Engineer', department: 'Engineering', reportsTo: '4', avatarUrl: '' }
+    { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', email: 'alice@example.com' },
+    { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', email: 'bob@example.com', reportsTo: '1' },
+    { id: '3', firstName: 'Carol', lastName: 'White', role: 'CFO', email: 'carol@example.com', reportsTo: '1' },
+    { id: '4', firstName: 'Dave', lastName: 'Lee', role: 'Lead Engineer', email: 'dave@example.com', reportsTo: '2' },
+    { id: '5', firstName: 'Eve', lastName: 'Davis', role: 'Engineer', email: 'eve@example.com', reportsTo: '4' }
   ];
 </script>
 `} />
 
 ### Editable Mode
 
-Enable drag-and-drop reorganization with `editable="true"`. Users can long-press (500ms) on a tile and drag it to a new manager.
+Drag-and-drop reorganization is enabled by default (`editable` defaults to `true`). Long-press a tile for 500 ms, then drag it onto another tile to reassign a reporting relationship. Drag to the **Unlink** zone to remove the reporting line, or hold on the **Delete** zone for 4 seconds to delete the user.
 
 <LiveExample height="340px" code={`
-<sp-org-chart id="chart2" editable="true"></sp-org-chart>
+<sp-org-chart id="chart2"></sp-org-chart>
 <script>
   const chart = document.getElementById('chart2');
   chart.users = [
-    { id: '1', name: 'Alice Johnson', title: 'CEO', department: 'Executive', avatarUrl: '' },
-    { id: '2', name: 'Bob Smith', title: 'CTO', department: 'Engineering', reportsTo: '1', avatarUrl: '' },
-    { id: '3', name: 'Carol White', title: 'CFO', department: 'Finance', reportsTo: '1', avatarUrl: '' },
-    { id: '4', name: 'Dave Lee', title: 'Lead Engineer', department: 'Engineering', reportsTo: '2', avatarUrl: '' }
+    { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', email: 'alice@example.com' },
+    { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', email: 'bob@example.com', reportsTo: '1' },
+    { id: '3', firstName: 'Carol', lastName: 'White', role: 'CFO', email: 'carol@example.com', reportsTo: '1' },
+    { id: '4', firstName: 'Dave', lastName: 'Lee', role: 'Lead Engineer', email: 'dave@example.com', reportsTo: '2' }
   ];
 </script>
 `} />
 
-### Filtered View
+### Branch Filtering
 
-Use the search input to filter users by name, title, or department. Filtered results show the full ancestor chain so context is preserved.
+Use `filterMode` and `filterBranchId` to filter the org chart by branch. Branch entities are user objects without a `lastName` — the component's `isBranch()` type guard identifies them automatically.
 
-<LiveExample height="340px" code={`
-<sp-org-chart id="chart3"></sp-org-chart>
-<p style="margin-top:8px;font-size:0.85rem;color:#666">
-  Try typing "Engineering" in the search box above the chart.
-</p>
+- `filterMode="highlight"` — dims users not in the specified branch while keeping the full tree visible.
+- `filterMode="isolate"` — hides branch entities and users outside the specified branch entirely.
+
+<LiveExample height="400px" code={`
+<sp-org-chart id="chart3" filter-mode="highlight" filter-branch-id="branch-eng"></sp-org-chart>
+<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+  <button onclick="setFilter('none','')" style="padding:4px 12px;cursor:pointer">Show All</button>
+  <button onclick="setFilter('highlight','branch-eng')" style="padding:4px 12px;cursor:pointer">Highlight Engineering</button>
+  <button onclick="setFilter('isolate','branch-eng')" style="padding:4px 12px;cursor:pointer">Isolate Engineering</button>
+</div>
 <script>
   const chart = document.getElementById('chart3');
   chart.users = [
-    { id: '1', name: 'Alice Johnson', title: 'CEO', department: 'Executive', avatarUrl: '' },
-    { id: '2', name: 'Bob Smith', title: 'CTO', department: 'Engineering', reportsTo: '1', avatarUrl: '' },
-    { id: '3', name: 'Carol White', title: 'CFO', department: 'Finance', reportsTo: '1', avatarUrl: '' },
-    { id: '4', name: 'Dave Lee', title: 'Lead Engineer', department: 'Engineering', reportsTo: '2', avatarUrl: '' },
-    { id: '5', name: 'Frank Brown', title: 'Accountant', department: 'Finance', reportsTo: '3', avatarUrl: '' }
+    { id: 'branch-eng', firstName: 'Engineering', role: 'Branch', branchLogo: '' },
+    { id: 'branch-fin', firstName: 'Finance', role: 'Branch', branchLogo: '' },
+    { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', email: 'alice@example.com', branchId: 'branch-eng' },
+    { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', email: 'bob@example.com', reportsTo: '1', branchId: 'branch-eng' },
+    { id: '3', firstName: 'Carol', lastName: 'White', role: 'CFO', email: 'carol@example.com', reportsTo: '1', branchId: 'branch-fin' },
+    { id: '4', firstName: 'Dave', lastName: 'Lee', role: 'Lead Engineer', email: 'dave@example.com', reportsTo: '2', branchId: 'branch-eng' }
   ];
+
+  function setFilter(mode, branchId) {
+    chart.filterMode = mode;
+    chart.filterBranchId = branchId;
+  }
 </script>
 `} />
 
 ### Event Handling
 
-Listen to `user-click`, `user-dblclick`, `user-delete`, and `hierarchy-change` events emitted by the component.
+Listen to `user-click`, `user-dblclick`, `hierarchy-change`, and `user-delete` events emitted by the component. Event names follow DOM kebab-case convention.
 
 <LiveExample height="380px" code={`
-<sp-org-chart id="chart4" editable="true"></sp-org-chart>
+<sp-org-chart id="chart4"></sp-org-chart>
 <div id="log" style="margin-top:8px;padding:8px;background:#f5f5f5;border-radius:4px;font-family:monospace;font-size:0.8rem;min-height:60px;"></div>
 <script>
   const chart = document.getElementById('chart4');
@@ -106,14 +119,15 @@ Listen to `user-click`, `user-dblclick`, `user-delete`, and `hierarchy-change` e
   }
 
   chart.users = [
-    { id: '1', name: 'Alice Johnson', title: 'CEO', department: 'Executive', avatarUrl: '' },
-    { id: '2', name: 'Bob Smith', title: 'CTO', department: 'Engineering', reportsTo: '1', avatarUrl: '' },
-    { id: '3', name: 'Carol White', title: 'CFO', department: 'Finance', reportsTo: '1', avatarUrl: '' }
+    { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', email: 'alice@example.com' },
+    { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', email: 'bob@example.com', reportsTo: '1' },
+    { id: '3', firstName: 'Carol', lastName: 'White', role: 'CFO', email: 'carol@example.com', reportsTo: '1' }
   ];
 
-  chart.addEventListener('userClick', e => addLog('userClick: ' + e.detail.name));
-  chart.addEventListener('userDblclick', e => addLog('userDblclick: ' + e.detail.name));
-  chart.addEventListener('hierarchyChange', e => addLog('hierarchyChange: ' + JSON.stringify(e.detail).substring(0, 60)));
+  chart.addEventListener('userClick', e => addLog('userClick: ' + e.detail.user.firstName + ' ' + e.detail.user.lastName));
+  chart.addEventListener('userDblclick', e => addLog('userDblclick: ' + e.detail.user.firstName + ' ' + e.detail.user.lastName));
+  chart.addEventListener('hierarchyChange', e => addLog('hierarchyChange: userId=' + e.detail.userId + ' newManager=' + e.detail.newManagerId));
+  chart.addEventListener('userDelete', e => addLog('userDelete: ' + e.detail.user.firstName + ' ' + e.detail.user.lastName));
 </script>
 `} />
 
@@ -128,10 +142,10 @@ Apply the `theme-dark` class (or set the `theme` attribute) to switch to the dar
 <script>
   const chart = document.getElementById('chart5');
   chart.users = [
-    { id: '1', name: 'Alice Johnson', title: 'CEO', department: 'Executive', avatarUrl: '' },
-    { id: '2', name: 'Bob Smith', title: 'CTO', department: 'Engineering', reportsTo: '1', avatarUrl: '' },
-    { id: '3', name: 'Carol White', title: 'CFO', department: 'Finance', reportsTo: '1', avatarUrl: '' },
-    { id: '4', name: 'Dave Lee', title: 'Lead Engineer', department: 'Engineering', reportsTo: '2', avatarUrl: '' }
+    { id: '1', firstName: 'Alice', lastName: 'Johnson', role: 'CEO', email: 'alice@example.com' },
+    { id: '2', firstName: 'Bob', lastName: 'Smith', role: 'CTO', email: 'bob@example.com', reportsTo: '1' },
+    { id: '3', firstName: 'Carol', lastName: 'White', role: 'CFO', email: 'carol@example.com', reportsTo: '1' },
+    { id: '4', firstName: 'Dave', lastName: 'Lee', role: 'Lead Engineer', email: 'dave@example.com', reportsTo: '2' }
   ];
 </script>
 `} />

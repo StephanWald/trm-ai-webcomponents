@@ -1,6 +1,6 @@
 ---
 title: sp-walkthrough
-description: Interactive video walkthrough component with scene timeline, DOM element highlighting, and author mode.
+description: Interactive video walkthrough component with Tabler icons, progress bar, skip/restart, scene list popup, volume popup, custom caption overlay, and author mode.
 sidebar_position: 2
 ---
 
@@ -12,11 +12,25 @@ export const componentDocs = docsData.components.find(c => c.tag === 'sp-walkthr
 
 # sp-walkthrough
 
-Interactive video walkthrough component that overlays timed scenes on a video. Each scene can highlight a DOM element, display a caption, and auto-advance on a timeline. Includes author mode for creating walkthroughs by pointing and clicking elements on the page.
+Interactive video walkthrough component that overlays timed scenes on a video. Each scene can highlight a DOM element, display a markdown-formatted caption, and auto-advance on a timeline. Includes author mode for creating walkthroughs by pointing and clicking elements on the page.
 
 :::info Preview Limitation
 Walkthrough examples below use a text-only mode (no video source) to demonstrate scene-based navigation. Full video playback requires an MP4 source and does not work inside documentation iframes. The component's full functionality — video sync, DOM highlighting, and captions — is available when used in a real application.
 :::
+
+## Features
+
+v1.1 ships a single-row controls bar that doubles as a drag handle for repositioning the floating panel. Key features:
+
+- **Tabler SVG icons** — All controls use inline SVG icons drawn in the Tabler style (play, pause, skip ±10 s, restart, scene list, volume, captions, close, previous/next scene).
+- **Progress bar** — Clickable seek bar showing current playback position. Visible only when a `videoSrc` is provided.
+- **Skip ±10 seconds** — Dedicated back and forward buttons to skip 10 seconds in the video.
+- **Restart** — Resets the video to 0:00 and returns to the first scene. Available in both manual and video modes.
+- **Scene list popup** — A custom popup (not a native `<select>`) listing all scenes by title and timestamp. Click any scene to jump directly to it.
+- **Volume slider popup** — Vertical slider popup with mute toggle. Opens above the volume button.
+- **Custom caption overlay** — Renders WebVTT captions inside the component (not as native browser subtitles) so they match the DWC design token theme. TextTrack mode is always `'hidden'`; cue text is read programmatically.
+- **Markdown in scene descriptions** — Scene `description` fields are rendered as HTML via a built-in Markdown renderer. Use bold, italic, lists, and code blocks in your captions.
+- **Highlight glow animations** — When a scene targets a DOM element via `highlightSelector`, the component injects a `@keyframes` glow animation into the document head (idempotent — only injected once).
 
 ## Installation
 
@@ -36,7 +50,7 @@ Or load via script tag:
 
 ### Basic Walkthrough (Manual Navigation)
 
-A walkthrough with no video — scenes advance manually via the Next/Prev buttons. Useful for UI tours without a recorded video.
+A walkthrough with no video — scenes advance manually via the Previous / Next buttons. Useful for UI tours without a recorded video. The restart button resets to scene 1 at any time.
 
 <LiveExample height="300px" code={`
 <sp-walkthrough id="wt1"></sp-walkthrough>
@@ -46,16 +60,16 @@ A walkthrough with no video — scenes advance manually via the Next/Prev button
 <script>
   const wt = document.getElementById('wt1');
   wt.scenes = [
-    { id: 's1', caption: 'Welcome! This walkthrough shows you around the interface.', startTime: 0, endTime: 3 },
-    { id: 's2', caption: 'Step 2: Click the menu button to open the navigation panel.', startTime: 3, endTime: 6 },
-    { id: 's3', caption: 'Step 3: Select your workspace from the list on the left.', startTime: 6, endTime: 9 }
+    { id: 's1', title: 'Welcome', caption: 'Welcome! This walkthrough shows you around the interface.', startTime: 0, endTime: 3 },
+    { id: 's2', title: 'Navigation', caption: 'Step 2: Click the menu button to open the navigation panel.', startTime: 3, endTime: 6 },
+    { id: 's3', title: 'Workspace', caption: 'Step 3: Select your workspace from the list on the left.', startTime: 6, endTime: 9 }
   ];
 </script>
 `} />
 
 ### Author Mode
 
-Enable author mode with `author-mode="true"` to create new scenes by clicking DOM elements. The component activates a pointer tool and records element selectors into the scene timeline.
+Enable author mode with `author-mode="true"` to create new scenes by clicking DOM elements. The component activates a crosshair pointer tool and records CSS element selectors into the scene timeline. Use the scene list panel to edit, reorder, and delete scenes, then listen to `timeline-updated` to persist changes.
 
 <LiveExample height="300px" code={`
 <p id="para1" style="padding:8px;border:1px solid #ddd;border-radius:4px">
@@ -69,7 +83,7 @@ Enable author mode with `author-mode="true"` to create new scenes by clicking DO
 <script>
   const wt = document.getElementById('wt2');
   wt.scenes = [
-    { id: 's1', caption: 'Author mode active — click elements to record selector targets.', startTime: 0, endTime: 5 }
+    { id: 's1', title: 'Start', caption: 'Author mode active — click elements to record selector targets.', startTime: 0, endTime: 5 }
   ];
 </script>
 `} />
@@ -97,13 +111,13 @@ Listen to `walkthrough-shown`, `walkthrough-hidden`, `scene-changed`, and `timel
   }
 
   wt.scenes = [
-    { id: 's1', caption: 'Scene 1: Introduction', startTime: 0, endTime: 4 },
-    { id: 's2', caption: 'Scene 2: Main feature overview', startTime: 4, endTime: 8 }
+    { id: 's1', title: 'Scene 1', caption: 'Scene 1: Introduction', startTime: 0, endTime: 4 },
+    { id: 's2', title: 'Scene 2', caption: 'Scene 2: Main feature overview', startTime: 4, endTime: 8 }
   ];
 
   wt.addEventListener('walkthroughShown', () => addLog('walkthroughShown'));
   wt.addEventListener('walkthroughHidden', () => addLog('walkthroughHidden'));
-  wt.addEventListener('sceneChanged', e => addLog('sceneChanged: scene ' + e.detail?.id));
+  wt.addEventListener('sceneChanged', e => addLog('sceneChanged: scene ' + e.detail?.sceneId));
   wt.addEventListener('timelineUpdated', e => addLog('timelineUpdated: ' + e.detail?.scenes?.length + ' scenes'));
 </script>
 `} />
@@ -123,8 +137,8 @@ Use the component's methods (`show()`, `hide()`, `play()`, `pause()`, `restart()
 <script>
   const wt = document.getElementById('wt4');
   wt.scenes = [
-    { id: 's1', caption: 'Scene 1: Use the buttons above to control this walkthrough.', startTime: 0, endTime: 5 },
-    { id: 's2', caption: 'Scene 2: The walkthrough can be hidden or aborted at any time.', startTime: 5, endTime: 10 }
+    { id: 's1', title: 'Scene 1', caption: 'Scene 1: Use the buttons above to control this walkthrough.', startTime: 0, endTime: 5 },
+    { id: 's2', title: 'Scene 2', caption: 'Scene 2: The walkthrough can be hidden or aborted at any time.', startTime: 5, endTime: 10 }
   ];
 </script>
 `} />
