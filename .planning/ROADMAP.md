@@ -30,7 +30,7 @@
 - [x] **Phase 9: Popover Utility** — Deliver sp-popover as a reusable viewport-aware positioning foundation (completed 2026-02-21)
 - [x] **Phase 10: Language & Voice** — Port sp-language-selector, sp-language-list, and sp-voice-input-button (completed 2026-02-22)
 - [x] **Phase 11: Communication & Splash** — Port sp-communication-preferences and sp-splash (completed 2026-02-22)
-- [ ] **Phase 12: Docs & Tests** — Complete documentation and test coverage for all v1.1 components
+- [x] **Phase 12: Docs & Tests** — Complete documentation and test coverage for all v1.1 components (completed 2026-02-22)
 
 ## Phase Details
 
@@ -139,7 +139,7 @@ Plans:
 | 9. Popover Utility | 2/2 | Complete   | 2026-02-21 | - |
 | 10. Language & Voice | 3/3 | Complete    | 2026-02-22 | - |
 | 11. Communication & Splash | 3/3 | Complete    | 2026-02-22 | - |
-| 12. Docs & Tests | 2/3 | In Progress|  | - |
+| 12. Docs & Tests | 3/3 | Complete   | 2026-02-22 | - |
 
 ---
 *Roadmap created: 2026-01-31*

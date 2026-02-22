@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 
 ## Current Position
 
-Phase: 12 of 12 (docs-tests) — IN PROGRESS
-Plan: 2 of 3 complete (12-01: updated sp-org-chart, sp-walkthrough, sp-popover docs for v1.1 API; 12-02: new component docs for sp-language-selector, sp-voice-input-button, sp-communication-preferences, sp-splash)
-Status: Phase 12 Plans 01 and 02 complete — all 8 component doc pages exist, sidebar and getting-started updated, sp-org-chart/sp-walkthrough reflect v1.1 API, docs build verified
-Last activity: 2026-02-22 — Completed 12-01-PLAN.md: updated sp-org-chart/sp-walkthrough for v1.1 API and expanded sp-popover docs with comprehensive examples
+Phase: 12 of 12 (docs-tests) — COMPLETE
+Plan: 3 of 3 complete (12-01: updated sp-org-chart, sp-walkthrough, sp-popover docs for v1.1 API; 12-02: new component docs for sp-language-selector, sp-voice-input-button, sp-communication-preferences, sp-splash; 12-03: verified build, 844 spec tests pass at 89.65% coverage, 115 E2E tests pass, docs site builds)
+Status: Phase 12 COMPLETE — all 3 plans done; v1.1 milestone complete with full test coverage and docs
+Last activity: 2026-02-22 — Completed 12-03-PLAN.md: verified build, spec/E2E tests, coverage threshold, and docs site build
 
-Progress: [████████░░] 75% (v1.1)
+Progress: [██████████] 100% (v1.1)
 
 ## Performance Metrics
 
@@ -37,6 +37,8 @@ Progress: [████████░░] 75% (v1.1)
 | Phase 11-communication-splash P02 | 10 | 2 tasks | 4 files |
 | Phase 11-communication-splash P03 | 5 | 2 tasks | 5 files |
 | Phase 12-docs-tests P01 | 3 | 2 tasks | 3 files |
+| Phase 12-docs-tests P02 | 3 | 2 tasks | 5 files |
+| Phase 12-docs-tests P03 | 5 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -97,6 +99,8 @@ v1.1 key decisions:
 - [Phase 12-02]: sp-splash examples use show() button trigger — full-screen overlay not visible in iframe without user-initiated show() call
 - [Phase 12-docs-tests]: sp-popover.mdx existed as Phase 09 stub; updated in place with richer examples rather than creating new file
 - [Phase 12-docs-tests]: Branch filtering example uses two branch entities (Engineering/Finance) to demonstrate contrast between highlight and isolate modes
+- [Phase 12-03]: puppeteer@20 installed as devDep — stencil test --e2e requires it even though the actual E2E runner is npm run test.e2e (playwright test)
+- [Phase 12-03]: page.waitForFunction pattern for E2E shadow DOM queries — poll until element exists to prevent flaky test when 8 workers start simultaneously against freshly-started dev server
 
 ### Pending Todos
 
@@ -115,5 +119,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 12-01-PLAN.md (updated sp-org-chart/sp-walkthrough for v1.1 API, expanded sp-popover docs; Plans 01 and 02 of Phase 12 complete; ready for Plan 03)
+Stopped at: Completed 12-03-PLAN.md (build, spec/E2E tests, coverage, docs site all verified; Phase 12 COMPLETE; v1.1 milestone complete)
 Resume file: None
