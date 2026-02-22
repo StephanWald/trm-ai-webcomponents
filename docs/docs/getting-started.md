@@ -93,7 +93,7 @@ Install all peer dependencies at once:
 npm install marked dompurify prismjs turndown
 ```
 
-The other components (`sp-org-chart`, `sp-walkthrough`) have no peer dependencies.
+The other components (`sp-org-chart`, `sp-walkthrough`, `sp-popover`, `sp-language-selector`, `sp-voice-input-button`, `sp-communication-preferences`, `sp-splash`) have no peer dependencies.
 
 ## Browser Support
 
@@ -110,3 +110,8 @@ All components use the Web Components standard (Custom Elements v1, Shadow DOM v
 - [sp-org-chart](./components/sp-org-chart) — Hierarchical org chart with drag-and-drop
 - [sp-walkthrough](./components/sp-walkthrough) — Interactive video walkthrough component
 - [sp-markdown-editor](./components/sp-markdown-editor) — Full-featured markdown editor
+- [sp-popover](./components/sp-popover) — Viewport-aware popover positioning
+- [sp-language-selector](./components/sp-language-selector) — Language selection dropdown
+- [sp-voice-input-button](./components/sp-voice-input-button) — Voice input with speech recognition
+- [sp-communication-preferences](./components/sp-communication-preferences) — Communication channel selector
+- [sp-splash](./components/sp-splash) — Full-screen splash modal overlay

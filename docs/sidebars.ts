@@ -31,6 +31,31 @@ const sidebars: SidebarsConfig = {
           id: 'components/sp-markdown-editor',
           label: 'sp-markdown-editor',
         },
+        {
+          type: 'doc',
+          id: 'components/sp-popover',
+          label: 'sp-popover',
+        },
+        {
+          type: 'doc',
+          id: 'components/sp-language-selector',
+          label: 'sp-language-selector',
+        },
+        {
+          type: 'doc',
+          id: 'components/sp-voice-input-button',
+          label: 'sp-voice-input-button',
+        },
+        {
+          type: 'doc',
+          id: 'components/sp-communication-preferences',
+          label: 'sp-communication-preferences',
+        },
+        {
+          type: 'doc',
+          id: 'components/sp-splash',
+          label: 'sp-splash',
+        },
       ],
     },
     {
