@@ -1,0 +1,235 @@
+/* ============================================================
+   sp-voice-input-button — DWC-themed circular microphone button
+   ============================================================ */
+
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+/* ---- Core button (VOIC-01: 44px circular) ---- */
+
+.voice-button {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--dwc-border-radius-full, 9999px);
+  border: 2px solid var(--dwc-color-border, #d1d5db);
+  background: var(--dwc-color-surface, #ffffff);
+  color: var(--dwc-color-text, #1a1a1a);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: visible;
+  transition: all var(--dwc-transition-base, 150ms ease);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.voice-button:hover:not(:disabled) {
+  border-color: var(--dwc-color-primary, #4f46e5);
+  background: var(--dwc-color-surface-secondary, #f9fafb);
+}
+
+.voice-button:disabled,
+.voice-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- Listening state: red pulse animation (VOIC-03) ---- */
+
+.voice-button.listening {
+  border-color: var(--dwc-color-danger, #dc3545);
+  background: rgba(220, 53, 69, 0.1);
+  color: var(--dwc-color-danger, #dc3545);
+  animation: sp-voice-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes sp-voice-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+  }
+}
+
+/* ---- Error state: shake animation (VOIC-05) ---- */
+
+.voice-button.error {
+  border-color: var(--dwc-color-danger, #dc3545);
+  animation: sp-voice-shake 0.5s ease-in-out;
+}
+
+@keyframes sp-voice-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-4px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+/* ---- Progress bar: hover cue animation (VOIC-02) ---- */
+
+.progress-bar {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--dwc-color-border, #d1d5db);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--dwc-transition-fast, 100ms ease);
+  pointer-events: none;
+}
+
+.progress-bar.visible {
+  opacity: 1;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--dwc-color-primary, #4f46e5);
+  border-radius: 2px;
+  transition: width 50ms linear;
+}
+
+/* ---- Recording indicator: blinking red dot (VOIC-03) ---- */
+
+.recording-indicator {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dwc-color-danger, #dc3545);
+  animation: sp-voice-blink 1s ease-in-out infinite;
+  display: none;
+  pointer-events: none;
+}
+
+.recording-indicator.visible {
+  display: block;
+}
+
+@keyframes sp-voice-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ---- Mode indicator badge (VOIC-06) ---- */
+
+.mode-indicator {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--dwc-color-surface, #ffffff);
+  border: 1px solid var(--dwc-color-border, #d1d5db);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+  pointer-events: none;
+}
+
+/* ---- Error message below button (VOIC-05) ---- */
+
+.error-message {
+  position: absolute;
+  top: calc(100% + var(--dwc-spacing-xs, 4px));
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: var(--dwc-font-size-xs, 0.75rem);
+  color: var(--dwc-color-danger, #dc3545);
+  font-family: var(--dwc-font-family, system-ui, -apple-system, sans-serif);
+  padding: var(--dwc-spacing-xs, 4px) var(--dwc-spacing-sm, 8px);
+  background: var(--dwc-color-surface, #ffffff);
+  border: 1px solid var(--dwc-color-danger, #dc3545);
+  border-radius: var(--dwc-border-radius-sm, 4px);
+  display: none;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.error-message.visible {
+  display: block;
+}
+
+/* ---- Compact mode ---- */
+
+:host(.compact) .voice-button {
+  width: 36px;
+  height: 36px;
+}
+
+/* ---- Theme overrides ---- */
+
+:host(.theme-light) .voice-button {
+  background: #ffffff;
+  color: #1a1a1a;
+  border-color: #d1d5db;
+}
+
+:host(.theme-light) .voice-button:hover:not(:disabled) {
+  border-color: #4f46e5;
+  background: #f9fafb;
+}
+
+:host(.theme-light) .mode-indicator {
+  background: #ffffff;
+  border-color: #d1d5db;
+}
+
+:host(.theme-light) .error-message {
+  background: #ffffff;
+}
+
+:host(.theme-dark) .voice-button {
+  background: #1f2937;
+  color: #f9fafb;
+  border-color: #374151;
+}
+
+:host(.theme-dark) .voice-button:hover:not(:disabled) {
+  border-color: #818cf8;
+  background: #111827;
+}
+
+:host(.theme-dark) .mode-indicator {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+:host(.theme-dark) .error-message {
+  background: #1f2937;
+}

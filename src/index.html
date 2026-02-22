@@ -105,6 +105,36 @@
   </div>
 
   <div class="demo-section" style="grid-column: 1 / -1;">
+    <h2>Voice Input Button</h2>
+    <p>Circular 44px microphone button. Hover triggers a 2-second progress bar cue then opens a language dropdown. Listening state shows a red pulse animation and blinking indicator. Mode indicator shows globe (browser) or robot (AI).</p>
+    <div style="display: flex; gap: 1.5rem; align-items: flex-start; padding: 1rem 0 2rem;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+        <sp-voice-input-button id="voiceDemo"></sp-voice-input-button>
+        <span style="font-size: 0.75rem; color: #666;">Browser mode</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+        <sp-voice-input-button id="voiceDemoAI" mode="ai"></sp-voice-input-button>
+        <span style="font-size: 0.75rem; color: #666;">AI mode</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+        <sp-voice-input-button id="voiceDemoCompact" compact="true"></sp-voice-input-button>
+        <span style="font-size: 0.75rem; color: #666;">Compact</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+        <sp-voice-input-button id="voiceDemoDisabled" disabled="true"></sp-voice-input-button>
+        <span style="font-size: 0.75rem; color: #666;">Disabled</span>
+      </div>
+    </div>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+      <button onclick="document.getElementById('voiceDemo').startListening()">startListening()</button>
+      <button onclick="document.getElementById('voiceDemo').stopListening()">stopListening()</button>
+      <button onclick="document.getElementById('voiceDemo').setError('Microphone not found')">setError()</button>
+      <button onclick="document.getElementById('voiceDemo').emitTranscription('Hello world', true)">emitTranscription()</button>
+    </div>
+    <div id="voiceEventLog" style="margin-top: 0.5rem; padding: 0.5rem; background: #f5f5f5; border-radius: 4px; font-family: monospace; font-size: 0.75rem; min-height: 2rem;">voice events will appear here...</div>
+  </div>
+
+  <div class="demo-section" style="grid-column: 1 / -1;">
     <h2>OrgChart Component</h2>
     <p>Hierarchical organization chart with drag-and-drop, filtering, and selection. Toggle editable mode with checkbox.</p>
     <label style="margin-bottom: 1rem; display: block;">
@@ -138,6 +168,23 @@
   </div>
 
   <script>
+    // Voice input button demo
+    const voiceDemo = document.getElementById('voiceDemo');
+    const voiceDemoAI = document.getElementById('voiceDemoAI');
+    const voiceEventLog = document.getElementById('voiceEventLog');
+
+    function logVoiceEvent(name, detail) {
+      voiceEventLog.textContent = `[${new Date().toLocaleTimeString()}] ${name}: ${JSON.stringify(detail || {})}`;
+    }
+
+    [voiceDemo, voiceDemoAI].forEach(el => {
+      el.addEventListener('voiceStart', (e) => logVoiceEvent('voiceStart', e.detail));
+      el.addEventListener('voiceStop', (e) => logVoiceEvent('voiceStop', e.detail));
+      el.addEventListener('voiceError', (e) => logVoiceEvent('voiceError', e.detail));
+      el.addEventListener('transcriptionUpdate', (e) => logVoiceEvent('transcriptionUpdate', e.detail));
+      el.addEventListener('languageChange', (e) => logVoiceEvent('languageChange', e.detail));
+    });
+
     // Language selector demo
     const langSelectorDemo = document.getElementById('langSelectorDemo');
     const langEventLog = document.getElementById('langEventLog');
