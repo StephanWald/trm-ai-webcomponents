@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Developers can add a single script tag or npm install and immediately use production-ready, self-contained Skillspilot UI components that look and behave consistently — without framework lock-in.
-**Current focus:** v1.1 — Phase 11: Communication Splash (in progress)
+**Current focus:** v1.1 — Phase 11: Communication Splash (complete) / Phase 12: Testing
 
 ## Current Position
 
-Phase: 11 of 12 (communication-splash) — IN PROGRESS
-Plan: 2 of 3 complete (11-01: sp-communication-preferences and sp-communication-list; 11-02: sp-splash)
-Status: Phase 11 plan 02 complete — sp-splash full-screen modal overlay with backdrop blur, gradient header, named slots, and dismiss animations
-Last activity: 2026-02-22 — Completed 11-02-PLAN.md: sp-splash component (SPLS-01 through SPLS-06 satisfied)
+Phase: 11 of 12 (communication-splash) — COMPLETE
+Plan: 3 of 3 complete (11-01: sp-communication-preferences and sp-communication-list; 11-02: sp-splash; 11-03: full test suite)
+Status: Phase 11 complete — all COMM and SPLS requirements validated by spec and E2E tests; 100% coverage on all component files
+Last activity: 2026-02-22 — Completed 11-03-PLAN.md: spec and E2E tests for all Phase 11 components (COMM-01..05 and SPLS-01..06 validated)
 
-Progress: [█████░░░░░] 42% (v1.1)
+Progress: [██████░░░░] 50% (v1.1)
 
 ## Performance Metrics
 
@@ -35,6 +35,7 @@ Progress: [█████░░░░░] 42% (v1.1)
 *Updated after each plan completion*
 | Phase 11-communication-splash P01 | 4 | 3 tasks | 8 files |
 | Phase 11-communication-splash P02 | 10 | 2 tasks | 4 files |
+| Phase 11-communication-splash P03 | 5 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,9 @@ v1.1 key decisions:
 - [Phase 11-02]: CSS stub created in Task 1 (not Task 2) — Stencil rollup requires the CSS file at build time before styles are written
 - [Phase 11-02]: handleBackdropClick uses event.target === event.currentTarget to prevent container-child clicks from dismissing the splash
 - [Phase 11-02]: componentDidLoad() syncs initial open=true for sp-splash — Stencil @Watch does not fire for initial prop values (same as sp-popover pattern)
+- [Phase 11-03]: Only parent selector component in newSpecPage components array — sp-popover and sp-communication-list render as uninflated stubs
+- [Phase 11-03]: popoverRef null-path branches covered by explicit null-stub tests — achieves 100% branch coverage on sp-communication-preferences.tsx
+- [Phase 11-03]: handleBackdropClick backdrop dismiss tested via mock event object with matching target/currentTarget (not real browser dispatch)
 
 ### Pending Todos
 
@@ -106,5 +110,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 11-02-PLAN.md (sp-splash full-screen modal overlay — Phase 11 plan 2 of 3 done)
+Stopped at: Completed 11-03-PLAN.md (spec and E2E tests for all Phase 11 components — Phase 11 complete; ready for Phase 12)
 Resume file: None

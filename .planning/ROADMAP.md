@@ -29,7 +29,7 @@
 - [x] **Phase 8: Walkthrough Parity** — Upgrade sp-walkthrough to match original prototype controls, animations, and rendering (completed 2026-02-21)
 - [x] **Phase 9: Popover Utility** — Deliver sp-popover as a reusable viewport-aware positioning foundation (completed 2026-02-21)
 - [x] **Phase 10: Language & Voice** — Port sp-language-selector, sp-language-list, and sp-voice-input-button (completed 2026-02-22)
-- [ ] **Phase 11: Communication & Splash** — Port sp-communication-preferences and sp-splash
+- [x] **Phase 11: Communication & Splash** — Port sp-communication-preferences and sp-splash (completed 2026-02-22)
 - [ ] **Phase 12: Docs & Tests** — Complete documentation and test coverage for all v1.1 components
 
 ## Phase Details
@@ -134,7 +134,7 @@ Plans:
 | 8. Walkthrough Parity | 2/2 | Complete   | 2026-02-21 | - |
 | 9. Popover Utility | 2/2 | Complete   | 2026-02-21 | - |
 | 10. Language & Voice | 3/3 | Complete    | 2026-02-22 | - |
-| 11. Communication & Splash | 2/3 | In Progress|  | - |
+| 11. Communication & Splash | 3/3 | Complete   | 2026-02-22 | - |
 | 12. Docs & Tests | v1.1 | 0/TBD | Not started | - |
 
 ---
