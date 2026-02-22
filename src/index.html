@@ -135,6 +135,46 @@
   </div>
 
   <div class="demo-section" style="grid-column: 1 / -1;">
+    <h2>Splash Screen</h2>
+    <p>Full-screen modal overlay with backdrop blur, gradient header, named content slots, and fade/slide animations. Supports close button, Escape key, and backdrop click to dismiss.</p>
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem;">
+      <button id="showSplashBtn">Show Splash</button>
+      <button id="showSplashDarkBtn">Show Splash (Dark)</button>
+      <button id="showSplashProgrammaticBtn">Show Splash (Programmatic)</button>
+    </div>
+
+    <!-- Light/default splash -->
+    <sp-splash id="splashDemo">
+      <div slot="logo" style="font-size: 3rem; line-height: 1;">&#127795;</div>
+      <span slot="title">Welcome to Skillspilot</span>
+      <span slot="subtitle">Your AI-powered learning companion</span>
+      <div slot="body">
+        <p style="margin: 0 0 0.75rem;">Skillspilot helps you master new skills faster with personalized AI-driven learning paths tailored to your goals and learning style.</p>
+        <p style="margin: 0;">Get started by selecting your preferred language and exploring the interactive walkthrough.</p>
+      </div>
+      <div slot="footer">
+        <button onclick="document.getElementById('splashDemo').hide()" style="padding: 0.6rem 2rem; background: #1976d2; color: #fff; border: none; border-radius: 6px; font-size: 0.875rem; cursor: pointer; font-weight: 600;">Get Started</button>
+      </div>
+    </sp-splash>
+
+    <!-- Dark splash -->
+    <sp-splash id="splashDemoDark" theme="dark">
+      <div slot="logo" style="font-size: 3rem; line-height: 1;">&#127795;</div>
+      <span slot="title">Welcome to Skillspilot</span>
+      <span slot="subtitle">Dark theme variant</span>
+      <div slot="body">
+        <p style="margin: 0 0 0.75rem;">This is the dark theme variant of the splash screen. All colors adapt to the dark surface tokens automatically.</p>
+        <p style="margin: 0;">The gradient header, body, and footer all respond to the theme attribute.</p>
+      </div>
+      <div slot="footer">
+        <button onclick="document.getElementById('splashDemoDark').hide()" style="padding: 0.6rem 2rem; background: #42a5f5; color: #fff; border: none; border-radius: 6px; font-size: 0.875rem; cursor: pointer; font-weight: 600;">Continue</button>
+      </div>
+    </sp-splash>
+
+    <div id="splashEventLog" style="margin-top: 0.5rem; padding: 0.5rem; background: #f5f5f5; border-radius: 4px; font-family: monospace; font-size: 0.75rem; min-height: 2rem;">splashClose events will appear here...</div>
+  </div>
+
+  <div class="demo-section" style="grid-column: 1 / -1;">
     <h2>OrgChart Component</h2>
     <p>Hierarchical organization chart with drag-and-drop, filtering, and selection. Toggle editable mode with checkbox.</p>
     <label style="margin-bottom: 1rem; display: block;">
@@ -168,6 +208,27 @@
   </div>
 
   <script>
+    // Splash screen demo
+    const splashDemo = document.getElementById('splashDemo');
+    const splashDemoDark = document.getElementById('splashDemoDark');
+    const splashEventLog = document.getElementById('splashEventLog');
+
+    document.getElementById('showSplashBtn').addEventListener('click', () => {
+      splashDemo.show();
+    });
+    document.getElementById('showSplashDarkBtn').addEventListener('click', () => {
+      splashDemoDark.show();
+    });
+    document.getElementById('showSplashProgrammaticBtn').addEventListener('click', async () => {
+      await splashDemo.show();
+    });
+
+    [splashDemo, splashDemoDark].forEach(el => {
+      el.addEventListener('splashClose', (e) => {
+        splashEventLog.textContent = `[${new Date().toLocaleTimeString()}] splashClose: reason="${e.detail.reason}" (from ${el.id})`;
+      });
+    });
+
     // Voice input button demo
     const voiceDemo = document.getElementById('voiceDemo');
     const voiceDemoAI = document.getElementById('voiceDemoAI');
