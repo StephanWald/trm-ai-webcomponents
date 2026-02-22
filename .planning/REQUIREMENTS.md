@@ -56,20 +56,20 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 
 ### Communication Preferences (COMM)
 
-- [ ] **COMM-01**: sp-communication-preferences selector renders icon-based button showing current channel preference
-- [ ] **COMM-02**: Dropdown list shows available channels (APPLICATION, EMAIL, WHATSAPP, PHONE, MS_TEAMS, GOOGLE_CHAT) with icons and labels
-- [ ] **COMM-03**: User can select a channel and component emits preferenceChange event
-- [ ] **COMM-04**: Selected channel shows checkmark in list with highlight styling
-- [ ] **COMM-05**: Components support compact mode and dark theme via DWC variables
+- [x] **COMM-01**: sp-communication-preferences selector renders icon-based button showing current channel preference
+- [x] **COMM-02**: Dropdown list shows available channels (APPLICATION, EMAIL, WHATSAPP, PHONE, MS_TEAMS, GOOGLE_CHAT) with icons and labels
+- [x] **COMM-03**: User can select a channel and component emits preferenceChange event
+- [x] **COMM-04**: Selected channel shows checkmark in list with highlight styling
+- [x] **COMM-05**: Components support compact mode and dark theme via DWC variables
 
 ### Splash Screen (SPLS)
 
-- [ ] **SPLS-01**: sp-splash renders full-screen modal overlay with backdrop blur
-- [ ] **SPLS-02**: Splash container displays with gradient header, content area, and footer
-- [ ] **SPLS-03**: Close button (top-right), Escape key, and backdrop click all dismiss the splash
-- [ ] **SPLS-04**: Show/hide methods control visibility with fade/slide animations
-- [ ] **SPLS-05**: Component emits close event when dismissed
-- [ ] **SPLS-06**: Content is customizable via slots (logo, title, subtitle, body, footer)
+- [x] **SPLS-01**: sp-splash renders full-screen modal overlay with backdrop blur
+- [x] **SPLS-02**: Splash container displays with gradient header, content area, and footer
+- [x] **SPLS-03**: Close button (top-right), Escape key, and backdrop click all dismiss the splash
+- [x] **SPLS-04**: Show/hide methods control visibility with fade/slide animations
+- [x] **SPLS-05**: Component emits close event when dismissed
+- [x] **SPLS-06**: Content is customizable via slots (logo, title, subtitle, body, footer)
 
 ### Popover (POPV)
 
@@ -162,17 +162,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VOIC-04 | Phase 10 | Complete |
 | VOIC-05 | Phase 10 | Complete |
 | VOIC-06 | Phase 10 | Complete |
-| COMM-01 | Phase 11 | Pending |
-| COMM-02 | Phase 11 | Pending |
-| COMM-03 | Phase 11 | Pending |
-| COMM-04 | Phase 11 | Pending |
-| COMM-05 | Phase 11 | Pending |
-| SPLS-01 | Phase 11 | Pending |
-| SPLS-02 | Phase 11 | Pending |
-| SPLS-03 | Phase 11 | Pending |
-| SPLS-04 | Phase 11 | Pending |
-| SPLS-05 | Phase 11 | Pending |
-| SPLS-06 | Phase 11 | Pending |
+| COMM-01 | Phase 11 | Complete |
+| COMM-02 | Phase 11 | Complete |
+| COMM-03 | Phase 11 | Complete |
+| COMM-04 | Phase 11 | Complete |
+| COMM-05 | Phase 11 | Complete |
+| SPLS-01 | Phase 11 | Complete |
+| SPLS-02 | Phase 11 | Complete |
+| SPLS-03 | Phase 11 | Complete |
+| SPLS-04 | Phase 11 | Complete |
+| SPLS-05 | Phase 11 | Complete |
+| SPLS-06 | Phase 11 | Complete |
 | POPV-01 | Phase 9 | Complete |
 | POPV-02 | Phase 9 | Complete |
 | POPV-03 | Phase 9 | Complete |

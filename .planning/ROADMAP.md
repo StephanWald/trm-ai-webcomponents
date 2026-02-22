@@ -134,7 +134,7 @@ Plans:
 | 8. Walkthrough Parity | 2/2 | Complete   | 2026-02-21 | - |
 | 9. Popover Utility | 2/2 | Complete   | 2026-02-21 | - |
 | 10. Language & Voice | 3/3 | Complete    | 2026-02-22 | - |
-| 11. Communication & Splash | v1.1 | 0/3 | Planned | - |
+| 11. Communication & Splash | 2/3 | In Progress|  | - |
 | 12. Docs & Tests | v1.1 | 0/TBD | Not started | - |
 
 ---

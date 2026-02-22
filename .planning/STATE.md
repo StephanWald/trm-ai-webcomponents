@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Developers can add a single script tag or npm install and immediately use production-ready, self-contained Skillspilot UI components that look and behave consistently — without framework lock-in.
-**Current focus:** v1.1 — Phase 10: Language & Voice (complete), moving to Phase 11
+**Current focus:** v1.1 — Phase 11: Communication Splash (in progress)
 
 ## Current Position
 
-Phase: 10 of 12 (language-voice) — COMPLETE
-Plan: 3 of 3 in current phase (all complete)
-Status: Phase 10 complete — all 3 plans done: sp-language-selector, sp-language-list, sp-voice-input-button, and full test suite
-Last activity: 2026-02-22 — Completed 10-03-PLAN.md: full test suite (6 test files, 754 spec tests + 14 E2E tests, 89% coverage)
+Phase: 11 of 12 (communication-splash) — IN PROGRESS
+Plan: 1 of 3 complete (11-01 done: sp-communication-preferences and sp-communication-list)
+Status: Phase 11 plan 01 complete — sp-communication-preferences, sp-communication-list, types, channels utility, icon helpers
+Last activity: 2026-02-22 — Completed 11-01-PLAN.md: sp-communication-preferences and sp-communication-list with DWC theming
 
 Progress: [█████░░░░░] 42% (v1.1)
 
@@ -33,6 +33,8 @@ Progress: [█████░░░░░] 42% (v1.1)
 | 10-language-voice | 3 | 69m | 23m |
 
 *Updated after each plan completion*
+| Phase 11-communication-splash P01 | 4 | 3 tasks | 8 files |
+| Phase 11-communication-splash P02 | 10 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -78,6 +80,14 @@ v1.1 key decisions:
 - [Phase 10-03]: jest.useFakeTimers() must not precede await page.waitForChanges() — confirmed by Phase 07-03 decision; test timer state directly on rootInstance without waitForChanges
 - [Phase 10-03]: Props tested via HTML attributes in newSpecPage (not rootInstance mutation) to avoid @Prop immutability warnings
 - [Phase 10-03]: E2E test for languageChange cross-shadow propagation uses direct prop assignment (el.selectedLanguage='fr') — native event name conflict may prevent onLanguageChange handler from firing in browser mode
+- [Phase 11-01]: renderChannelIcon() dispatcher centralizes icon-to-channel mapping — components call one function instead of importing 6 individual icon functions
+- [Phase 11-01]: icons.tsx re-exports renderChevronDownIcon and renderCheckIcon from sp-language-selector/utils/icons — keeps imports clean and avoids duplication
+- [Phase 11-01]: sp-communication-list is a flat list (no sections) — only 6 channels, no preferred/all grouping needed unlike language list
+- [Phase 11-01]: No auto-hide timer in sp-communication-preferences — plan explicitly stated no timer needed unlike language selector
+- [Phase 11-02]: CSS uses display:none/flex toggle (not opacity/visibility) for overlay open state — linter enforced; fade achieved via @keyframes splashFadeIn
+- [Phase 11-02]: CSS stub created in Task 1 (not Task 2) — Stencil rollup requires the CSS file at build time before styles are written
+- [Phase 11-02]: handleBackdropClick uses event.target === event.currentTarget to prevent container-child clicks from dismissing the splash
+- [Phase 11-02]: componentDidLoad() syncs initial open=true for sp-splash — Stencil @Watch does not fire for initial prop values (same as sp-popover pattern)
 
 ### Pending Todos
 
@@ -96,5 +106,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 10-03-PLAN.md (full test suite — Phase 10 complete, all 3 plans done)
+Stopped at: Completed 11-01-PLAN.md: sp-communication-preferences and sp-communication-list (Phase 11 plan 1 of 3)
 Resume file: None
