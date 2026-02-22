@@ -104,7 +104,11 @@ Plans:
   2. Selecting a channel emits a preferenceChange event; the selected channel shows a checkmark and highlight in the list; compact mode and dark theme work via DWC variables
   3. sp-splash renders a full-screen modal overlay with backdrop blur, gradient header, content area, and footer; all content areas are customizable via named slots (logo, title, subtitle, body, footer)
   4. Clicking the backdrop, pressing Escape, or clicking the close button all dismiss sp-splash with a fade/slide animation; show and hide methods control visibility programmatically; the component emits a close event on dismissal
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 11-01-PLAN.md — Communication preferences: types, channel data, icons, sp-communication-list, sp-communication-preferences with sp-popover dropdown
+- [ ] 11-02-PLAN.md — Splash screen: sp-splash full-screen modal overlay with backdrop blur, gradient header, named slots, dismiss behaviors, fade/slide animations
+- [ ] 11-03-PLAN.md — Tests: spec tests for all communication/splash components and E2E tests for browser interactions
 
 ### Phase 12: Docs & Tests
 **Goal**: Every v1.1 component has up-to-date Docusaurus API reference pages and passes the 70% test coverage threshold
@@ -130,9 +134,9 @@ Plans:
 | 8. Walkthrough Parity | 2/2 | Complete   | 2026-02-21 | - |
 | 9. Popover Utility | 2/2 | Complete   | 2026-02-21 | - |
 | 10. Language & Voice | 3/3 | Complete    | 2026-02-22 | - |
-| 11. Communication & Splash | v1.1 | 0/TBD | Not started | - |
+| 11. Communication & Splash | v1.1 | 0/3 | Planned | - |
 | 12. Docs & Tests | v1.1 | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-01-31*
-*Last updated: 2026-02-21 — Phase 10 planned (3 plans in 3 waves)*
+*Last updated: 2026-02-22 — Phase 11 planned (3 plans in 2 waves)*
