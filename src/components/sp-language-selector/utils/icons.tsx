@@ -92,3 +92,30 @@ export function renderMicrophoneIcon(size: number = 18) {
     </svg>
   );
 }
+
+/**
+ * Renders a Tabler robot icon as inline SVG.
+ * Used as the AI mode indicator in sp-voice-input-button (VOIC-06).
+ * Rounded rectangle head with two circular eyes and an antenna.
+ */
+export function renderRobotIcon(size: number = 24) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="3" y="11" width="18" height="10" rx="2" />
+      <circle cx="9" cy="16" r="1" />
+      <circle cx="15" cy="16" r="1" />
+      <path d="M12 11V7" />
+      <circle cx="12" cy="6" r="1" />
+    </svg>
+  );
+}
