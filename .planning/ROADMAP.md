@@ -118,7 +118,11 @@ Plans:
   1. Docusaurus API reference pages for sp-org-chart and sp-walkthrough accurately reflect all new props, events, and methods added in v1.1
   2. New Docusaurus pages exist for sp-language-selector, sp-voice-input-button, sp-communication-preferences, sp-splash, and sp-popover — each with usage examples and prop tables
   3. Stencil spec and e2e tests for all new and refactored v1.1 components report 70% coverage or higher across statements, branches, functions, and lines
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 12-01-PLAN.md — Update sp-org-chart and sp-walkthrough doc pages for v1.1 API, create sp-popover doc page
+- [ ] 12-02-PLAN.md — Create doc pages for sp-language-selector, sp-voice-input-button, sp-communication-preferences, sp-splash; update sidebar and getting-started
+- [ ] 12-03-PLAN.md — Verify 70% test coverage threshold, rebuild docs.json, confirm docs site builds
 
 ## Progress
 
@@ -135,8 +139,8 @@ Plans:
 | 9. Popover Utility | 2/2 | Complete   | 2026-02-21 | - |
 | 10. Language & Voice | 3/3 | Complete    | 2026-02-22 | - |
 | 11. Communication & Splash | 3/3 | Complete    | 2026-02-22 | - |
-| 12. Docs & Tests | v1.1 | 0/TBD | Not started | - |
+| 12. Docs & Tests | v1.1 | 0/3 | Not started | - |
 
 ---
 *Roadmap created: 2026-01-31*
-*Last updated: 2026-02-22 — Phase 11 planned (3 plans in 2 waves)*
+*Last updated: 2026-02-22 — Phase 12 planned (3 plans in 2 waves)*
