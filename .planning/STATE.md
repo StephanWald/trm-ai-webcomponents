@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 12 of 12 (docs-tests) — IN PROGRESS
-Plan: 2 of 3 complete (12-01: updated sp-org-chart and sp-walkthrough docs; 12-02: new component docs for sp-language-selector, sp-voice-input-button, sp-communication-preferences, sp-splash, sp-popover)
-Status: Phase 12 Plan 02 complete — all 8 component doc pages exist, sidebar and getting-started updated, docs build verified
-Last activity: 2026-02-22 — Completed 12-02-PLAN.md: created Docusaurus pages for 5 new v1.1 components, updated sidebar (8 components) and getting-started
+Plan: 1 of 3 complete (12-01: updated sp-org-chart and sp-walkthrough docs for v1.1 API; updated sp-popover docs with comprehensive examples)
+Status: Phase 12 Plan 01 complete — sp-org-chart v1.1 data model, branch filtering docs, sp-walkthrough v1.1 Features section, sp-popover expanded examples; docs build verified
+Last activity: 2026-02-22 — Completed 12-01-PLAN.md: updated 3 MDX doc pages (sp-org-chart v1.1 model/filtering, sp-walkthrough v1.1 features, sp-popover comprehensive examples)
 
-Progress: [████████░░] 75% (v1.1)
+Progress: [██████░░░░] 50% (v1.1)
 
 ## Performance Metrics
 
@@ -36,6 +36,7 @@ Progress: [████████░░] 75% (v1.1)
 | Phase 11-communication-splash P01 | 4 | 3 tasks | 8 files |
 | Phase 11-communication-splash P02 | 10 | 2 tasks | 4 files |
 | Phase 11-communication-splash P03 | 5 | 2 tasks | 5 files |
+| Phase 12-docs-tests P01 | 3 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,8 @@ v1.1 key decisions:
 - [Phase 11-03]: handleBackdropClick backdrop dismiss tested via mock event object with matching target/currentTarget (not real browser dispatch)
 - [Phase 12-02]: sp-popover.mdx created alongside 4 new component pages — sidebar reference to components/sp-popover would cause broken link without the MDX file
 - [Phase 12-02]: sp-splash examples use show() button trigger — full-screen overlay not visible in iframe without user-initiated show() call
+- [Phase 12-docs-tests]: sp-popover.mdx existed as Phase 09 stub; updated in place with richer examples rather than creating new file
+- [Phase 12-docs-tests]: Branch filtering example uses two branch entities (Engineering/Finance) to demonstrate contrast between highlight and isolate modes
 
 ### Pending Todos
 
@@ -112,5 +115,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 12-02-PLAN.md (new Docusaurus component pages for sp-language-selector, sp-voice-input-button, sp-communication-preferences, sp-splash, sp-popover; sidebar and getting-started updated)
+Stopped at: Completed 12-01-PLAN.md (updated sp-org-chart and sp-walkthrough for v1.1 API; expanded sp-popover docs with placement/dismiss/programmatic examples; docs build verified; DOCS-01 satisfied)
 Resume file: None
