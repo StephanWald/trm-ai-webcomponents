@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Developers can add a single script tag or npm install and immediately use production-ready, self-contained Skillspilot UI components that look and behave consistently — without framework lock-in.
-**Current focus:** v1.1 — Phase 9: sp-popover (complete)
+**Current focus:** v1.1 — Phase 10: Language & Voice
 
 ## Current Position
 
-Phase: 9 of 12 (sp-popover)
-Plan: 2 of 2 in current phase (09-02 complete — phase complete)
-Status: Phase 9 complete — sp-popover built and fully tested
-Last activity: 2026-02-21 — Completed 09-02-PLAN.md: sp-popover test suite (252-line position spec, 410-line component spec, 12 E2E tests; 2 bugs fixed)
+Phase: 10 of 12 (language-voice)
+Plan: 1 of 2 in current phase (10-01 complete)
+Status: Phase 10 in progress — sp-language-selector and sp-language-list built
+Last activity: 2026-02-22 — Completed 10-01-PLAN.md: sp-language-selector + sp-language-list (28 languages, browser preferred detection, auto-hide, DWC tokens)
 
-Progress: [█████░░░░░] 30% (v1.1)
+Progress: [█████░░░░░] 35% (v1.1)
 
 ## Performance Metrics
 
@@ -30,6 +30,7 @@ Progress: [█████░░░░░] 30% (v1.1)
 | 07-org-chart-parity | 3 | 52m | 17.3m |
 | 08-walkthrough-parity | 2 | 16m | 8m |
 | 09-popover-utility | 2 | 16m | 8m |
+| 10-language-voice | 1 | 3m | 3m |
 
 *Updated after each plan completion*
 
@@ -66,6 +67,10 @@ v1.1 key decisions:
 - [Phase 09-02]: global.requestAnimationFrame sync shim at module level required for Stencil spec tests when component uses rAF in lifecycle (mock-doc implements rAF as setTimeout which flushAll doesn't drain)
 - [Phase 09-02]: showPopover/hidePopover should only set the open prop — @Watch drives openInternal/closeInternal to prevent double-open/close events
 - [Phase 09-02]: componentDidLoad() needed for initial open=true — Stencil @Watch does not fire for initial prop values
+- [Phase 10-01]: sp-language-selector embeds sp-popover in its own shadow DOM render — button is the popover's previousElementSibling anchor
+- [Phase 10-01]: languageChange event name kept despite Stencil warning about native DOM conflict — plan requires this name, it is functional
+- [Phase 10-01]: renderMicrophoneIcon included in icons.tsx proactively for Plan 02 voice button reuse
+- [Phase 10-01]: Icon helpers as standalone exported TSX functions in utils/icons.tsx — not class methods
 
 ### Pending Todos
 
@@ -83,6 +88,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-21
-Stopped at: Completed 09-02-PLAN.md (sp-popover test suite — Phase 9 fully complete)
+Last session: 2026-02-22
+Stopped at: Completed 10-01-PLAN.md (sp-language-selector + sp-language-list — Phase 10 Plan 1 complete)
 Resume file: None

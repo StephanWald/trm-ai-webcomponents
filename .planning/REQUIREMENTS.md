@@ -38,12 +38,12 @@ Requirements for v1.1 release. Each maps to roadmap phases.
 
 ### Language Selector (LANG)
 
-- [ ] **LANG-01**: sp-language-selector renders as inline button with globe icon, uppercase language code, and dropdown arrow
-- [ ] **LANG-02**: sp-language-list renders animated slide-in dropdown with browser-preferred languages section and alphabetically sorted others
-- [ ] **LANG-03**: User can select a language and component emits languageChange event with language code
-- [ ] **LANG-04**: Selected language shows checkmark indicator in list
-- [ ] **LANG-05**: List auto-hides after 3 seconds when mouse leaves, with viewport boundary detection
-- [ ] **LANG-06**: Components support enabled/disabled state, compact mode, and dark theme via DWC variables
+- [x] **LANG-01**: sp-language-selector renders as inline button with globe icon, uppercase language code, and dropdown arrow
+- [x] **LANG-02**: sp-language-list renders animated slide-in dropdown with browser-preferred languages section and alphabetically sorted others
+- [x] **LANG-03**: User can select a language and component emits languageChange event with language code
+- [x] **LANG-04**: Selected language shows checkmark indicator in list
+- [x] **LANG-05**: List auto-hides after 3 seconds when mouse leaves, with viewport boundary detection
+- [x] **LANG-06**: Components support enabled/disabled state, compact mode, and dark theme via DWC variables
 
 ### Voice Input Button (VOIC)
 
@@ -150,12 +150,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | WALK-09 | Phase 8 | Complete |
 | WALK-10 | Phase 8 | Complete |
 | WALK-11 | Phase 8 | Complete |
-| LANG-01 | Phase 10 | Pending |
-| LANG-02 | Phase 10 | Pending |
-| LANG-03 | Phase 10 | Pending |
-| LANG-04 | Phase 10 | Pending |
-| LANG-05 | Phase 10 | Pending |
-| LANG-06 | Phase 10 | Pending |
+| LANG-01 | Phase 10 | Complete |
+| LANG-02 | Phase 10 | Complete |
+| LANG-03 | Phase 10 | Complete |
+| LANG-04 | Phase 10 | Complete |
+| LANG-05 | Phase 10 | Complete |
+| LANG-06 | Phase 10 | Complete |
 | VOIC-01 | Phase 10 | Pending |
 | VOIC-02 | Phase 10 | Pending |
 | VOIC-03 | Phase 10 | Pending |
