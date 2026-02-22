@@ -30,6 +30,12 @@ test.describe('sp-language-selector E2E', () => {
   test('renders language selector button with globe icon and language code text', async ({ page }) => {
     await page.goto('http://localhost:3333');
 
+    // Wait for the custom element to be defined and its shadow DOM populated
+    await page.waitForFunction(() => {
+      const el = document.querySelector('#langSelectorDemo');
+      return !!el?.shadowRoot?.querySelector('.selector-button');
+    }, { timeout: 5000 });
+
     const hasSelectorButton = await page.evaluate(() => {
       const el = document.querySelector('#langSelectorDemo');
       return !!el?.shadowRoot?.querySelector('.selector-button');
