@@ -1,6 +1,6 @@
 ---
 title: sp-popover
-description: Viewport-aware popover positioning utility. Anchors to any element with automatic placement flipping when near viewport edges. Used internally by sp-language-selector, sp-voice-input-button, and sp-communication-preferences.
+description: Viewport-aware popover positioning component with 6 placements, boundary detection, and configurable dismiss behaviors.
 sidebar_position: 4
 ---
 
@@ -12,7 +12,9 @@ export const componentDocs = docsData.components.find(c => c.tag === 'sp-popover
 
 # sp-popover
 
-Viewport-aware popover positioning utility web component. Anchors to a sibling element (or any element via `anchor` prop) and automatically flips placement when the preferred position would overflow the viewport. Supports outside-click and Escape-key dismissal. Used internally by `sp-language-selector`, `sp-voice-input-button`, and `sp-communication-preferences`.
+Reusable viewport-aware popover component that positions slotted content relative to an anchor element. Supports 6 placement options (`bottom-start`, `bottom-end`, `top-start`, `top-end`, `right-start`, `left-start`), auto-repositioning when near viewport boundaries, close-on-outside-click and close-on-escape behaviors, and a fade+slide enter animation.
+
+The anchor defaults to the element's `previousElementSibling`, so placing a `<sp-popover>` directly after a button makes that button the trigger automatically — no extra configuration needed. Use the `anchor` prop to provide a CSS selector or a direct element reference for any other anchor.
 
 ## Installation
 
@@ -32,54 +34,115 @@ Or load via script tag:
 
 ### Basic Popover
 
-By default `sp-popover` anchors to its previous sibling element. Click the button to toggle the popover open and closed.
+A button that toggles a popover below it. The `<sp-popover>` element is placed directly after the button so `previousElementSibling` resolves the anchor automatically. Click outside or press Escape to dismiss.
 
 <LiveExample height="200px" code={`
-<button id="popBtn" style="padding:8px 16px;cursor:pointer;">Toggle Popover</button>
-<sp-popover id="pop1">
-  <div style="padding:12px;">
+<button onclick="document.getElementById('pop1').togglePopover()" style="padding:6px 16px;cursor:pointer">
+  Toggle Popover
+</button>
+<sp-popover id="pop1" placement="bottom-start">
+  <div style="padding:12px 16px;min-width:180px">
     <strong>Hello from sp-popover!</strong>
-    <p style="margin:8px 0 0;">This content is positioned relative to the button above.</p>
+    <p style="margin:8px 0 0;font-size:0.875rem;color:#555">
+      This content is slotted into the popover. Click outside or press Escape to close.
+    </p>
   </div>
 </sp-popover>
-<script>
-  document.getElementById('popBtn').addEventListener('click', function() {
-    document.getElementById('pop1').togglePopover();
-  });
-<\/script>
 `} />
 
 ### Placement Options
 
-Use the `placement` prop to control which side the popover appears on. It will auto-flip when there is not enough space in the viewport.
+The `placement` prop controls where the popover appears relative to its anchor. The component automatically flips to an alternate placement when the preferred placement overflows the viewport. All 6 placement values are shown below.
 
-<LiveExample height="200px" code={`
-<button id="popBtn2" style="padding:8px 16px;cursor:pointer;">Open (top-start)</button>
-<sp-popover id="pop2" placement="top-start">
-  <div style="padding:12px;">Positioned above the button</div>
+<LiveExample height="220px" code={`
+<div style="display:flex;gap:8px;flex-wrap:wrap;padding:24px 0">
+  <button id="btn-bottom" onclick="document.getElementById('pop-bottom').togglePopover()" style="padding:6px 14px;cursor:pointer">
+    bottom-start
+  </button>
+  <sp-popover id="pop-bottom" placement="bottom-start">
+    <div style="padding:10px 14px;font-size:0.875rem">Placed below the anchor (bottom-start)</div>
+  </sp-popover>
+
+  <button id="btn-top" onclick="document.getElementById('pop-top').togglePopover()" style="padding:6px 14px;cursor:pointer">
+    top-start
+  </button>
+  <sp-popover id="pop-top" placement="top-start" anchor="#btn-top">
+    <div style="padding:10px 14px;font-size:0.875rem">Placed above the anchor (top-start)</div>
+  </sp-popover>
+
+  <button id="btn-right" onclick="document.getElementById('pop-right').togglePopover()" style="padding:6px 14px;cursor:pointer">
+    right-start
+  </button>
+  <sp-popover id="pop-right" placement="right-start" anchor="#btn-right">
+    <div style="padding:10px 14px;font-size:0.875rem">Placed to the right (right-start)</div>
+  </sp-popover>
+</div>
+`} />
+
+### Dismiss Behaviors
+
+Control whether the popover closes when clicking outside (`close-on-click`) or pressing Escape (`close-on-escape`). Toggle the checkboxes to see the effect in real time.
+
+<LiveExample height="280px" code={`
+<div style="display:flex;gap:12px;margin-bottom:12px;flex-direction:column">
+  <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+    <input type="checkbox" id="chk-click" checked onchange="syncDismiss()"> Close on outside click
+  </label>
+  <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+    <input type="checkbox" id="chk-esc" checked onchange="syncDismiss()"> Close on Escape key
+  </label>
+</div>
+<button onclick="document.getElementById('pop-dismiss').togglePopover()" style="padding:6px 16px;cursor:pointer">
+  Toggle Popover
+</button>
+<sp-popover id="pop-dismiss" placement="bottom-start">
+  <div style="padding:12px 16px;min-width:200px">
+    <p style="margin:0;font-size:0.875rem">Dismiss behavior controlled by checkboxes above.</p>
+    <button onclick="document.getElementById('pop-dismiss').hidePopover()" style="margin-top:8px;padding:4px 10px;cursor:pointer;font-size:0.8rem">
+      Close manually
+    </button>
+  </div>
 </sp-popover>
 <script>
-  document.getElementById('popBtn2').addEventListener('click', function() {
-    document.getElementById('pop2').togglePopover();
-  });
+  function syncDismiss() {
+    const pop = document.getElementById('pop-dismiss');
+    pop.closeOnClick = document.getElementById('chk-click').checked;
+    pop.closeOnEscape = document.getElementById('chk-esc').checked;
+  }
 <\/script>
 `} />
 
-### With Event Handlers
+### Programmatic Control
 
-Listen to `popoverOpen` and `popoverClose` events.
+Use the `showPopover()`, `hidePopover()`, and `togglePopover()` methods to control the popover from JavaScript. Listen to `popoverOpen` and `popoverClose` events to react to visibility changes.
 
-<LiveExample height="200px" code={`
-<button id="popBtn3" style="padding:8px 16px;cursor:pointer;">Toggle Popover</button>
-<sp-popover id="pop3">
-  <div style="padding:12px;">Popover content</div>
+<LiveExample height="260px" code={`
+<button id="anchor-prog" style="padding:6px 16px;cursor:pointer">Anchor Button</button>
+<sp-popover id="pop-prog" placement="bottom-start">
+  <div style="padding:12px 16px;min-width:180px;font-size:0.875rem">
+    Controlled programmatically.
+  </div>
 </sp-popover>
-<div id="evtLog" style="margin-top:8px;font-family:monospace;font-size:0.8rem;color:#555;"></div>
+<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+  <button onclick="document.getElementById('pop-prog').showPopover()" style="padding:5px 12px;cursor:pointer">showPopover()</button>
+  <button onclick="document.getElementById('pop-prog').hidePopover()" style="padding:5px 12px;cursor:pointer">hidePopover()</button>
+  <button onclick="document.getElementById('pop-prog').togglePopover()" style="padding:5px 12px;cursor:pointer">togglePopover()</button>
+</div>
+<div id="pop-log" style="margin-top:8px;padding:8px;background:#f5f5f5;border-radius:4px;font-family:monospace;font-size:0.8rem;min-height:40px;"></div>
 <script>
-  const pop = document.getElementById('pop3');
-  document.getElementById('popBtn3').addEventListener('click', function() { pop.togglePopover(); });
-  pop.addEventListener('popoverOpen', function() { document.getElementById('evtLog').textContent = 'popoverOpen fired'; });
-  pop.addEventListener('popoverClose', function() { document.getElementById('evtLog').textContent = 'popoverClose fired'; });
+  const pop = document.getElementById('pop-prog');
+  const log = document.getElementById('pop-log');
+
+  function addLog(msg) {
+    const p = document.createElement('p');
+    p.style.margin = '2px 0';
+    p.textContent = new Date().toLocaleTimeString() + ' - ' + msg;
+    log.prepend(p);
+    if (log.children.length > 4) log.lastChild.remove();
+  }
+
+  pop.addEventListener('popoverOpen', () => addLog('popoverOpen'));
+  pop.addEventListener('popoverClose', () => addLog('popoverClose'));
 <\/script>
 `} />
 
